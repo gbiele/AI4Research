@@ -1,0 +1,152 @@
+/* FHI 2024 palette + typography aligned with Presentasjon2.pptx (Office theme1 + slide master) */
+
+:root {
+  --fhi-dk1: #393c61;
+  --fhi-lt1: #ffffff;
+  --fhi-dk2: #222222;
+  --fhi-lt2: #fad8d7;
+  --fhi-accent1: #65adc3;
+  --fhi-accent2: #ee7068;
+  --fhi-accent3: #68cdaf;
+  --fhi-accent4: #f7b665;
+  --fhi-accent5: #435c68;
+  --fhi-accent6: #767676;
+  --fhi-hlink: #386e84;
+  --fhi-folhlink: #767676;
+  --fhi-font-stack: Calibri, "Segoe UI", system-ui, sans-serif;
+}
+
+.reveal {
+  font-family: var(--fhi-font-stack);
+  color: var(--fhi-dk2);
+}
+
+.reveal .backgrounds,
+.reveal .slide-background {
+  background-color: var(--fhi-lt1);
+}
+
+.reveal .slides section {
+  color: var(--fhi-dk2);
+  font-size: 28pt;
+  line-height: 1.2;
+  text-align: left;
+  padding-left: 8%;
+  padding-right: 8%;
+  box-sizing: border-box;
+}
+
+/* Slide titles: ## in Quarto → h2; title slide → h1 */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  font-family: var(--fhi-font-stack);
+  color: var(--fhi-dk1);
+  font-weight: 600;
+  line-height: 1.1;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.reveal h1 {
+  font-size: 46.5pt;
+}
+
+.reveal h2 {
+  font-size: 46.5pt;
+}
+
+.reveal h3 {
+  font-size: 32pt;
+  color: var(--fhi-dk1);
+}
+
+/* Body list levels (approx. master bodyStyle 1–5) */
+.reveal .slides section ul ul {
+  font-size: 20pt;
+  line-height: 0.9;
+}
+
+.reveal .slides section ul ul ul {
+  font-size: 18pt;
+}
+
+.reveal .slides section ul ul ul ul {
+  font-size: 16pt;
+}
+
+.reveal .slides section ul ul ul ul ul {
+  font-size: 14pt;
+}
+
+.reveal ul > li::marker {
+  color: var(--fhi-accent2);
+}
+
+.reveal a {
+  color: var(--fhi-hlink);
+}
+
+.reveal a:visited {
+  color: var(--fhi-folhlink);
+}
+
+.reveal strong,
+.reveal b {
+  color: var(--fhi-dk2);
+}
+
+.reveal blockquote {
+  border-left: 0.25em solid var(--fhi-accent1);
+  background: rgba(101, 173, 195, 0.08);
+  color: var(--fhi-dk2);
+  box-shadow: none;
+}
+
+.reveal pre {
+  font-size: 0.55em;
+  line-height: 1.25;
+  box-shadow: none;
+  border: 1px solid var(--fhi-accent5);
+  border-radius: 4px;
+  background: #f7f8fa;
+}
+
+.reveal code {
+  color: var(--fhi-accent5);
+  background: rgba(67, 92, 104, 0.08);
+  padding: 0.1em 0.25em;
+  border-radius: 3px;
+}
+
+.reveal pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Title slide */
+.reveal .title-slide h1 {
+  color: var(--fhi-dk1);
+}
+
+.reveal .title-slide .subtitle,
+.reveal .title-slide p {
+  color: var(--fhi-dk2);
+}
+
+/* Slide number */
+.reveal .slide-number {
+  color: var(--fhi-accent5);
+  font-size: 0.65em;
+}
+
+/* Footnotes on slides */
+.reveal .footnotes,
+.reveal aside.footnotes {
+  font-size: 0.45em;
+  color: var(--fhi-accent6);
+}
+
+.reveal .footnotes ol {
+  padding-left: 1.2em;
+}

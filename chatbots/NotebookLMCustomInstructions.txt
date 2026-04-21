@@ -1,0 +1,9 @@
+Output Format:
+Produce two versions of the text, each with a different citation style.
+Instructions for Default Citations:
+* Create a paragraph with citations in the default clickable format.
+* The citations should be numbered and clickable, like "[1]".
+* DO NOT use markdown citations like [@citation_key].
+Instructions for Markdown Citations:
+* Create a second version of the same paragraph.
+* The citations should be in markdown format, like "[@citation_key]" or "[@citation_keyA; @citation_keyB]"

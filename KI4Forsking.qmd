@@ -1,0 +1,249 @@
+---
+title: "AI in Research: Moving Beyond the Default"
+subtitle: "Structuring Workflows from Simple Prompts to Agentic Systems"
+format:
+  revealjs:
+    theme: simple
+    css: styles/KI4Forsking-reveal.css
+    slide-number: true
+    transition: slide
+    embed-resources: true
+---
+
+## 
+
+:::: {.columns}
+::: {.column width="50%"}
+![](figures/pisa_hbsc_composite_scatter.png){width=100% fig-align="center"}
+:::
+::: {.column width="50%" style="font-size:0.5em;"}
+```
+Download hsbc data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv  and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv.
+Then extract data for 15 year olds 
+- who-5-well-being-index 
+- life satisfaction
+- self efficacy (2 measures)
+from the data and calculate a composite score for each country.
+
+Next go to https://zenodo.org/records/13382904 and download the PISA 2022 student file.
+Build a composite score from reading, mathematics and science, and compute the average for each European country.
+
+Finally, plot a scatterplot with the composite HBSC score on the x-axis and the composite PISA score on the y-axis. Label all the Nordic countries and highlight Norway and save the figure as figures/scatter_pisa_hsbc.png
+
+Use R to do this.
+Document all steps in a script, which you save as scripts/pisa_hbsc_scatter.
+Save all data in the data folder.
+```
+:::
+
+::::
+
+
+## LLM problems for researcher
+
+* LLMs are **prediction / interpolations machines**: They model the temporal order of tokens (words)
+* This is **very useful**, because words that are correctly ordered do contain meaning
+* But the way LLMS are built produces 2 problems for researchers when "new" chains of words are generated
+  * **Regression to the mode** of the training data
+  * **Hallucination**
+
+As researchers, we want to harness the usefulness of LLMs while controlling their problems
+
+---
+
+## Solutions for LLM problems
+
+* Use thinking mode^[Naming conventions depend on provider] by default (not fast)
+* Good **custom instructions** and **prompts**
+* Fill the **context windows** with relevant & accurate information
+* Use tools with **inbuilt verification**
+* **Don't ask LLMs to do work that you can't verify**^[Think of LLMs as multiplying the competences you have, not as giving you completely new competences.]
+
+---
+
+## Custom instructions
+
+:::: {.columns}
+
+::: {.column width="60%"}
+* All models nowadays allow to **change the personality** 
+* Instructions for researchers
+:::
+
+::: {.column width="40%"}
+<div id="ci-wrap-instructions" style="width:100%;">
+  <img src="figures/CustomInstructions1.png" style="width:100%;"/>
+  <img src="figures/CustomInstructions2.png" style="width:100%;display:none;"/>
+  <img src="figures/CustomInstructions3.png" style="width:100%;display:none;"/>
+  <img src="figures/CustomInstructions4.png" style="width:100%;display:none;"/>
+</div>
+<div id="ci-caption-instructions" style="text-align:center;font-size:0.8em;color:#555;">1 / 4</div>
+<script>
+(function(){
+  var wrap = document.getElementById('ci-wrap-instructions');
+  var slides = wrap.querySelectorAll('img');
+  var cap = document.getElementById('ci-caption-instructions');
+  var n = slides.length;
+  var i = 0;
+  setInterval(function(){
+    slides[i].style.display = 'none';
+    i = (i+1) % n;
+    slides[i].style.display = 'block';
+    cap.textContent = (i+1) + " / " + n;
+  }, 3000);
+})();
+</script>
+:::
+
+::::
+
+```
+- Say "I don't know" rather than guessing; never fabricate citations or statistics
+- Use web search and tools to verify facts before stating them
+- Cite primary literature; prefer peer-reviewed sources over summaries
+- Push back on flawed reasoning or unsupported claims
+- Think step by step and check your reasoning before answering
+- Be concise; do not pad responses or ask unnecessary follow-up questions
+- Do not suggest next steps or offer further help unless asked
+
+```
+
+## Custom chatbots
+
+:::: {.columns}
+
+::: {.column width="60%"}
+* Provide additional info about desired behavior for specific tasks, and use task specific chat bots 
+* Methods consultant, copy editor english, grant reviewer, copy - editor "enkelt språk"
+:::
+
+::: {.column width="40%"}
+<div id="ci-wrap-chats" style="width:100%;">
+  <img src="figures/CustomChats1.png" style="width:100%;"/>
+  <img src="figures/CustomChats2.png" style="width:100%;display:none;"/>
+  <img src="figures/CustomChats3.png" style="width:100%;display:none;"/>
+</div>
+<div id="ci-caption-chats" style="text-align:center;font-size:0.8em;color:#555;">1 / 3</div>
+<script>
+(function(){
+  var wrap = document.getElementById('ci-wrap-chats');
+  var slides = wrap.querySelectorAll('img');
+  var cap = document.getElementById('ci-caption-chats');
+  var n = slides.length;
+  var i = 0;
+  setInterval(function(){
+    slides[i].style.display = 'none';
+    i = (i+1) % n;
+    slides[i].style.display = 'block';
+    cap.textContent = (i+1) + " / " + n;
+  }, 3000);
+})();
+</script>
+:::
+
+::::
+
+
+
+Chatbot contents
+
+:::: {.columns}
+
+::: {.column width="30%"}
+* Name
+* Description
+:::
+
+::: {.column width="30%"}
+* **Instructions**
+* **Knowledge**
+:::
+
+::: {.column width="30%"}
+* Tools
+:::
+
+::::
+
+
+## Retrieval Augmented Generation
+
+:::: {.columns}
+
+::: {.column width="60%"}
+* Allows to limit answers to bew derived from provided text
+* Uses semantic search to find relevant text in a knowledge base
+:::
+
+::: {.column width="40%"}
+<div id="ci-wrap-notebooklm" style="width:100%;">
+  <img src="figures/NotbookLM1.png" style="width:100%;"/>
+  <img src="figures/NotbookLM2.png" style="width:100%;display:none;"/>
+  <img src="figures/NotbookLM3.png" style="width:100%;display:none;"/>
+</div>
+<div id="ci-caption-notebooklm" style="text-align:center;font-size:0.8em;color:#555;">1 / 3</div>
+<script>
+(function(){
+  var wrap = document.getElementById('ci-wrap-notebooklm');
+  var slides = wrap.querySelectorAll('img');
+  var cap = document.getElementById('ci-caption-notebooklm');
+  var n = slides.length;
+  var i = 0;
+  setInterval(function(){
+    slides[i].style.display = 'none';
+    i = (i+1) % n;
+    slides[i].style.display = 'block';
+    cap.textContent = (i+1) + " / " + n;
+  }, 3000);
+})();
+</script>
+:::
+::::
+
+  * **Elicit** (elicit.com, great but uses mostly abstracts :-()
+  * **NotebookLM** (https://notebooklm.google.com/)
+* Also here: Garbage in, garbage out. (`pdfParser` in R)
+
+
+
+
+## AI-assisted text generation — with verification
+
+* FHI produces reports for hundreds of municipalities, schools, ... — writing subgroup-specific text by hand doesn't scale
+* LLMs can generate this text automatically from statistical tables
+* Also useful for drafting results sections from analysis output
+* Risk: LLMs can hallucinate numbers —> **programmatic verification** 
+* In R: `tblscribe` ^[compares numbers in generated text against source table]
+
+## Agentic systems
+
+:::: {.columns}
+
+::: {.column width="60%"}
+Whats that? 
+
+  * Tools that write and execute code.
+  * Work iteratively — run code, read errors, and self-correct.
+  * Most effective when you can judge whether the output is correct.
+  
+:::
+
+::: {.column width="40%"}
+Example tools:
+
+  * Cursor (cursor.com)
+  * Claude Code/Workspace (claude.com)
+  * Copilot (for Office files)
+  * ...
+
+:::
+
+::::
+
+## Summary
+
+* LLMs are extremly powerful, but also fallible
+* Need to put in guardrails: Custom instructions, Custom Chatbots, RAGs, Programmatic verification
+* Agentic systems are the next step: Tools that write and execute code
+* We are living the future now: The question is not if LLMs will change how we do research, but how.
+

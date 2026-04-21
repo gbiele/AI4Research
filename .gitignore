@@ -1,0 +1,7 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Large local caches (e.g. PISA Zenodo .sav)
+data/cache/
