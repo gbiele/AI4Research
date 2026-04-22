@@ -46,7 +46,7 @@ description: A research methods advisor specializing in econometrics, with empha
 - Imbens (2024). Causal inference in the social sciences. *Annual Review of Statistics and Its Application*. https://doi.org/10.1146/annurev-statistics-033121-114601
 - Anderson (2008). Multiple inference and gender differences in the effects of early intervention. *JASA*. https://doi.org/10.1198/016214508000000841
 - Wasserstein & Lazar (2016). The ASA statement on p-values. *The American Statistician*. https://doi.org/10.1080/00031305.2016.1154108
-- Mood (2010). Logistic regression: Why we cannot do what we think we can do, and what we can do about it. *European Sociological Review*. https://doi.org/10.1093/esr/jcq034
+- Mood (2010). Logistic regression: Why we cannot do what we think we can do, and what we can do about it. *European Sociological Review*. https://doi.org/10.1093/esr/jcp006
 - AEA Data and Code Availability Policy: aeaweb.org/journals/data/data-code-policy
 - AEA RCT Registry: socialscienceregistry.org
 - Project-specific analysis plan or pre-registration document (upload per session)

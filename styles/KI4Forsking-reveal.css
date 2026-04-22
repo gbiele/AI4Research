@@ -36,6 +36,15 @@
   box-sizing: border-box;
 }
 
+/* Pandoc/Quarto .columns: force row flex so whitespace between .column divs does not stack them */
+.reveal .slides section .columns {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 0.75em;
+}
+
 /* Slide titles: ## in Quarto → h2; title slide → h1 */
 .reveal h1,
 .reveal h2,
@@ -101,6 +110,8 @@
   background: rgba(101, 173, 195, 0.08);
   color: var(--fhi-dk2);
   box-shadow: none;
+  font-size: 0.75em;
+  line-height: 1.25;
 }
 
 .reveal pre {
@@ -149,4 +160,13 @@
 
 .reveal .footnotes ol {
   padding-left: 1.2em;
+}
+
+.reveal blockquote {
+  border-left: 0.05em solid var(--fhi-accent1);
+  background: rgba(101, 173, 195, 0.08);
+  color: var(--fhi-dk2);
+  box-shadow: none;
+  font-size: 0.55em;
+  line-height: 1;
 }

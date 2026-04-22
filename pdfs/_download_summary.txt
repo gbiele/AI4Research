@@ -2,28 +2,46 @@ methods_consultant_psychology	10.1177/0956797611417632	cached
 methods_consultant_psychology	10.1027/1864-9335/a000192	cached
 methods_consultant_psychology	10.1037/a0038889	cached
 methods_consultant_psychology	10.1038/s41562-018-0311-x	cached
-methods_consultant_psychology	10.1073/pnas.1708274114	europepmc: https://europepmc.org/articles/PMC5856500?pdf=render
-methods_consultant_psychology	10.1177/2515245917745629	FAIL: no PDF found is_oa=True title='Thinking Clearly About Correlations and Causation: Graphical'
+methods_consultant_psychology	10.1073/pnas.1708274114	cached
+methods_consultant_psychology	10.1177/2515245917745629	cached
 methods_consultant_psychology	10.1146/annurev-psych-122216-011845	cached
 methods_consultant_psychology	10.1146/annurev-psych-122216-011836	cached
 methods_consultant_psychology	10.1146/annurev-psych-020821-114157	cached
 methods_consultant_psychology	10.1146/annurev-psych-020821-094927	cached
+methods_consultant_psychology	10.1080/00031305.2016.1154108	cached
+methods_consultant_psychology	10.1080/00031305.2019.1583913	cached
+methods_consultant_psychology	10.1177/2515245918770963	cached
+methods_consultant_psychology	10.1093/esr/jcp006	cached
+methods_consultant_psychology	10.1126/science.aab2374	FAIL: no PDF found is_oa=True title='Promoting an open research culture'
 methods_consultant_econometrics	10.1016/j.jeconom.2020.12.001	cached
 methods_consultant_econometrics	10.1016/j.jeconom.2023.03.008	FAIL: no PDF found is_oa=False title='What’s trending in difference-in-differences? A synthesis of'
 methods_consultant_econometrics	10.1016/j.jeconom.2007.05.005	cached
-methods_consultant_econometrics	10.2307/2951620	FAIL: no PDF found is_oa=False title='Identification and Estimation of Local Average Treatment Eff'
+methods_consultant_econometrics	10.2307/2951620	cached
 methods_consultant_econometrics	10.1016/S1573-4412(07)06070-9	FAIL: no PDF found is_oa=False title='Chapter 70 Econometric Evaluation of Social Programs, Part I'
 methods_consultant_econometrics	10.1146/annurev-economics-080217-053402	cached
 methods_consultant_econometrics	10.1146/annurev-economics-101617-041813	cached
 methods_consultant_econometrics	10.1146/annurev-economics-080218-025643	cached
 methods_consultant_econometrics	10.1146/annurev-economics-051520-021409	cached
 methods_consultant_econometrics	10.1146/annurev-statistics-033121-114601	cached
+methods_consultant_econometrics	10.1198/016214508000000841	FAIL: no PDF found is_oa=False title='Multiple Inference and Gender Differences in the Effects of '
+methods_consultant_econometrics	10.1080/00031305.2016.1154108	cached
+methods_consultant_econometrics	10.1093/esr/jcp006	cached
 methods_consultant_epidemiology	10.1136/jech.2004.029496	cached
-methods_consultant_epidemiology	10.1097/00001648-199901000-00008	FAIL: no PDF found is_oa=False title='Causal Diagrams for Epidemiologic Research'
-methods_consultant_epidemiology	10.1093/aje/kwv254	europepmc: https://europepmc.org/articles/PMC4832051?pdf=render
-methods_consultant_epidemiology	10.1093/ije/dyw341	FAIL: no PDF found is_oa=True title='Robust causal inference using directed acyclic graphs: the R'
+methods_consultant_epidemiology	10.1097/00001648-199901000-00008	cached
+methods_consultant_epidemiology	10.1093/aje/kwv254	cached
+methods_consultant_epidemiology	10.1093/ije/dyw341	cached
 methods_consultant_epidemiology	10.1146/annurev-publhealth-031811-124606	FAIL: no PDF found is_oa=True title='Causal Inference in Public Health'
 methods_consultant_epidemiology	10.1146/annurev-publhealth-032315-021402	cached
 methods_consultant_epidemiology	10.1146/annurev-publhealth-040617-013507	cached
 methods_consultant_epidemiology	10.1146/annurev-publhealth-061022-050825	cached
 methods_consultant_epidemiology	10.1146/annurev-publhealth-051920-114020	cached
+methods_consultant_epidemiology	10.1080/00031305.2016.1154108	cached
+methods_consultant_epidemiology	10.1093/oxfordjournals.aje.a114593	crossref: http://academic.oup.com/aje/article-pdf/125/5/761/287809/125-5-761.pdf
+methods_consultant_epidemiology	10.1097/EDE.0000000000000291	FAIL: no PDF found is_oa=False title='The Relation of Collapsibility and Confounding to Faithfulne'
+methods_consultant_epidemiology	10.1093/aje/kwi188	cached
+methods_consultant_epidemiology	10.1126/science.aab2374	FAIL: no PDF found is_oa=True title='Promoting an open research culture'
+methods_consultant	10.1080/00031305.2016.1154108	cached
+methods_consultant	10.1080/00031305.2019.1583913	cached
+methods_consultant	10.1111/j.2517-6161.1995.tb02031.x	crossref: https://academic.oup.com/jrsssb/article-pdf/57/1/289/49173396/jrsssb_57_1_289.pdf
+methods_consultant	10.1093/esr/jcp006	cached
+methods_consultant	10.1126/science.aab2374	FAIL: no PDF found is_oa=True title='Promoting an open research culture'

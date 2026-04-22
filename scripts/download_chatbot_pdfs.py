@@ -2,7 +2,15 @@
 """
 Download PDFs for DOIs listed in chatbots/*.md into pdfs/<chatbot_folder>/.
 
-Resolution order: Unpaywall (all OA locations) -> Crossref pdf links ->
+Optional authenticated fetches (institutional access): set one of:
+  AI4RESEARCH_COOKIE_FILE — path to a Netscape/Mozilla cookies.txt (e.g. from a browser extension).
+  AI4RESEARCH_HTTP_COOKIE — raw Cookie header value (name=value; name2=value2).
+If both are set, the file takes precedence for urllib; curl uses the same rule.
+Never commit real cookie files.
+
+Resolution order: Unpaywall (all OA locations) -> Semantic Scholar (openAccessPdf) ->
+ OpenAlex (best_oa_location / oa_url) -> Crossref pdf links -> EuropePMC ->
+ CORE -> preprints (arXiv/PMC via Semantic Scholar externalIds) ->
  landing page (urllib, then curl) -> extract PDF URLs from HTML.
 Uses curl.exe as fallback when urllib is blocked (common for publisher sites).
 """
@@ -10,14 +18,17 @@ from __future__ import annotations
 
 import html as html_module
 import json
+import os
 import re
 import shutil
 import subprocess
 import tempfile
 import time
+import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from http.cookiejar import MozillaCookieJar
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -35,6 +46,71 @@ CTX = __import__("ssl").create_default_context()
 DOI_RE = re.compile(r"https?://doi\.org/(10\.\d{4,9}/[^\s\]]+)", re.I)
 
 CURL = shutil.which("curl") or shutil.which("curl.exe")
+
+_cookie_opener: urllib.request.OpenerDirector | None = None
+_cookie_opener_source: str | None = None
+
+
+def _cookie_file_path() -> str | None:
+    raw = os.environ.get("AI4RESEARCH_COOKIE_FILE", "").strip()
+    if not raw:
+        return None
+    path = Path(raw).expanduser()
+    return str(path.resolve()) if path.is_file() else None
+
+
+def _cookie_header_value() -> str | None:
+    h = os.environ.get("AI4RESEARCH_HTTP_COOKIE", "").strip()
+    return h or None
+
+
+def _get_cookie_opener() -> urllib.request.OpenerDirector | None:
+    global _cookie_opener, _cookie_opener_source
+    fp = _cookie_file_path()
+    if fp is None:
+        return None
+    if _cookie_opener is not None and _cookie_opener_source == fp:
+        return _cookie_opener
+    try:
+        cj = MozillaCookieJar(fp)
+        cj.load(ignore_discard=True, ignore_expires=True)
+    except OSError as e:
+        print(f"AI4RESEARCH_COOKIE_FILE: could not load {fp}: {e}", file=sys.stderr)
+        return None
+    except Exception as e:
+        print(f"AI4RESEARCH_COOKIE_FILE: invalid or unsupported jar {fp}: {e}", file=sys.stderr)
+        return None
+    https_handler = urllib.request.HTTPSHandler(context=CTX)
+    _cookie_opener = urllib.request.build_opener(
+        urllib.request.HTTPCookieProcessor(cj),
+        https_handler,
+    )
+    _cookie_opener_source = fp
+    return _cookie_opener
+
+
+def _apply_cookie_header(req: urllib.request.Request) -> None:
+    hv = _cookie_header_value()
+    if hv:
+        req.add_header("Cookie", hv)
+
+
+def _urlopen_with_cookies(req: urllib.request.Request, timeout: int):
+    opener = _get_cookie_opener()
+    if opener is not None:
+        return opener.open(req, timeout=timeout)
+    _apply_cookie_header(req)
+    return urllib.request.urlopen(req, timeout=timeout, context=CTX)
+
+
+def _curl_cookie_args() -> list[str]:
+    fp = _cookie_file_path()
+    if fp:
+        return ["-b", fp]
+    hv = _cookie_header_value()
+    if hv:
+        return ["-b", hv]
+    return []
 
 
 def find_dois_in_md(text: str) -> list[str]:
@@ -67,7 +143,7 @@ def http_get_urllib(url: str) -> tuple[bytes, str]:
         },
         method="GET",
     )
-    with urllib.request.urlopen(req, timeout=90, context=CTX) as resp:
+    with _urlopen_with_cookies(req, 90) as resp:
         return resp.read(), resp.geturl()
 
 
@@ -89,6 +165,7 @@ def curl_fetch(url: str) -> bytes | None:
                 USER_AGENT,
                 "-e",
                 referer_for_url(url),
+                *_curl_cookie_args(),
                 "-o",
                 str(path),
                 url,
@@ -141,6 +218,79 @@ def iter_unpaywall_pdf_urls(uw: dict) -> list[str]:
                 if u not in seen:
                     seen.append(u)
     return seen
+
+
+def semantic_scholar_lookup(doi: str) -> dict | None:
+    q = urllib.parse.quote(doi, safe="")
+    url = f"https://api.semanticscholar.org/graph/v1/paper/DOI:{q}?fields=openAccessPdf,externalIds"
+    try:
+        data, _ = http_get_urllib(url)
+        return json.loads(data.decode("utf-8", errors="replace"))
+    except (urllib.error.HTTPError, urllib.error.URLError, json.JSONDecodeError, TimeoutError, OSError):
+        return None
+
+
+def iter_semantic_scholar_pdf_urls(ss: dict) -> list[str]:
+    out: list[str] = []
+    oa = ss.get("openAccessPdf")
+    if oa and oa.get("url"):
+        out.append(oa["url"])
+    return out
+
+
+def preprint_pdf_urls(ss: dict) -> list[str]:
+    """Construct PDF URLs from arXiv and PubMed Central IDs found in Semantic Scholar metadata."""
+    ids = ss.get("externalIds") or {}
+    out: list[str] = []
+    arxiv_id = ids.get("ArXiv")
+    if arxiv_id:
+        out.append(f"https://arxiv.org/pdf/{arxiv_id}.pdf")
+    pmc_id = ids.get("PubMedCentral")
+    if pmc_id:
+        out.append(f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{pmc_id}/pdf/")
+    return out
+
+
+def openalex_pdf_urls(doi: str) -> list[str]:
+    q = urllib.parse.quote(doi, safe="")
+    url = f"https://api.openalex.org/works/https://doi.org/{q}"
+    try:
+        data, _ = http_get_urllib(url)
+        msg = json.loads(data.decode("utf-8", errors="replace"))
+    except Exception:
+        return []
+    out: list[str] = []
+    for src in [
+        msg.get("best_oa_location") or {},
+        msg.get("primary_location") or {},
+    ]:
+        u = src.get("pdf_url")
+        if u and u not in out:
+            out.append(u)
+    u = (msg.get("open_access") or {}).get("oa_url")
+    if u and u not in out:
+        out.append(u)
+    for loc in msg.get("locations") or []:
+        u = loc.get("pdf_url")
+        if u and u not in out:
+            out.append(u)
+    return out
+
+
+def core_pdf_urls(doi: str) -> list[str]:
+    q = urllib.parse.quote(f'doi:"{doi}"', safe="")
+    url = f"https://api.core.ac.uk/v3/search/works?q={q}&limit=1"
+    try:
+        data, _ = http_get_urllib(url)
+        msg = json.loads(data.decode("utf-8", errors="replace"))
+    except Exception:
+        return []
+    out: list[str] = []
+    for result in (msg.get("results") or [])[:1]:
+        u = result.get("downloadUrl")
+        if u and u not in out:
+            out.append(u)
+    return out
 
 
 def europepmc_pdf_urls(doi: str) -> list[str]:
@@ -213,19 +363,25 @@ def _resolve_url(u: str, base_url: str) -> str:
 
 
 def extract_pdf_urls_from_html(body: bytes, base_url: str) -> list[str]:
-    """Prefer citation_pdf_url meta; only accept same-registrable-domain hrefs (avoids bogus CMS PDFs)."""
+    """Prefer citation_pdf_url meta and <link type=application/pdf>; also catches
+    /doi/pdf/ publisher links; only accepts same-registrable-domain hrefs for generic .pdf links."""
     text = body.decode("utf-8", errors="replace")
     meta_urls: list[str] = []
     for pat in (
         r'citation_pdf_url"\s+content="([^"]+)"',
         r"citation_pdf_url'\s+content='([^']+)'",
         r'<meta\s+name="citation_pdf_url"\s+content="([^"]+)"',
+        # <link rel="alternate" type="application/pdf" href="...">
+        r'<link[^>]+type=["\']application/pdf["\'][^>]+href=["\']([^"\']+)["\']',
+        r'<link[^>]+href=["\']([^"\']+)["\'][^>]+type=["\']application/pdf["\']',
     ):
         for m in re.finditer(pat, text, re.I):
             meta_urls.append(m.group(1))
 
     base_dom = _reg_domain(urllib.parse.urlparse(base_url).netloc)
     href_urls: list[str] = []
+
+    # Same-domain .pdf hrefs
     for m in re.finditer(r'href="([^"]+\.pdf[^"]*)"', text, re.I):
         u = m.group(1)
         if "javascript" in u.lower():
@@ -236,6 +392,17 @@ def extract_pdf_urls_from_html(body: bytes, base_url: str) -> list[str]:
         if _reg_domain(urllib.parse.urlparse(abs_u).netloc) != base_dom:
             continue
         href_urls.append(abs_u)
+
+    # Publisher /doi/pdf/, /doi/epdf/, /doi/pdfplus/ patterns (Taylor & Francis, Oxford, Wiley, etc.)
+    for m in re.finditer(r'href="([^"]*?/doi/(?:pdf|epdf|pdfplus)/[^"]*)"', text, re.I):
+        u = m.group(1)
+        if "javascript" in u.lower():
+            continue
+        abs_u = _resolve_url(u, base_url)
+        if not abs_u.startswith("http"):
+            continue
+        if abs_u not in href_urls:
+            href_urls.append(abs_u)
 
     ordered = meta_urls + href_urls
     abs_urls: list[str] = []
@@ -255,7 +422,7 @@ def fetch_pdf_bytes(url: str) -> bytes | None:
         method="GET",
     )
     try:
-        with urllib.request.urlopen(req, timeout=120, context=CTX) as resp:
+        with _urlopen_with_cookies(req, 120) as resp:
             ct = (resp.headers.get("Content-Type") or "").lower()
             data = resp.read()
         if data[:4] == b"%PDF" or "pdf" in ct:
@@ -291,12 +458,23 @@ def fetch_landing_html(doi: str) -> tuple[bytes, str] | tuple[None, str]:
 
 def download_for_doi(doi: str) -> tuple[bool, bytes, str]:
     uw = unpaywall_lookup(doi)
-
     if uw:
         ulist = iter_unpaywall_pdf_urls(uw)
         data, src = try_urls(ulist)
         if data:
             return True, data, f"unpaywall: {src}"
+
+    ss = semantic_scholar_lookup(doi)
+    if ss:
+        sslist = iter_semantic_scholar_pdf_urls(ss)
+        data, src = try_urls(sslist)
+        if data:
+            return True, data, f"semanticscholar: {src}"
+
+    oalist = openalex_pdf_urls(doi)
+    data, src = try_urls(oalist)
+    if data:
+        return True, data, f"openalex: {src}"
 
     xlist = crossref_pdf_urls(doi)
     data, src = try_urls(xlist)
@@ -307,6 +485,17 @@ def download_for_doi(doi: str) -> tuple[bool, bytes, str]:
     data, src = try_urls(emlist)
     if data:
         return True, data, f"europepmc: {src}"
+
+    clist = core_pdf_urls(doi)
+    data, src = try_urls(clist)
+    if data:
+        return True, data, f"core: {src}"
+
+    if ss:
+        plist = preprint_pdf_urls(ss)
+        data, src = try_urls(plist)
+        if data:
+            return True, data, f"preprint: {src}"
 
     result = fetch_landing_html(doi)
     if result[0] is None:
@@ -333,6 +522,7 @@ def main() -> None:
         ("methods_consultant_psychology.md", "methods_consultant_psychology"),
         ("methods_consultant_econometrics.md", "methods_consultant_econometrics"),
         ("methods_consultant_epidemiology.md", "methods_consultant_epidemiology"),
+        ("methods_consultant.md", "methods_consultant"),
     ]
 
     PDFS.mkdir(parents=True, exist_ok=True)

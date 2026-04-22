@@ -1,6 +1,6 @@
 ---
-title: "AI in Research: Moving Beyond the Default"
-subtitle: "Structuring Workflows from Simple Prompts to Agentic Systems"
+title: "AI in Research: Harnessing the Strengths, Controlling the Weaknesses"
+subtitle: "Tools and Techniques for Responsible AI Use in Research"
 format:
   revealjs:
     theme: simple
@@ -13,10 +13,7 @@ format:
 ## 
 
 :::: {.columns}
-::: {.column width="65%"}
-![](figures/pisa_hbsc_composite_scatter.png){width=100% fig-align="center"}
-:::
-::: {.column width="35%" style="font-size:0.5em;"}
+::: {.column style="width:30%; font-size:0.5em;"}
 ```
 Download hsbc data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv  and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv.
 Then extract data for 15 year olds 
@@ -36,6 +33,9 @@ Save all data in the data folder.
 ```
 :::
 
+::: {.column width="70%"}
+![](figures/pisa_hbsc_composite_scatter.png){width=100% fig-align="center"}
+:::
 ::::
 
 
@@ -53,12 +53,13 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 
 ## Solutions for LLM problems
 
-* Enable **extended reasoning** for complex questions^[Called "thinking mode", "deep research", etc. depending on provider — slower but more reliable]
-* Good **custom instructions** and **prompts**
-* Fill the **context windows** with relevant & accurate information
+* Enable **extended reasoning** for complex questions^[Called "thinking mode", "deep research", etc. depending on provider]
+* Good **custom instructions**
+* Good **prompts**
+* Fill the **context windows** with relevant information
 * Use tools with **inbuilt verification**
-* **Don't ask LLMs to do work that you can't verify**^[Think of LLMs as multiplying the competences you have, not as giving you completely new competences.]
-* **Data privacy**: never upload raw research data; use training-data-safe services for sensitive tasks — see the [blog post](KI4ResearchBlog.md) for details
+* **Only ask LLMs to do work you can verify**^[LLMs multiply the competences you have, they don't give you completely new ones.]
+* **Data privacy**: see the [blog post](KI4ResearchBlog.md)
 
 ---
 
@@ -99,25 +100,24 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 
 ::::
 
-```
-- Say "I don't know" rather than guessing; never fabricate citations or statistics
-- Use web search and tools to verify facts before stating them
-- Cite primary literature; prefer peer-reviewed sources over summaries
-- Push back on flawed reasoning or unsupported claims
-- Think step by step and check your reasoning before answering
-- Read papers critically: flag when conclusions outrun the evidence, when study designs cannot support causal claims, or when limitations are understated
-- Be concise; do not pad responses or ask unnecessary follow-up questions
-- Do not suggest next steps or offer further help unless asked
-
-```
+> - **Say "I don't know"** rather than guessing; never fabricate citations or statistics
+> - **Use tools** like web search or python to verify facts before stating them
+> - **Push back** on flawed reasoning or unsupported claims
+> - **Think step by step** and check your reasoning before answering
+> - **Cite primary literature**; prefer peer-reviewed sources over summaries
+> - **Read papers critically**: flag when conclusions outrun the evidence, when study designs cannot support causal claims, or when limitations are understated
+> - **Be concise**; do not pad responses or ask unnecessary follow-up questions
+> - Do not suggest next steps or offer further help unless asked
 
 ## Custom chatbots
 
 :::: {.columns}
 
-::: {.column width="60%"}
-* Provide additional info about desired behavior for specific tasks, and use task specific chat bots 
-* Methods consultant, copy editor english, grant reviewer, copy - editor "enkelt språk"
+::: {.column width="50%"}
+* Define and use task-specific chatbots
+* Provide additional information about desired behavior
+* Examples:
+  * Methods consultant, copy editor English, grant reviewer, copy editor plain language
 :::
 
 ::: {.column width="40%"}
@@ -222,21 +222,20 @@ Chatbot contents
 
 :::: {.columns}
 
-::: {.column width="60%"}
-What's that?
-
-  * Tools that write and execute code.
-  * Work iteratively — run code, read errors, and self-correct.
+::: {.column width="80%"}
+  * Plan and execute multi-step tasks with minimal human input.
+  * Can use external tools: web search, file system, databases and APIs.
+  * **Write and execute code.**
+  * Work iteratively — run code, read errors, and **self-correct**.
   * Most effective when you can judge whether the output is correct.
-  
+
 :::
 
-::: {.column width="40%"}
-Example tools:
-
-  * Cursor (cursor.com)
-  * Claude Code/Workspace (claude.com)
-  * MS Copilot (for Office files)
+::: {.column style="width:20%; font-size:0.5em;"}
+  * cursor.com
+  * anthropic.com/product/claude-code
+  * anthropic.com/product/claude-cowork
+  * https://antigravity.google/
   * ...
 
 :::
@@ -246,9 +245,9 @@ Example tools:
 ## Summary
 
 * LLMs are extremely powerful, but also fallible
-* Need to put in guardrails: Custom instructions, Custom Chatbots, RAG, Programmatic verification
-* Agentic systems are the next step: Tools that write and execute code
-* **LLMs multiply the competences you already have** — the output scales with what you bring to the prompt
+* Need guardrails: Custom instructions, Custom Chatbots, RAG, Programmatic verification
+* Agentic systems are the next step
+* LLMs multiply the competences you already have
 
-We are living the future now: The question is not if LLMs will change how we do research, but how.
+**We are living the future now: The question is not if LLMs will change how we do research, but how.**
 

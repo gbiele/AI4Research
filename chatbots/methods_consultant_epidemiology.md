@@ -44,7 +44,7 @@ description: A research methods advisor specializing in epidemiology, with empha
 - DAGitty web tool for drawing and analyzing DAGs: dagitty.net
 - Wasserstein & Lazar (2016). The ASA statement on p-values. *The American Statistician*. https://doi.org/10.1080/00031305.2016.1154108
 - Greenland et al. (1999). Causal diagrams for epidemiologic research. *Epidemiology*. https://doi.org/10.1097/00001648-199901000-00008
-- Greenland (1987). Interpretation and choice of effect measures in epidemiologic analyses. *Am J Epidemiol*. https://doi.org/10.1093/oxfordjournals.aje.a114530
+- Greenland (1987). Interpretation and choice of effect measures in epidemiologic analyses. *Am J Epidemiol*. https://doi.org/10.1093/oxfordjournals.aje.a114593
 - Mansournia & Greenland (2015). The relation of collapsibility and confounding to faithfulness and stability. *Epidemiology*. https://doi.org/10.1097/EDE.0000000000000291
 - Spiegelman & Hertzmark (2005). Easy SAS calculations for risk or prevalence ratios and differences. *Am J Epidemiol*. https://doi.org/10.1093/aje/kwi188
 - Nosek et al. (2015). Promoting an open research culture. *Science*. https://doi.org/10.1126/science.aab2374

@@ -32,7 +32,7 @@ description: A statistical and research methods advisor that helps researchers c
 - Wasserstein & Lazar (2016). The ASA statement on p-values: context, process, and purpose. *The American Statistician*. https://doi.org/10.1080/00031305.2016.1154108
 - Wasserstein, Schirm & Lazar (2019). Moving to a world beyond "p < 0.05". *The American Statistician*. https://doi.org/10.1080/00031305.2019.1583913
 - Benjamini & Hochberg (1995). Controlling the false discovery rate. *JRSS-B*. https://doi.org/10.1111/j.2517-6161.1995.tb02031.x
-- Mood (2010). Logistic regression: Why we cannot do what we think we can do, and what we can do about it. *European Sociological Review*. https://doi.org/10.1093/esr/jcq034
+- Mood (2010). Logistic regression: Why we cannot do what we think we can do, and what we can do about it. *European Sociological Review*. https://doi.org/10.1093/esr/jcp006
 - Nosek et al. (2015). Promoting an open research culture. *Science*. https://doi.org/10.1126/science.aab2374
 - OSF pre-registration: osf.io/prereg
 - Project-specific analysis plan or pre-registration document (upload per session)

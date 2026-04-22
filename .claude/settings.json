@@ -58,7 +58,8 @@
       "Bash(curl -s -L -H 'User-Agent: Mozilla/5.0' -o /c/Users/gubi/github/AI4Research/pdfs/lakens_2018_justify_alpha.pdf http://eprints.nottingham.ac.uk/49123/1/Justify%20Your%20Alpha.pdf)",
       "Bash(curl -s -L -H 'User-Agent: Mozilla/5.0' -o /c/Users/gubi/github/AI4Research/pdfs/lakens_2018_justify_alpha.pdf https://pure.tue.nl/ws/files/119109470/Lakens_et_al._2018_Justify_your_alpha.pdf)",
       "Bash(curl -s -L -H 'User-Agent: Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36' -o /c/Users/gubi/github/AI4Research/pdfs/nosek_2018_preregistration.pdf https://www.pnas.org/content/pnas/115/11/2600.full.pdf)",
-      "Bash(curl -s \"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pmc&term=10.1073/pnas.1708274114[doi]&retmode=json\")"
+      "Bash(curl -s \"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pmc&term=10.1073/pnas.1708274114[doi]&retmode=json\")",
+      "Bash(py -c ' *)"
     ]
   }
 }
