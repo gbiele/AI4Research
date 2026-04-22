@@ -13,10 +13,10 @@ format:
 ## 
 
 :::: {.columns}
-::: {.column width="50%"}
+::: {.column width="65%"}
 ![](figures/pisa_hbsc_composite_scatter.png){width=100% fig-align="center"}
 :::
-::: {.column width="50%" style="font-size:0.5em;"}
+::: {.column width="35%" style="font-size:0.5em;"}
 ```
 Download hsbc data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv  and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv.
 Then extract data for 15 year olds 
@@ -39,7 +39,7 @@ Save all data in the data folder.
 ::::
 
 
-## LLM problems for researcher
+## LLM problems for researchers
 
 * LLMs are **prediction / interpolations machines**: They model the temporal order of tokens (words)
 * This is **very useful**, because words that are correctly ordered do contain meaning
@@ -53,11 +53,12 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 
 ## Solutions for LLM problems
 
-* Use thinking mode^[Naming conventions depend on provider] by default (not fast)
+* Enable **extended reasoning** for complex questions^[Called "thinking mode", "deep research", etc. depending on provider — slower but more reliable]
 * Good **custom instructions** and **prompts**
 * Fill the **context windows** with relevant & accurate information
 * Use tools with **inbuilt verification**
 * **Don't ask LLMs to do work that you can't verify**^[Think of LLMs as multiplying the competences you have, not as giving you completely new competences.]
+* **Data privacy**: never upload raw research data; use training-data-safe services for sensitive tasks — see the [blog post](KI4ResearchBlog.md) for details
 
 ---
 
@@ -66,7 +67,8 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 :::: {.columns}
 
 ::: {.column width="60%"}
-* All models nowadays allow to **change the personality** 
+* All models allow to **change the personality**
+* Apply to **all conversations** — set once, always in effect
 * Instructions for researchers
 :::
 
@@ -172,7 +174,7 @@ Chatbot contents
 :::: {.columns}
 
 ::: {.column width="60%"}
-* Allows to limit answers to bew derived from provided text
+* Limits answers to those derived from provided text
 * Uses semantic search to find relevant text in a knowledge base
 :::
 
@@ -221,7 +223,7 @@ Chatbot contents
 :::: {.columns}
 
 ::: {.column width="60%"}
-Whats that? 
+What's that?
 
   * Tools that write and execute code.
   * Work iteratively — run code, read errors, and self-correct.
@@ -234,7 +236,7 @@ Example tools:
 
   * Cursor (cursor.com)
   * Claude Code/Workspace (claude.com)
-  * Copilot (for Office files)
+  * MS Copilot (for Office files)
   * ...
 
 :::
@@ -243,8 +245,10 @@ Example tools:
 
 ## Summary
 
-* LLMs are extremly powerful, but also fallible
-* Need to put in guardrails: Custom instructions, Custom Chatbots, RAGs, Programmatic verification
+* LLMs are extremely powerful, but also fallible
+* Need to put in guardrails: Custom instructions, Custom Chatbots, RAG, Programmatic verification
 * Agentic systems are the next step: Tools that write and execute code
-* We are living the future now: The question is not if LLMs will change how we do research, but how.
+* **LLMs multiply the competences you already have** — the output scales with what you bring to the prompt
+
+We are living the future now: The question is not if LLMs will change how we do research, but how.
 
