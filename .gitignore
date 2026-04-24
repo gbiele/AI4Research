@@ -5,3 +5,4 @@
 
 # Large local caches (e.g. PISA Zenodo .sav)
 data/cache/
+.positai
