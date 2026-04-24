@@ -11,7 +11,7 @@ format:
 
 Suppose you want to quickly put together a figure showing how Norway and other European countries compare on student learning and well-being — combining PISA academic achievement data with HBSC well-being data. Downloading the files, wrangling two large international datasets, constructing composite scores, and producing a labelled scatterplot would normally take an afternoon of coding. How quickly can this actually be done?
 
-Here is a condensed version of the prompt given to an AI assistant with access to the web and code execution (the full prompt is in the footnote[^1]):
+Here is a condensed version of the prompt[^2] given to an AI assistant with access to the web and code execution (the full prompt is in the footnote[^1]):
 
 > - Download HBSC data and extract well-being, life satisfaction, and self-efficacy measures for 15-year-olds; compute a composite score per country.
 > - Download the PISA 2022 student file from Zenodo; build a composite from reading, mathematics, and science; compute European country averages.
@@ -27,21 +27,21 @@ Not bad for a single short prompt. The pipeline ran end to end — web scraping,
 
 That said, the result is not perfect.  In a more complete workflow, the prompt would include explicit instructions on how to construct composite scores (e.g., z-score each variable before averaging), what axis labels to use, and what the figure should communicate. The prompt would also specify what to do with missing data and how to handle countries that appear in one dataset but not the other.
 
-This is the general pattern with agentic AI: the output scales with the quality of the instructions. A short prompt produces a plausible first draft. A well-specified prompt — written by someone who knows what a good analysis looks like — produces something close to a finished product.
+This is the general pattern with agentic AI[^3]: the output scales with the quality of the instructions. A short prompt produces a plausible first draft. A well-specified prompt — written by someone who knows what a good analysis looks like — produces something close to a finished product.
 
 This is not a demo. This is what current agentic AI systems can do. The question is no longer whether AI will change how we do research, but how to use it in ways that are actually reliable.
 
-
+This example illustrates just how powerful large language models can be — but they also have important limitations that we as researchers must take into account.
 
 ## Why LLMs Are Tricky for Researchers
 
-Large language models (LLMs) are extraordinarily powerful — but their architecture creates two problems that matter especially in scientific contexts.
+Large language models (LLMs)[^4] are extraordinarily powerful — but their architecture creates two problems that matter especially in scientific contexts.
 
 ### Regression to the Mode
 
-LLMs are trained to predict the next most-likely token (word fragment) given everything that came before. This makes them excellent at generating fluent, coherent text. But it also means they pull toward the *mode* of their training data. Ask an LLM to summarise evidence on a contested topic and it will often produce a smooth, confident synthesis that papers over genuine scientific disagreement. Ask it to generate a novel hypothesis and it will tend toward ideas that are already well-represented in the literature.
+LLMs are trained to predict the next most-likely token[^5] (word fragment) given everything that came before. This makes them excellent at generating fluent, coherent text. But it also means they pull toward the *mode* of their training data. Ask an LLM to summarise evidence on a contested topic and it will often produce a smooth, confident synthesis that papers over genuine scientific disagreement. Ask it to generate a novel hypothesis and it will tend toward ideas that are already well-represented in the literature.
 
-For researchers, regression to the mode is a subtle trap: the output *sounds* authoritative while being epistemically conservative. 
+For researchers, regression to the mode is a subtle trap: the output *sounds* authoritative while being epistemically conservative. This is especially problematic when querying an LLM about a research topic and relying exclusively on information from its training data. The model will confidently reproduce the dominant view in the literature — including its biases, blind spots, and outdated consensus — without flagging minority findings, ongoing debates, or more recent developments that postdate its training. The result can look like a thorough synthesis while missing exactly the nuance that matters for scientific work.
 
 ### Hallucination
 
@@ -55,10 +55,10 @@ For researchers, hallucination is not merely embarrassing — it is a validity t
 
 These two problems suggest a practical framework with five levers:
 
-1. **Enable extended reasoning** for complex questions so the model thinks step by step before answering, rather than pattern-matching to the most plausible response.
+1. **Enable extended reasoning** so the model thinks step by step before answering, rather than pattern-matching to the most plausible response.
 2. **Give the model specific, expert instructions** so it behaves like a domain specialist rather than a generalist assistant.
-3. **Fill the context window with curated documents and domain knowledge** so the model reasons from evidence rather than from model-memory.
-4. **Extend context retrieval dynamically** using semantic search over a larger document library (RAG).
+3. **Fill the context window[^6] with curated documents and domain knowledge** so the model reasons from evidence rather than from model-memory.
+4. **Extend context retrieval dynamically** using semantic search over a larger document library (RAG[^7]).
 5. **Automate or facilitate checking of outputs** so errors are caught before they propagate.
 
 The rest of this post works through each lever in turn, from the simplest interventions (extended reasoning, custom instructions, good prompts) to the most powerful (agentic systems with programmatic verification).
@@ -68,18 +68,16 @@ The rest of this post works through each lever in turn, from the simplest interv
 
 Before working through the levers, one ground rule: be careful about what you paste or upload into an LLM.
 
-**Raw research data should not be uploaded.** This applies to participant-level data, health records, administrative data, and any dataset with privacy implications — regardless of pseudonymisation. The clear exception is data you downloaded from a public source or would share openly anyway (the PISA and HBSC files in the example above fall into this category).
+**Raw research data must not be uploaded.** This applies to participant-level data, health records, administrative data, and any dataset with privacy implications — regardless of pseudonymisation. The clear exception is data you downloaded from a public source or would share openly anyway (the PISA and HBSC files in the example above fall into this category).
 
-Pre-publication results are a different matter. Sharing a table of means or a draft results section carries no privacy risk, and using an LLM to help draft or check such text is generally fine.
-
-What does require care is training data. Standard consumer-facing LLM services may use your conversations to improve their models unless you opt out or use a version that excludes this. For tasks involving sensitive materials — confidential grant applications, internal project documents, unpublished methods — use a service that contractually excludes your prompts from training data. Enterprise versions of Microsoft Copilot (Microsoft 365) and the API-based tiers of Claude, ChatGPT, and Gemini typically provide this guarantee; verify the terms for the specific service before proceeding.
+Pre-publication results are a different matter. Sharing a table of means or a draft results section carries no privacy risk, and using an LLM to help draft or check such text is generally fine. ^[What does require care is training data. Standard consumer-facing LLM services may use your conversations to improve their models unless you opt out or use a version that excludes this. For tasks involving sensitive materials — confidential grant applications, internal project documents, unpublished methods — use a service that contractually excludes your prompts from training data. Enterprise versions of Microsoft Copilot (Microsoft 365) and the API-based tiers of Claude, ChatGPT, and Gemini typically provide this guarantee; verify the terms for the specific service before proceeding.]
 
 In all cases, follow FHI's guidelines on AI use. If you are uncertain whether a particular use is permitted, check with your data manager or privacy officer before proceeding.
 
 
 ## Lever 1: Custom Instructions
 
-Every major LLM interface now allows you to set a persistent system prompt — instructions that apply to every conversation. This is the easiest and highest-leverage thing a researcher can do.
+Every major LLM interface now allows you to set a persistent system prompt[^8] — instructions that apply to every conversation. This is the easiest and highest-leverage thing a researcher can do.
 
 ### What good custom instructions look like
 
@@ -104,9 +102,9 @@ Microsoft Copilot (available at [copilot.microsoft.com](https://copilot.microsof
 
 **Step-by-step:**
 
-1. Open Microsoft Copilot.
-2. Click the **profile icon** in the top-right corner and select **Settings** (or the gear icon).
-3. Look for **Personalization** or **Custom instructions** in the sidebar.
+1. Open Microsoft Copilot 365.
+2. Click the three dorts besiudes your **profile icon** and select **Settings** (or the gear icon).
+3. Click on  **Personalization** in the left side bar and then click on **Revise  instructions** (under **Custom instructions**) on the right side.
 4. In the text field, paste your custom instructions. You can include multiple bullet points; the model will apply them persistently.
 5. Save your settings. From this point on, every new Copilot conversation will start with these instructions already in effect.
 
@@ -114,11 +112,11 @@ Microsoft Copilot (available at [copilot.microsoft.com](https://copilot.microsof
 
 ### Extended Reasoning
 
-Most major LLM interfaces now offer an extended reasoning mode — variously labelled *thinking*, *deep think*, *extended thinking*, or *deep research* depending on the provider. When enabled, the model allocates additional compute to step-by-step reasoning before generating its final response, rather than immediately producing the most statistically likely continuation.
+Most major LLM interfaces now offer an extended reasoning mode — variously labelled *thinking*, *deep think*, *extended thinking*, or *deep research* depending on the provider. When enabled, the model allocates additional compute to step-by-step reasoning before generating its final response, rather than immediately producing the most statistically likely continuation. Some services, including Microsoft Copilot 365, offer an *auto* setting where the model itself decides how much reasoning to apply. This is fine for everyday tasks, but for analytically demanding work it is better to explicitly select a higher reasoning setting — leaving this to the model risks under-investing in reasoning precisely when it matters most.
 
 For researchers, this matters most for tasks that require multi-step logical reasoning: evaluating a causal argument, working through a statistical model specification, critiquing a study design, or deriving a testable hypothesis from a theoretical claim. These are exactly the tasks where standard LLMs tend to regress to the mode and produce confident-sounding but shallow answers. Extended reasoning substantially reduces this problem.
 
-It is a single toggle, costs nothing beyond the extra tokens used, and is the highest-leverage change you can make for analytical questions. Enable it by default for anything methodologically demanding; turn it off for simple drafting tasks where speed matters more.
+It is a single toggle, and is the highest-leverage change you can make for analytical questions. Enable it by default for anything methodologically demanding; turn it off for simple drafting tasks where speed matters more.
 
 ### Writing Good Prompts
 
@@ -132,12 +130,14 @@ What distinguishes a good prompt from a weak one:
 - **Flag what to avoid.** If there are common errors, off-target interpretations, or things you already know do not apply, say so directly.
 - **For complex tasks, break the task into explicit steps.** A single long prompt asking for multiple things tends to produce uneven output. Sequence the sub-tasks, or ask the model to work through them one at a time.
 
-A practical shortcut: paste a weak first draft of a prompt and ask the model to identify what is underspecified. It will often surface the gaps you missed.
+A practical shortcut: paste a weak first draft of a prompt and ask the model to identify what is underspecified. It will often surface the gaps you missed. You can then answer those questions directly in the conversation, and ask the model to write an improved prompt that incorporates your answers. This back-and-forth typically produces a substantially better prompt in two or three exchanges than most people would write from scratch.
+
+One more habit worth forming: start a new chat for each new question or task. Long conversations that span multiple topics accumulate context that can pull the model off-target — earlier exchanges linger in the context window and can subtly skew responses to later questions. A fresh chat gives the model a clean context focused entirely on the task at hand.
 
 
 ## Lever 2: Custom Chatbots and Agents
 
-Custom instructions give you a better-behaved generalist assistant. Custom chatbots go further: they embed domain expertise, methodological guardrails, and a curated knowledge base into a reusable agent you can share with colleagues or return to across projects.
+Custom instructions give you a better-behaved generalist assistant. Custom chatbots go further: rather than starting each new task in the default chat, you open a purpose-built chatbot instead — one that already has domain expertise, methodological guardrails, and a curated knowledge base baked in. The result is a reusable specialist you can return to across projects and share with colleagues, without having to re-specify your requirements each time.
 
 ### What a custom chatbot specification looks like
 
@@ -165,7 +165,7 @@ Here is the specification for the *Methods Consultant — Epidemiology* chatbot 
 
 **Knowledge base (excerpt):**
 
-These are the actual documents (PDFs or better markdown files, see below) uploaded to the chatbot. When you ask a question, the agent uses the relevant passages in its response — so it can cite and reason from the specific content of these papers rather than from the model's general training:
+These are the actual documents (PDFs or better markdown files, see below) uploaded to the custom chatbot. When you ask a question, the agent uses the relevant passages in its response — so it can cite and reason from the specific content of these papers rather than from the model's general training:
 
 - Hernán & Robins (2006). Estimating causal effects from epidemiological data.
 - Greenland, Pearl & Robins (1999). Causal diagrams for epidemiologic research.
@@ -179,26 +179,32 @@ The same principle applies to the other chatbots in this collection:
 | Chatbot | Purpose |
 |---|---|
 | Methods Consultant | General statistics and study design for social/health sciences |
-| Methods Consultant — Psychology | Psychology-specific, with replication crisis and open science norms |
-| Methods Consultant — Epidemiology | Causal inference, DAGs, epidemiological study designs |
-| Methods Consultant — Econometrics | IV, DiD, RDD, program evaluation designs |
+| Methods Consultant — Psychology | Psychology-specific, with emphasis on open science and lessons from the replication crisis |
+| Methods Consultant — Epidemiology | Causal inference, DAGs, and epidemiological study designs |
+| Methods Consultant — Econometrics | Causal identification strategies: IV, DiD, RDD, program evaluation |
 | Grant Reviewer | Critical review against funder criteria (RCN, ERC, NIH) |
-| Copy Editor — English | Academic editing, APA style, tracked changes |
+| Copy Editor — English | Academic copy editing for clarity, grammar, and style |
 | Copy Editor — Enkelt Språk | Plain-language rewriting in Norwegian |
+| Literature Synthesizer | Structured extraction and synthesis from uploaded PDFs with full traceability |
+| Narrative Literature Reviewer | Critical narrative reviews from uploaded sources, foregrounding contradictions and methodological quality |
+| SAP / Prereg Drafter | Converts an approved analysis plan into a formal pre-registration or statistical analysis plan |
+| Code Writer | Guides reproducible R or Python analysis code from raw data to tables and figures |
+
+These chatbot specifications were largely generated with AI assistance and should be treated as a solid starting point rather than a finished product. Review the instructions, adjust them to your field and workflow, and refine them as you discover where the defaults fall short.
 
 ### Setting up custom chatbots and agents in Microsoft Copilot
 
-Microsoft Copilot supports custom configurations (called **Copilot Agents** in Copilot Studio) that embed persistent instructions, knowledge, and tools. In practice, most research use cases call for a **custom chatbot**: a named assistant with fixed instructions and an uploaded knowledge base that you interact with conversationally. This becomes a true **agent** when you additionally grant it the ability to take actions — for example, generating and editing Word or PowerPoint files, sending emails, or querying SharePoint. For a methods consultant or copy editor, the chatbot form is usually sufficient. The agent form becomes useful when you want the AI to produce a draft document directly, not just advise on its content.
+Microsoft Copilot supports custom configurations (called **Copilot Agents** in Copilot 365) that embed persistent instructions, knowledge, and tools. In practice, most research use cases call for a **custom chatbot**: a named assistant with fixed instructions and an uploaded knowledge base that you interact with conversationally. This becomes a true **agent**[^9] when you additionally grant it the ability to take actions — for example, generating and editing Word or PowerPoint files, sending emails, or querying SharePoint. For a methods consultant or copy editor, the chatbot form is usually sufficient. The agent form becomes useful when you want the AI to produce a draft document directly, not just advise on its content.
 
 **Step-by-step (Copilot Studio / Microsoft 365 Copilot):**
 
-1. Go to [copilotstudio.microsoft.com](https://copilotstudio.microsoft.com) and sign in.
-2. Click **Create** → **New agent**.
+1. Open MS Copilot 365.
+2. On the left side bar, click on **New agent**. This will the open the agent creation field on the right side.
 3. Give the agent a **name** and a short **description** (e.g., "Methods Consultant — Epidemiology").
 4. In the **Instructions** field, paste the instructions from the chatbot specification. Be specific: the more precise the instructions, the more reliably the agent will behave.
 5. Under **Knowledge**, click **Add knowledge** and upload relevant documents — PDFs of methods papers, reporting checklists, your project's analysis plan.
 6. Configure **Actions** (tools) as needed: web search, file access, or code interpreter if available in your tenant.
-7. Click **Publish** to make the agent available in Teams, Copilot, or via a shared link.
+7. Click **Create** to make the agent available.
 
 > **Tip:** Copilot agents can be scoped to your organisation, shared with a team, or kept private. For a methods consultant that references your institution's statistical guidelines, keeping it within your organisation makes sense.
 
@@ -219,7 +225,7 @@ For knowledge-base documents you return to repeatedly — core methods papers, r
 
 Custom chatbots with a fixed knowledge base are powerful, but they require you to anticipate which documents you need. Retrieval Augmented Generation (RAG) systems go further: they maintain a searchable knowledge base and retrieve relevant passages *at query time* using semantic search.
 
-In a RAG system, your question is converted to a vector embedding and matched against embeddings of document chunks. The most relevant passages are pulled into the context window before the model generates its answer. The model is effectively asked: "Given these specific passages, answer this question." This constrains the model to reason from the provided text rather than from its training data — directly addressing the hallucination problem for literature-based questions.
+In a RAG system, your question is converted to a vector embedding[^10] and matched against embeddings of document chunks. The most relevant passages are pulled into the context window before the model generates its answer. The model is effectively asked: "Given these specific passages, answer this question." This constrains the model to reason from the provided text rather than from its training data — directly addressing the hallucination problem for literature-based questions.
 
 ### Practical RAG tools for researchers
 
@@ -342,7 +348,15 @@ The common thread: instructions shape model behaviour, context windows filled wi
 
 ## Getting Started
 
-Everything in this post — writing precise custom instructions, specifying a chatbot, drafting a detailed analysis prompt — takes real effort to build. But here is the shortcut: use LLMs to help build all of it. Ask a model to draft custom instructions for your field, then iterate. Describe the kind of expert you want a chatbot to behave like and ask the model to write the instruction set. Paste a rough analysis prompt and ask the model to identify what is underspecified. The first version does not need to be perfect — it needs to be good enough to start, and you refine it as you learn where the model fails.
+You can get most of the benefit described in this post with two simple steps that together take under an hour.
+
+**Step 1: Set up custom instructions.** Copy the example from the Lever 1 section above, paste it into Copilot's settings (or whichever tool you use), and adjust a line or two to fit your field. That is it. From this point on, every conversation starts with a model that is more careful, more honest about uncertainty, and less likely to pad its answers. This alone is worth doing today.
+
+**Step 2: Create one to three custom chatbots.** Think of the research tasks you turn to an LLM for most often — literature questions, methods advice, writing feedback, code help. Pick one or three. Then describe what you need to an LLM and ask it to write a custom chatbot specification for that task. Paste the result into Copilot Studio as a new agent, and you have a purpose-built assistant ready to use. It does not need to be perfect — it needs to be good enough to start. You will notice quickly when it falls short, and a short conversation with the LLM is usually enough to improve the instructions.
+
+The chatbots in the `chatbots/` directory are ready-made starting points if you want to skip even that first step. Take one that fits a task you already do, adjust the instructions to match your field and habits, and you are done.
+
+With time, you can deepen the knowledge base, tighten the instructions, and add more chatbots as you find new uses. But the initial payoff — better answers, fewer hallucinations, a specialist available any time — comes quickly and with very little effort.
 
 One practical note on tool selection: model capabilities change quickly. When choosing between services, ask a model with web search to look up recent benchmarks rather than relying on what it knows from training — the landscape moves faster than any training dataset.
 
@@ -357,5 +371,23 @@ The framework in this post is not about being cautious with AI. It is about bein
 *The chatbot specifications referenced in this post are available in the `chatbots/` directory. The `pdfParser` and `tblscribe` R packages are available on GitHub.*
 
 
+
+[^2]: A **prompt** is the text input you give to an AI model — your question, instruction, or task description. The quality of the prompt strongly influences the quality of the output.
+
+[^3]: An **agentic AI system** can autonomously plan and execute a sequence of actions — web searches, code execution, file reading and writing — to complete a complex multi-step task, rather than just responding to a single query.
+
+[^4]: **Large language models (LLMs)** are AI models trained on vast amounts of text to predict and generate language. They power tools like ChatGPT, Claude, Gemini, and Microsoft Copilot.
+
+[^5]: A **token** is the basic unit an LLM processes — roughly a word or word fragment. On average, one English word is about 1.3 tokens. LLMs do not read full words; they read sequences of tokens.
+
+[^6]: The **context window** is the total amount of text an LLM can process at once — your prompt, any uploaded documents, and the conversation history. Information outside the context window is invisible to the model. Modern LLMs have large context windows (hundreds of thousands of tokens), but there are still limits, and what is in the window matters for answer quality.
+
+[^7]: **RAG (Retrieval Augmented Generation)** is a technique where relevant passages from a knowledge base are automatically retrieved and inserted into the prompt before the model generates its answer. This grounds the model's response in specific documents rather than in training-data memory alone.
+
+[^8]: A **system prompt** is a set of instructions provided to the model before the conversation begins. It is always active but not directly visible in the chat. Custom instructions in Copilot, ChatGPT, and Claude all work by setting a system prompt.
+
+[^9]: In the Microsoft Copilot context, an **agent** is a custom chatbot that can also take actions — creating or editing documents, sending emails, querying SharePoint — not just generate text in a conversation.
+
+[^10]: A **vector embedding** is a numerical representation of text that captures its meaning. By converting both your query and your documents into embeddings, a RAG system can retrieve passages that are semantically similar to your question — even if they use different words.
 
 [^1]: Full prompt: "Download hsbc data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv. Then extract data for 15 year olds — who-5-well-being-index, life satisfaction, self efficacy (2 measures) — from the data and calculate a composite score for each country. Next go to https://zenodo.org/records/13382904 and download the PISA 2022 student file. Build a composite score from reading, mathematics and science, and compute the average for each European country. Finally, plot a scatterplot with the composite HBSC score on the x-axis and the composite PISA score on the y-axis. Label all the Nordic countries and highlight Norway and save the figure as figures/scatter_pisa_hsbc.png. Use R to do this. Document all steps in a script, which you save as scripts/pisa_hbsc_scatter. Save all data in the data folder."
