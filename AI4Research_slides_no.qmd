@@ -1,6 +1,7 @@
 ---
 title: "KI i forskning: Utnytte styrkene, kontrollere svakhetene"
 subtitle: "Verktøy og teknikker for ansvarlig KI-bruk i forskning"
+author: "Guido Biele"
 format:
   revealjs:
     theme: simple
@@ -58,7 +59,7 @@ Som forskere ønsker vi å utnytte nytten av LLM-er samtidig som vi kontrollerer
 * Fyll **kontekstvinduene** med relevant informasjon
 * Bruk verktøy med **innebygd verifisering**
 * **Be LLM-er bare om å gjøre arbeid du kan verifisere**^[LLM-er multipliserer kompetansen du har, de gir ikke helt nye kompetanser.]
-* **Datapersonvern**: se [blogginnlegget](KI4ResearchBlog.md) 
+* **Datapersonvern**: se [blogginnlegget](AI4Research_blog_no.html)
 
 ---
 

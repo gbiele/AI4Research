@@ -21,8 +21,8 @@ Both are addressable through three practical levers, in increasing order of effo
 
 | File | Description |
 |---|---|
-| [KI4ResearchBlog.qmd](KI4ResearchBlog.qmd) / [KI4ForskingBlogNO.qmd](KI4ForskingBlogNO.qmd) | Blog post (English / Norwegian): concrete instructions for using AI across the research workflow, covering key failure modes (hallucination, regression to the typical) and how to address them |
-| [KI4Forsking.qmd](KI4Forsking.qmd)  / [KI4Forsking_no.qmd](KI4Forsking_no.qmd)| Short presentation (English / Norwegian): brief overview of AI tools for researchers without detailed guidance |
+| [AI4Research_blog_en.qmd](AI4Research_blog_en.qmd) ([html](https://gbiele.github.io/AI4Research/AI4Research_blog_en.html)) / [AI4Research_blog_no.qmd](AI4Research_blog_no.qmd) ([html](https://gbiele.github.io/AI4Research/AI4Research_blog_no.html)) | Blog post (English / Norwegian): concrete instructions for using AI across the research workflow, covering key failure modes (hallucination, regression to the typical) and how to address them |
+| [AI4Research_slides_en.qmd](AI4Research_slides_en.qmd) ([html](https://gbiele.github.io/AI4Research/AI4Research_slides_en.html)) / [AI4Research_slides_no.qmd](AI4Research_slides_no.qmd) ([html](https://gbiele.github.io/AI4Research/AI4Research_slides_no.html)) | Short presentation (English / Norwegian): brief overview of AI tools for researchers without detailed guidance |
 
 Rendered HTML versions of each document are included alongside the source files.
 

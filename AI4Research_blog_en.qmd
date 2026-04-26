@@ -1,6 +1,7 @@
 ---
 title: "AI in Research: Harnessing the Strengths, Controlling the Weaknesses"
 subtitle: "Tools and Techniques for Responsible AI Use in Research"
+author: "Guido Biele"
 format:
   html:
     embed-resources: true

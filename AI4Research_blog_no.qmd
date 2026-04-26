@@ -1,6 +1,7 @@
 ---
 title: "KI i forskning: Utnytt styrkene, kontroller svakhetene"
 subtitle: "Verktøy og teknikker for ansvarlig KI-bruk i forskning"
+author: "Guido Biele"
 format:
   html:
     embed-resources: true

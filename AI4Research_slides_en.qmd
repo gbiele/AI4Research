@@ -1,6 +1,7 @@
 ---
 title: "AI in Research: Harnessing the Strengths, Controlling the Weaknesses"
 subtitle: "Tools and Techniques for Responsible AI Use in Research"
+author: "Guido Biele"
 format:
   revealjs:
     theme: simple
@@ -59,7 +60,7 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 * Fill the **context windows** with relevant information
 * Use tools with **inbuilt verification**
 * **Only ask LLMs to do work you can verify**^[LLMs multiply the competences you have, they don't give you completely new ones.]
-* **Data privacy**: see the [blog post](KI4ResearchBlog.md)
+* **Data privacy**: see the [blog post](AI4Research_blog_en.html)
 
 ---
 
