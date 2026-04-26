@@ -36,6 +36,8 @@ Dette er ikke en demo. Det er hva dagens agentbaserte KI-systemer[^3] kan gjøre
 
 Men kraftfullt betyr ikke problemfritt. Begrensningene er viktige, særlig for forskere.
 
+Dette innlegget tar for seg hva som gjør LLM-er både nyttige og upålitelige for forskning — den samme arkitekturen som produserer flytende, selvsikker tekst, produserer også hallusinasjoner, konservativ syntese og resonnering du ikke kan inspisere. Deretter gjennomgår det tre praktiske spaker for å kontrollere disse risikoene: å skrive bedre instruksjoner, forankre modellen i egne dokumenter og verifisere resultater programmatisk. Vil du ha de praktiske stegene uten bakgrunnen, hopp frem til [Kom i gang](#kom-i-gang).
+
 ## Hvorfor store språkmodeller er utfordrende for forskere
 
 Den samme arkitekturen som gjør store språkmodeller (LLM-er)[^4] flytende, gjør dem også upålitelige på bestemte måter – og begge egenskapene stammer fra samme kilde.

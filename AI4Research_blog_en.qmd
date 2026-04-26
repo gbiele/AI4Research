@@ -36,6 +36,8 @@ This is not a demo. It's what current agentic AI systems[^3] can do. The questio
 
 But powerful doesn't mean problem-free. The limitations matter, especially for researchers.
 
+This post works through what makes LLMs both useful and unreliable for research — the same architecture that produces fluent, confident output also produces hallucinations, conservative synthesis, and reasoning you cannot inspect. It then covers three practical levers for controlling those risks: writing better instructions, grounding the model in your own documents, and verifying outputs programmatically. If you want the actionable steps without the background, skip ahead to [Getting Started](#getting-started).
+
 ## Why LLMs Are Tricky for Researchers
 
 The same architecture that makes large language models (LLMs)[^4] fluent also makes them unreliable in specific ways — and both properties stem from the same source.
