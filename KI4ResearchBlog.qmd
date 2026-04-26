@@ -137,7 +137,7 @@ Custom instructions shape how the model behaves across all conversations; a good
 What distinguishes a good prompt from a weak one:
 
 - **State the goal, not the procedure.** Describe what a correct output looks like, not the steps you assume the model should follow. The model will often find a better path than the one you'd have prescribed.
-- **Provide the relevant context.** Include the research question, the data structure, the relevant constraints, and any domain knowledge the model would otherwise lack. An agent reasons from what's in the context window; context you omit is context it can't use.
+- **Provide the relevant context.** Include the research question, the data structure, the relevant constraints, and any domain knowledge the model would otherwise lack. An agent reasons from what's in the context window[^6]; context you omit is context it can't use.
 - **Define the output format explicitly.** Specify length, structure, and medium: a table, a prose paragraph, executable R code, a bulleted list with citations. Vague requests produce variable outputs.
 - **Flag what to avoid.** If there are common errors, off-target interpretations, or things you already know don't apply, say so.
 - **For complex tasks, break the task into explicit steps.** A single long prompt asking for multiple things tends to produce uneven output.
@@ -179,9 +179,9 @@ The weak prompt will produce a smooth, confident overview that papers over genui
 
 The difference is not length for its own sake. Every added element is doing work: the population specification prevents the model from blending adult and adolescent evidence; the causal inference instruction forces it to treat a cross-sectional correlation differently from an experiment; the "do not smooth over disagreements" instruction directly counteracts regression to the mode; the citation instruction with a verification requirement reduces hallucination risk. The output format request means you get something you can actually use rather than a wall of prose to restructure yourself.
 
-A practical shortcut: paste a weak first draft of a prompt and ask the model to identify what's underspecified. It'll often surface the gaps you missed. Answer those questions, then ask the model to write an improved prompt incorporating your answers. Two or three exchanges usually produces something substantially better than most people write from scratch.
+> **Tip:** Paste a weak first draft of a prompt and ask the model to identify what's underspecified. It'll often surface the gaps you missed. Answer those questions, then ask the model to write an improved prompt incorporating your answers. Two or three exchanges usually produces something substantially better than most people write from scratch.
 
-One more habit worth forming: start a new chat for each new question or task. Long conversations that span multiple topics accumulate context that can pull the model off-target — earlier exchanges linger in the context window and can skew later responses. A fresh chat keeps the context focused.
+> **Tip:** Start a new chat for each new question or task. Long conversations that span multiple topics accumulate context that can pull the model off-target — earlier exchanges linger in the context window and can skew later responses. A fresh chat keeps the context focused.
 
 ## Lever 2: Custom Chatbots
 
@@ -231,7 +231,7 @@ Microsoft Copilot supports custom configurations (called **Copilot Agents** in C
 
 Custom chatbots with a fixed knowledge base are powerful, but they require you to anticipate which documents you need. RAG — Retrieval Augmented Generation — systems go further: they maintain a searchable knowledge base and retrieve relevant passages *at query time* using semantic search.[^10]
 
-When you ask a question, the system retrieves the passages most relevant to your query and places them in the model's context window[^6] before it generates its answer — so the model works from your documents, not its training memory. The practical effect is direct: instead of hallucinating a citation from memory, the model is constrained to reason from text you supplied and can verify.
+When you ask a question, the system retrieves the passages most relevant to your query and places them in the model's context window before it generates its answer — so the model works from your documents, not its training memory. The practical effect is direct: instead of hallucinating a citation from memory, the model is constrained to reason from text you supplied and can verify.
 
 ### Practical RAG tools for researchers
 
@@ -251,7 +251,7 @@ The three levers above require no programming skills. For researchers comfortabl
 
 ## Putting It Together: A Practical Workflow
 
-The table below maps a typical research workflow — from grant writing through to manuscript editing — to the AI tools described in this post. It is not a prescription: most researchers will find AI useful at some stages and not others, and starting with one or two tasks where the benefit is obvious is more sustainable than trying to integrate AI everywhere at once. The point is that there is now a purpose-built tool for each major stage, and they are designed to work together — the SAP produced by the SAP / Prereg Drafter becomes the document the Data Analyst — R chatbot works from, which in turn produces the output tables the Results Writer uses to plan and draft the results section.
+The table below maps a typical research workflow — from grant writing through to manuscript editing — to the AI tools described in this post. It is not a prescription: most researchers will find AI useful at some stages and not others, and starting with one or two tasks where the benefit is obvious is more sustainable than trying to integrate AI everywhere at once. The point is that for each major stage there is either a dedicated tool or a custom chatbot that is straightforward to set up, and they are designed to work together — the SAP produced by the SAP / Prereg Drafter becomes the document the Data Analyst — R chatbot works from, which in turn produces the output tables the Results Writer uses to plan and draft the results section.
 
 <div style="font-size: 0.8em;">
 | Task | Tool | Verification | Watch out for |
@@ -382,9 +382,9 @@ An agentic AI system goes beyond answering questions in a chat window. It can us
 
 ![An overview of the Cursor agentic coding environment, showing its AI-native editor interface with inline code generation and debugging capabilities.](figures/Cursor.png)
 
-### Current Tools
+### Some Available Tools
 
-The main agentic coding environments used in research settings are [Claude Code](https://claude.ai/download) (Anthropic), which is particularly strong for R and Python data pipelines and can be used directly in a terminal or IDE; [Cursor](https://www.cursor.com), an AI-native code editor that writes, runs, and debugs code inline; [GitHub Copilot Workspace](https://githubnext.com/projects/copilot-workspace), which works within GitHub's ecosystem; and Microsoft Copilot with Code Interpreter, available in some Microsoft 365 configurations. All of them support the same core workflow: describe the task, let the agent write and run the code, review the output.
+The main agentic coding environments used in research settings are [Claude Code](https://claude.ai/download) (Anthropic), which is particularly strong for R and Python data pipelines and can be used directly in a terminal or IDE; [Cursor](https://www.cursor.com), an AI-native code editor that writes, runs, and debugs code inline; [GitHub Copilot Workspace](https://githubnext.com/projects/copilot-workspace), which works within GitHub's ecosystem; and Microsoft Copilot with Code Interpreter, available in some Microsoft 365 configurations. All of them support the same core workflow: describe the task, let the agent write and run the code, review the output. If you already use Visual Studio Code, the easiest entry point is to install the [Claude Code extension](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) directly in the editor — you get the full agentic functionality without leaving the environment you already work in.
 
 ### What Agentic Systems Are Best At
 

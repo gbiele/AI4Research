@@ -1,0 +1,423 @@
+---
+title: "KI i forskning: Utnytt styrkene, kontroller svakhetene"
+subtitle: "Verktøy og teknikker for ansvarlig KI-bruk i forskning"
+format:
+  html:
+    embed-resources: true
+---
+
+
+## Fremtiden er allerede her
+
+La oss si at du raskt vil lage en figur som viser hvordan Norge og andre europeiske land sammenligner seg på elevers læring og trivsel – ved å kombinere PISA-data om faglig prestasjon med HBSC-data om velvære. Å laste ned filene, bearbeide to store internasjonale datasett, konstruere sammensatte mål og lage et merket spredningsplott ville normalt ta en ettermiddag med koding. Hvor raskt kan dette faktisk gjøres?
+
+Her er en forkortet versjon av instruksjonen[^1] som ble gitt til en KI-assistent med tilgang til internett og kodekjøring (den fullstendige instruksjonen er i fotnoten[^2]):
+
+> - Last ned HBSC-data og hent ut mål for velvære, livstilfredshet og mestringstro for 15-åringer; beregn en sammensatt skåre per land.
+> - Last ned PISA 2022-elevfilen fra Zenodo; bygg et sammensatt mål fra lesing, matematikk og naturfag; beregn europeiske landsgjennomsnitt.
+> - Lag et spredningsplott av HBSC-sammensatt skåre (x) mot PISA-sammensatt skåre (y); merk alle nordiske land; fremhev Norge.
+> - Bruk R; lagre skriptet, figuren og alle data i angitte mapper.
+
+
+Her er figuren som kom ut:
+
+![PISA 2022 mot HBSC-velværeindeks per europeisk land](figures/pisa_hbsc_composite_scatter.png)
+
+Ikke verst for en enkelt, kort instruksjon. Hele kjeden gikk fra start til slutt – websøk, databearbeiding, sammensatte mål på tvers av to store internasjonale datasett og et merket spredningsplott – uten manuell koding. KI-assistenten søkte på nettet, lastet ned filer, skrev og kjørte R-kode, leste feilmeldinger og korrigerte seg selv til skriptet kjørte feilfritt.
+
+Resultatet er ikke perfekt. Et mer fullstendig opplegg ville inkludere eksplisitte instruksjoner om hvordan sammensatte mål konstrueres (f.eks. z-skår hver variabel før gjennomsnittberegning), hvilke aksetekster som skal brukes, og hva figuren skal formidle. Det ville også spesifisere hva som skal gjøres med manglende data og hvordan land som bare finnes i ett datasett, skal håndteres.
+
+Resultatet skalerer med kvaliteten på instruksjonene – det er mønsteret. En kort instruksjon gir et plausibelt første utkast. En godt spesifisert instruksjon, skrevet av noen som vet hva en god analyse ser ut som, gir noe som nærmer seg et ferdig produkt.
+
+PISA-eksempelet brukte agentverktøy. Det meste av det som følger, gjør ikke det. Lim inn et sett med grove møtenotater i en hvilken som helst KI-chatbot med instruksjonen «gjør disse om til en strukturert analyseplan med hypoteser, utfall og beslutningsregler», og du har et fungerende SAP-utkast på minutter. Det samme prinsippet gjelder gjennom hele forskningsarbeidet – verktøyet gjør det mekaniske arbeidet; du bidrar med ekspertisen til å vurdere det som kommer tilbake.
+
+Dette er ikke en demo. Det er hva dagens agentbaserte KI-systemer[^3] kan gjøre. Spørsmålet er ikke lenger om KI vil endre hvordan vi forsker, men hvordan vi bruker det på måter som faktisk er pålitelige.
+
+Men kraftfullt betyr ikke problemfritt. Begrensningene er viktige, særlig for forskere.
+
+## Hvorfor store språkmodeller er utfordrende for forskere
+
+Den samme arkitekturen som gjør store språkmodeller (LLM-er)[^4] flytende, gjør dem også upålitelige på bestemte måter – og begge egenskapene stammer fra samme kilde.
+
+### Regresjon mot det typiske
+
+LLM-er er trent til å forutsi det neste mest sannsynlige token[^5] (ordfragment) gitt alt som kom før. Det er det som gjør dem flytende. Det er også det som gjør dem konservative.
+
+Be en LLM om å oppsummere bevis på et omstridt tema, og den vil ofte produsere en glatt, selvsikker syntese som glatter over reelle vitenskapelige uenigheter. Be den generere en ny hypotese, og den vil tendere mot ideer som allerede er godt representert i litteraturen.
+
+For forskere er denne tendensen mot det typiske en subtil felle: resultatet *høres* autoritativt ut, men er epistemisk konservativt. Dette er særlig problematisk når du spør en LLM om et forskningstema og stoler på treningsdataene. Modellen vil trygt reprodusere det dominante synet i litteraturen – inkludert dens skjevheter, blinde flekker og utdatert konsensus – uten å flagge mindretallsfunn, pågående debatter eller utviklinger som kom etter treningsskjæringen. Det kan se ut som en grundig syntese, mens det mangler nettopp den nyanseringen som betyr noe.
+
+### Hallusinasjon
+
+Fordi LLM-er er trent til å produsere plausible fortsettelser snarere enn faktamessig forankrede svar, genererer de noen ganger innhold som er flytende, men feil. Det klassiske problemet er fabrikkerte referanser – artikler som ikke eksisterer, forfattere som ikke skrev dem, DOI-er som peker til noe helt annet. Men hallusinasjon strekker seg til statistikk, datoer, metodebeskrivelser og alle påstander som krever å hente frem et konkret faktum fra hukommelsen snarere enn å resonnere fra instruksjonen.
+
+For forskere er dette ikke bare pinlig – det er en trussel mot gyldigheten. En resultatdel som finner opp tall, eller en litteraturgjennomgang som siterer spøkelsesartikler, kan undergrave forskningsintegritet. Det gode er at det finnes praktiske måter å gjøre LLM-bruk tryggere på, og de fleste krever ikke stor innsats.
+
+
+
+## Et rammeverk for ansvarlig bruk
+
+Begge problemene har praktiske løsninger – tre spaker, i stigende rekkefølge av innsats:
+
+- **Spak 1: Tilpassede instruksjoner, utvidet resonnering og gode instruksjoner** – setter hvordan modellen oppfører seg i alle samtaler.
+- **Spak 2: Tilpassede chatboter** – formålsbygde spesialister med innebygd domeneekspertise.
+- **Spak 3: Forankre modellen i egne dokumenter** – slik at svarene trekker fra dine artikler, ikke modellens treningshukommelse.
+
+Det som følger, går gjennom hver spak, fra den enkleste til den mest krevende. Vil du ha en rask oversikt, hopp frem til [Kom i gang](#kom-i-gang).
+
+
+::: {.callout-warning}
+## Personvern: Hva du ikke bør laste opp
+
+**Råe forskningsdata må ikke lastes opp.** Dette gjelder data på deltakernivå, helseregistre, administrative data og ethvert datasett med personvernimplikasjoner – uavhengig av pseudonymisering. Unntaket er data du har lastet ned fra en offentlig kilde eller ville delt åpent uansett (PISA- og HBSC-filene ovenfor faller i denne kategorien).
+
+Upubliserte resultater er en annen sak. Å dele en tabell med gjennomsnitt eller et utkast til resultatdel medfører ingen personvernrisiko, og det er generelt greit å bruke en LLM til å hjelpe med å utforme eller sjekke slik tekst. ^[Det som krever forsiktighet, er treningsdata. Standard forbrukerrettede LLM-tjenester kan bruke samtalene dine til å forbedre modellene sine, med mindre du melder deg av eller bruker en versjon som utelukker dette. For oppgaver med sensitivt materiale – konfidensielle søknader, interne prosjektdokumenter, upubliserte metoder – bruk en tjeneste som kontraktsmessig utelukker instruksjonene dine fra treningsdata. Enterprise-versjoner av Microsoft Copilot (Microsoft 365) og API-baserte nivåer av Claude, ChatGPT og Gemini gir vanligvis denne garantien; verifiser vilkårene for den spesifikke tjenesten før du begynner.]
+
+Følg FHIs retningslinjer for KI-bruk. Er du usikker på om en bestemt bruk er tillatt, sjekk med din dataansvarlige eller personvernombud før du fortsetter.
+:::
+
+
+## Spak 1: Tilpassede instruksjoner
+
+*~5 min · nybegynner · Hver samtale starter bedre*
+
+Alle større LLM-grensesnitt lar deg nå angi tilpassede instruksjoner[^8] – instruksjoner som gjelder for alle samtaler. Det er det enkleste, mest virkningsfulle en forsker kan gjøre.
+
+Her er et sett med tilpassede instruksjoner utformet for forskere:
+
+```
+- Si "jeg vet ikke" fremfor å gjette; fabrikker aldri referanser eller statistikk
+- Bruk nettsøk og verktøy for å verifisere fakta før de oppgis
+- Siter primærlitteratur; foretrekk fagfellevurderte kilder fremfor oppsummeringer
+- Utfordre feilaktig resonnering eller påstander uten støtte
+- Tenk steg for steg og sjekk resonnementet ditt før du svarer
+- Les artikler kritisk: flag når konklusjoner overskrider bevisene, når studiedesign ikke kan underbygge kausale påstander, eller når begrensninger underkommuniseres
+- Vær konsis; ikke fyll ut svar eller still unødvendige oppfølgingsspørsmål
+- Ikke foreslå neste steg eller tilby videre hjelp med mindre du blir bedt om det
+```
+
+Disse instruksjonene adresserer hallusinasjon direkte («fabrikker aldri referanser»), motvirker tendensen mot overkonfisident syntese («utfordre feilaktig resonnering»), og kutter støy («ikke fyll ut svar»). En modell som følger disse, oppfører seg ganske annerledes enn standarden.
+
+### Angi tilpassede instruksjoner i Microsoft Copilot
+
+Microsoft Copilot (tilgjengelig på [copilot.microsoft.com](https://copilot.microsoft.com) og integrert i Microsoft 365) støtter tilpassede instruksjoner gjennom innstillingene.
+
+**Steg for steg:**
+
+1. Åpne MS Copilot 365.
+2. Klikk på de tre prikkene ved siden av **profilbildet** og velg **Innstillinger** (eller tannhjulikonet).
+3. Klikk på **Personalisering** i venstrekolonnen og deretter **Endre instruksjoner** (under **Egendefinerte instruksjoner**) til høyre.
+4. Lim inn de tilpassede instruksjonene i tekstfeltet. Du kan inkludere flere punkter; modellen vil anvende dem vedvarende.
+5. Lagre innstillingene. Fra dette tidspunktet vil alle nye Copilot-samtaler starte med disse instruksjonene allerede aktive.
+
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+  <source src="figures/CustomInstructions.mp4" type="video/mp4">
+</video>
+
+> **Tips:** Tilpassede instruksjoner i Copilot gjelder på tvers av sesjoner, men ikke nødvendigvis alle Microsoft 365-inngangspunkter (f.eks. kan Copilot i Word ha andre innstillinger enn nettleserversjonen). Sjekk den spesifikke integrasjonen du bruker.
+
+### Utvidet resonnering
+
+De fleste store chatboter tilbyr nå en modus for utvidet resonnering – kalt *thinking*, *deep think*, eller *extended thinking* avhengig av leverandøren. Når den er aktivert, arbeider modellen seg steg for steg gjennom et problem før den genererer svaret, i stedet for å hoppe til den statistisk mest sannsynlige fortsettelsen.
+
+Noen tjenester, inkludert Microsoft Copilot 365, tilbyr en *auto*-innstilling der modellen selv bestemmer hvor mye resonnering den skal bruke. Det er greit for hverdagsoppgaver. For analytisk krevende arbeid bør du eksplisitt velge et høyere resorvneringsnivå – å overlate det til modellen betyr at den kan underinvestere i resonnering nettopp når det betyr mest.
+
+Her lønner utvidet resonnering seg: evaluere et kausalt argument, arbeide gjennom en statistisk modellspesifikasjon, kritisere et studiedesign, utlede en testbar hypotese fra et teoretisk utsagn. Dette er nøyaktig de oppgavene der standard LLM-er tenderer mot å produsere selvsikkelydende, men grunne svar. Utvidet resonnering eliminerer det ikke helt, men reduserer det vesentlig.
+
+Det er en enkelt bryter. Aktiver den som standard for alt som er metodisk krevende; slå den av for enkle utarbeidingsoppgaver der hastighet betyr mer.
+
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+  <source src="figures/Thinking.mp4" type="video/mp4">
+</video>
+
+### Å skrive gode instruksjoner
+
+Tilpassede instruksjoner former hvordan modellen oppfører seg i alle samtaler; en god instruksjon former hvordan den oppfører seg for en bestemt oppgave. Begge deler er viktige.
+
+Hva som skiller en god instruksjon fra en svak:
+
+- **Beskriv målet, ikke fremgangsmåten.** Beskriv hva et korrekt resultat ser ut som, ikke trinnene du antar modellen bør følge. Modellen vil ofte finne en bedre vei enn den du ville ha foreskrevet.
+- **Gi relevant kontekst.** Inkluder forskningsspørsmål, datastruktur, relevante begrensninger og domenekunnskap modellen ellers ville mangle. En agent resonnerer fra det som er i kontekstvinduet[^6]; kontekst du utelater, er kontekst den ikke kan bruke.
+- **Definer utdataformatet eksplisitt.** Spesifiser lengde, struktur og medium: en tabell, et prosaavsnitt, kjørbar R-kode, en punktliste med referanser. Vage forespørsler gir variable resultater.
+- **Angi hva som skal unngås.** Dersom det finnes vanlige feil, feiltolkninger eller ting du allerede vet ikke gjelder, si det.
+- **For komplekse oppgaver, del opp i eksplisitte steg.** En enkelt lang instruksjon som ber om mange ting, gir gjerne ujevnt resultat.
+
+Samme forskningstema, to svært ulike instruksjoner – og to svært ulike resultater:
+
+<table style="font-size: 0.8em; width: 100%; border-collapse: collapse; margin: 1em 0;">
+<colgroup>
+  <col style="width: 25%">
+  <col style="width: 75%">
+</colgroup>
+<thead>
+<tr style="border-bottom: 2px solid #dee2e6;">
+  <th style="text-align: left; padding: 0.5em 1em 0.5em 0; font-weight: 600;">Svak instruksjon</th>
+  <th style="text-align: left; padding: 0.5em 0 0.5em 1em; font-weight: 600;">Sterkere instruksjon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="vertical-align: top; padding: 0.75em 1em 0.75em 0;">
+<pre style="margin: 0; white-space: pre-wrap; background: #f8f9fa; padding: 0.6em 0.75em; border-radius: 4px; font-size: inherit; border: 1px solid #e9ecef;">Oppsummer forskningen på effektene av sosiale medier på psykisk helse.</pre>
+</td>
+<td style="vertical-align: top; padding: 0.75em 0 0.75em 1em;">
+<pre style="margin: 0; white-space: pre-wrap; background: #f8f9fa; padding: 0.6em 0.75em; border-radius: 4px; font-size: inherit; border: 1px solid #e9ecef;">I am reviewing evidence on the effects of social media use on mental health in adolescents (ages 13–18), with a focus on depression and anxiety outcomes.
+Please do the following:
+1. Summarise what the evidence shows, distinguishing clearly between correlational/cross-sectional studies and studies that support stronger causal claims (longitudinal designs, natural experiments, randomised trials).
+2. Flag where the literature is genuinely contested — effect sizes, direction of causality, whether effects differ by platform, content type, sex, or age.
+3. Note the key methodological weaknesses in this literature (e.g., self-reported outcomes, reverse causality, confounding, publication bias).
+4. Identify 3–5 specific papers I should read, with enough detail that I can verify they exist (authors, year, journal). Do not invent citations.
+Do not smooth over disagreements. If the evidence is weak or mixed, say so.
+Format: structured prose with a short summary table at the end (study type,
+finding, strength of evidence).</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+Eksempelet bruker engelsk – og det er en bevisst anbefaling. LLM-er er i all hovedsak trent på engelskspråklig tekst, og engelske instruksjoner gir gjennomgående mer presise, bedre strukturerte svar enn tilsvarende instruksjoner på norsk, særlig for analytisk krevende oppgaver.
+
+Den svake instruksjonen vil gi en glatt, selvsikker oversikt som glatter over reelle vitenskapelige uenigheter – nøyaktig regresjon-mot-det-typiske-problemet beskrevet ovenfor. Modellen vil reprodusere det dominante narrativet i litteraturen, blande korrelasjons- og eksperimentell evidens uten å skille dem, og presentere omstridte funn som avgjorte. Den vil ikke fortelle deg at dette er hva den gjør.
+
+Forskjellen handler ikke om lengde for lengdens skyld. Hvert tillegg gjør en jobb: befolkningsspesifikasjonen hindrer modellen i å blande voksen- og ungdomsevidens; kausal inferens-instruksjonen tvinger den til å behandle en tverrsnittskorrelasjon annerledes enn et eksperiment; «glatt ikke over uenigheter»-instruksjonen motvirker direkte regresjon mot det typiske; referanseinstruksjonen med verifiseringskrav reduserer hallusinasjonsrisiko. Utdataformatforespørselen betyr at du får noe du faktisk kan bruke, fremfor en tekstvegg du selv må strukturere.
+
+> **Tips:** Lim inn et svakt første utkast av en instruksjon og be modellen identifisere hva som er underspecifisert. Den vil ofte avdekke hullene du gikk glipp av. Svar på de spørsmålene, og be deretter modellen skrive en forbedret instruksjon som inkorporerer svarene. To eller tre slike runder gir vanligvis noe vesentlig bedre enn de fleste skriver fra bunnen av.
+
+> **Tips:** Start en ny chat for hvert nye spørsmål eller oppgave. Lange samtaler som spenner over flere emner, akkumulerer kontekst som kan dra modellen av sporet – tidligere utvekslinger henger igjen i kontekstvinduet og kan skjevstille senere svar. En fersk chat holder konteksten fokusert.
+
+## Spak 2: Tilpassede chatboter
+
+*~15 min · nybegynner · Gjenbrukbar spesialist tilgjengelig når som helst*
+
+Tenk på en tilpasset chatbot som en spesialist du snakker med – den gir ekspertråd innenfor en samtale. En agent er derimot en spesialist som gjør arbeid for deg: redigerer filer, kjører kode, utfører handlinger på dine vegne. For de fleste forskningsoppgaver er chatbot-formen det du trenger.
+
+Tilpassede instruksjoner gir deg en bedre generalist-assistent. Tilpassede chatboter går lenger: i stedet for å starte hver oppgave i standard-chaten, åpner du en formålsbygd chatbot – en som allerede har domeneekspertise, metodiske sikkerhetsskranker og en kuratert kunnskapsbase innebygd. Resultatet er en gjenbrukbar spesialist du kan vende tilbake til på tvers av prosjekter og dele med kolleger, uten å spesifisere kravene dine på nytt hver gang.
+
+### Hva en chatbot-spesifikasjon ser ut som
+
+En chatbot-spesifikasjon har fire deler:
+
+- **Navn og beskrivelse:** en kort, spesifikk etikett som gjør chatbotens formål umiddelbart klart – både for din egen referanse og for kolleger du deler den med (f.eks. «Metodekonsulent – Epidemiologi» / «Rådgiver for kausal inferens og studiedesign innen folkehelseforskning»)
+- **Instruksjoner:** hva chatboten skal og ikke skal gjøre, hvordan den skal resonnere, hva den skal spørre om før den svarer
+- **Kunnskap:** filer du laster opp til chatboten – PDF-er av metodeartikler, lærebøker, rapporteringssjekklister, din institusjons retningslinjer – lagret med agenten og benyttet ved generering av svar. Når du stiller et spørsmål, søker chatboten i dette opplastede materialet og bruker relevante avsnitt til å informere svaret, i stedet for utelukkende å basere seg på det den underliggende modellen lærte under opplæringen.
+- **Verktøy:** nettsøk, kodekjøring, filtilgang (avhengig av plattform)
+
+Et fullstendig eksempel – *Metodekonsulent – Epidemiologi*-spesifikasjonen – samt en tabell over alle tilgjengelige chatboter finnes i [Tillegget](#tillegg-chatbot-eksempel-og-oversikt).
+
+### Sette opp tilpassede chatboter og agenter i Microsoft Copilot
+
+Microsoft Copilot støtter tilpassede konfigurasjoner (kalt **Copilot-agenter** i Copilot 365) som innebygger vedvarende instruksjoner, kunnskap og verktøy. For de fleste forskningsformål er en **tilpasset chatbot** det du trenger: en navngitt assistent med faste instruksjoner og en opplastet kunnskapsbase som du samhandler med samtalemessig. Dette blir en ekte **agent**[^9] når du i tillegg gir den evnen til å utføre handlinger – generere og redigere Word- eller PowerPoint-filer, sende e-post, spørre SharePoint. For en metodekonsulent eller tekstredaktør er chatbot-formen vanligvis nok. Agent-formen blir nyttig når du vil at KI-en skal produsere et utkast til dokument, ikke bare gi råd om innholdet.
+
+**Steg for steg (Copilot Studio / Microsoft 365 Copilot):**
+
+1. Åpne MS Copilot 365.
+2. I venstrekolonnen, klikk på **Ny agent**. Dette åpner agentopprettelsesfeltet til høyre.
+3. Gi agenten et **navn** og en kort **beskrivelse** (f.eks. «Metodekonsulent – Epidemiologi»).
+4. I **Instruksjoner**-feltet, lim inn instruksjonene fra chatbot-spesifikasjonen. Vær spesifikk: jo mer presis instruksjonene er, jo mer pålitelig vil agenten oppføre seg.
+5. Under **Kunnskap**, klikk **Legg til kunnskap** og last opp relevante dokumenter – PDF-er av metodeartikler, rapporteringssjekklister, prosjektets analyseplan.
+6. Konfigurer **Handlinger** (verktøy) etter behov: nettsøk, filtilgang eller kodefortolker om tilgjengelig i din leietaker.
+7. Klikk **Opprett** for å gjøre agenten tilgjengelig.
+
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+  <source src="figures/CustomChatbot.mp4" type="video/mp4">
+</video>
+
+> **Tips:** Copilot-agenter kan avgrenses til din organisasjon, deles med et team eller holdes private. For en metodekonsulent som refererer til din institusjons statistiske retningslinjer, gir det mening å holde den innenfor organisasjonen.
+
+> **Tips:** For best resultat, last opp Markdown i stedet for rå PDF-er – PDF-tekstutvinning er ofte dårlig og kan forringe kvaliteten på svarene. Se [Dokumentkvalitet for kunnskapsbaser](#tillegg-dokumentkvalitet) i Tillegget.
+
+
+## Spak 3: Forankre modellen i egne dokumenter
+
+*~10–30 min · nybegynner · Modellen svarer fra dine artikler, ikke treningshukommelsen*
+
+Tilpassede chatboter med en fast kunnskapsbase er kraftfulle, men de krever at du forutser hvilke dokumenter du trenger. RAG – Retrieval Augmented Generation (hentingsforsterket generering) – systemer går lenger: de vedlikeholder en søkbar kunnskapsbase og henter relevante avsnitt *på spørretidspunktet* ved hjelp av semantisk søk.[^10]
+
+Når du stiller et spørsmål, henter systemet avsnittene som er mest relevante og plasserer dem i modellens kontekstvindu før den genererer svaret – slik at modellen arbeider fra dine dokumenter, ikke treningshukommelsen. Den praktiske effekten er direkte: i stedet for å hallusinere en referanse fra hukommelsen, er modellen begrenset til å resonnere fra tekst du har levert og kan verifisere.
+
+### Praktiske RAG-verktøy for forskere
+
+**[NotebookLM](https://notebooklm.google.com/)** (Google) er det mest tilgjengelige RAG-verktøyet for forskere – og det er gratis. Du laster opp kildene dine – PDF-er, Markdown, Google Docs, nettsider – og NotebookLM lager en søkbar notatbok forankret i disse kildene. Svar inkluderer referanser til det spesifikke avsnittet som ble brukt, slik at du kan verifisere dem direkte. Det er et generelt verktøy og mangler de forskningsspesifikke funksjonene som gjør systematisk litteraturarbeid raskere.
+
+Bruk det til:
+
+- Litteratursyntese fra et kuratert sett med artikler
+- Utarbeide innledninger eller diskusjonsdeler forankret i referanselisten din
+- Besvare konkrete spørsmål om opplastede dokumenter – artikler, lærebøker eller dokumentasjon for programvare som R-pakker
+
+**[Elicit](https://elicit.com/)** er spesialbygget for forskning. Det søker i en stor akademisk database og trekker ut strukturert informasjon – utfall, populasjon, metoder, effektstørrelser – fra artikler på en måte som er direkte nyttig for systematiske oversikter og evidenssyntese. Avveiningen er kostnad og oppsett: for å bruke Elicit effektivt trenger du en av de bedre betalingsplanene (rundt 4 500 NOK/år), og billigere kontoer analyserer bare et lite antall fulltekster per måned. Selv med en dyrere plan betyr det å få full tekstresonnering ofte at du må laste opp PDF-er selv. Det ekstra trinnet er verdt det for systematisk oversiktsarbeid, men Elicit belønner gjennomtenkt oppsett fremfor sporadisk bruk.
+
+**I begge tilfeller:** dokumenter konvertert med `pdfParser` før opplasting vil gi RAG-systemet mer nøyaktig, strukturert tekst å indeksere.
+
+De tre spakene ovenfor krever ingen programmeringsferdigheter. For forskere som er komfortable med R eller jobber i et kodningsmiljø, beskriver Tillegget to ytterligere tilnærminger: programmatisk tallverifisering med `tblscribe` og agentbaserte systemer for å automatisere hele analysepipelines.
+
+## Å sette det hele sammen: En praktisk arbeidsflyt
+
+Tabellen nedenfor kartlegger en typisk forskningsarbeidsflyt – fra søknadsskriving til manuskriptredigering – mot KI-verktøyene beskrevet i dette innlegget. Det er ikke en forskrift: de fleste forskere vil finne KI nyttig i noen faser og ikke i andre, og å starte med én eller to oppgaver der fordelen er åpenbar, er mer bærekraftig enn å prøve å integrere KI overalt på en gang. Poenget er at det for hvert hoveddtrinn enten finnes et dedikert verktøy eller er enkelt å sette opp en tilpasset chatbot, og de er designet for å fungere sammen – SAP-en produsert av SAP/Prereg-utkasteren blir dokumentet Dataanalytiker – R-chatboten arbeider fra, som igjen produserer utdatatabellene Resultatskriveren bruker til å planlegge og utarbeide resultatdelen.
+
+<div style="font-size: 0.8em;">
+| Oppgave | Verktøy | Verifisering | Vær oppmerksom på |
+|---|---|---|---|
+| Søknadsskriving og -gjennomgang | Søknadsgjennomgangschatbot | Din kunnskap om finansiørens kriterier | Tilbakemelding gjenspeiler kunnskapsbasen; hold den oppdatert med finansiørens prioriteringer |
+| Litteraturgjennomgang og -syntese | NotebookLM eller Elicit^A^ | Referansesjekk mot kilder | Henting er ufullkommen; ikke alle relevante avsnitt vil dukke opp |
+| Metoder og studiedesign | Metodekonsulent-chatbot | Din domeneekspertise | Kan mangle feltspesifikke normer ikke dekket i kunnskapsbasen |
+| Analyseplanlegging | SAP/Prereg-utkaster-chatbot | Metodekonsulentgjennomgang | Formaliserer det som ble avtalt; erstatter ikke å avtale det først |
+| Dataforbehandling og analyse | Dataanalytiker – R-chatbot | Kjør koden; inspiser resultater | Koden kan kjøre riktig, men implementere feil analyse |
+| Resultatbeskrivelse | Resultatskriver-chatbot eller `tblscribe`^B^ | Programmatisk tallsjekk; ekspertgjennomgang av innramming | Tall er verifisert; tolkning krever fortsatt ekspertgjennomgang |
+| Manuskriptredigering | Tekstredaktør – Engelsk-chatbot | Les endringene nøye | Stilendringer kan utilsiktet endre mening |
+| Klarspråksredigering (norsk) | Tekstredaktør – Enkelt Språk-chatbot | Les endringene nøye | Registerforenkling kan miste presisjon; verifiser at nøkkelpåstander forblir nøyaktige |
+
+*Støtteverktøy (begge krever R): ^A^[`pdfParser`](https://github.com/gbiele/pdfParser) konverterer PDF-er til rent Markdown før opplasting. ^B^[`tblscribe`](#tillegg-tblscribe) verifiserer programmatisk tall i KI-generert tekst.*
+</div>
+
+Instruksjoner former modelladferd, kontekstvinduer fylt med pålitelig informasjon forankrer modellresonnering, og verifisering – enten programmatisk eller av eksperter – fanger opp det som slipper gjennom.
+
+## Kom i gang {#kom-i-gang}
+
+Det meste av fordelen beskrevet i dette innlegget kommer fra to steg som til sammen tar under 30 minutter.
+
+**Steg 1: Sett opp tilpassede instruksjoner.** Kopier eksempelet fra Spak 1-seksjonen, lim det inn i Copilots innstillinger (eller hvilket verktøy du bruker), og juster en linje eller to for å passe ditt fagfelt. Ferdig. Alle samtaler fra dette tidspunktet starter med en modell som er mer forsiktig, mer ærlig om usikkerhet og mindre tilbøyelig til å fylle ut svarene.
+
+**Steg 2: Opprett én til tre tilpassede chatboter.** Tenk på hvilke forskningsoppgaver du oftest vender deg til en LLM for – litteraturspørsmål, metodisk råd, skrivetilbakemelding, kodehjelp. Velg én til tre. Beskriv deretter hva du trenger til en LLM og be den skrive en chatbot-spesifikasjon for den oppgaven. Lim resultatet inn i Copilot Studio som en ny agent, og du har en formålsbygd assistent klar til bruk. Den trenger ikke å være perfekt – den trenger å være god nok til å komme i gang. Du vil raskt legge merke til når den faller kort, og en kort samtale med LLM-en er vanligvis nok til å forbedre instruksjonene.
+
+Chatbotene i `chatbots/`-katalogen er ferdige startpunkter om du vil hoppe over selv det første steget. Ta én som passer en oppgave du allerede gjør, juster instruksjonene til ditt fagfelt og dine vaner, og du er ferdig.
+
+Med tiden kan du dype kunnskapsbasen, stramme instruksjonene og legge til flere chatboter etter hvert som du finner nye bruksområder. Men den innledende gevinsten – bedre svar, færre hallusinasjoner, en spesialist tilgjengelig når som helst – kommer raskt og med svært liten innsats.
+
+En praktisk merknad om verktøyvalg: modellkapasiteter endrer seg raskt. Når du velger mellom tjenester, be en modell med nettsøk om å slå opp nylige benchmarks fremfor å basere deg på hva den vet fra opplæringen – landskapet endrer seg raskere enn noe treningsdatasett.
+
+## Konklusjon
+
+Verktøyene beskrevet her endrer ikke hva god forskning ser ut som – de endrer hvor mye av det mekaniske arbeidet du selv må gjøre. Tilpassede instruksjoner og chatboter håndterer repetitive innrammingsoppgaver: utarbeiding, sjekking, omformatering. RAG-systemer gjør det vanskeligere å sitere en artikkel du ikke har lest. Agentbaserte systemer komprimerer flertrinns-pipelines fra en ettermiddag til en instruksjon.
+
+Det dette frigjør, er arbeidet som fortsatt krever en forsker: å identifisere det riktige spørsmålet, vurdere om et resultat er plausibelt, bestemme hva bevisene faktisk innebærer. LLM-er er forsterkere – de multipliserer kompetansene du allerede har. Brukt uforsiktig skalerer de svakhetene dine like gjerne. Brukt vel gir de deg tilbake tid til å fokusere på den delen av arbeidet ingen modell kan erstatte.
+
+Start med [Steg 1 i Kom i gang](#kom-i-gang). Fem minutters oppsett endrer alle samtaler som følger.
+
+*Chatbot-spesifikasjonene det refereres til i dette innlegget er tilgjengelige i `chatbots/`-katalogen. R-pakkene `pdfParser` og `tblscribe` er tilgjengelige på GitHub.*
+
+## Tillegg
+
+### Chatbot-eksempel og oversikt {#tillegg-chatbot-eksempel-og-oversikt}
+
+#### Metodekonsulent – Epidemiologi: Full spesifikasjon
+
+**Instruksjoner**
+(Ett eksempel per tema (fullstendige instruksjoner tilgjengelige i [`chatbots/`-katalogen](chatbots/methods_consultant_epidemiology.md))):
+
+```
+- **Rolle**: Du er ekspert på epidemiologiske metoder og kausal inferens for folkehelseforskning.
+- **Avklaring før svar**: Still oppklarende spørsmål om forskningsspørsmål, målpopulasjon, eksponering, utfall, tidshorisont og tilgjengelige data før du anbefaler metoder.
+- **Kausal resonnering med DAG-er**: For kausale spørsmål, krev at forskeren tegner eller beskriver en DAG før du anbefaler justeringssett; forklar forskjellen mellom konfundere, mediatorer og kollidere.
+- **Estimand-spesifikasjon**: Før du anbefaler et studiedesign, krev at forskeren angir målestimanden presist – hvilken størrelse, i hvilken populasjon, under hvilken eksponeringskontrast, ved hvilken tidshorisont.
+- **Effektmål**: Når målestimanden er et marginalmål, anbefal risikoforhold eller risikodifferanser (Poisson med robuste SE-er, log-binomial, marginal standardisering) fremfor oddsforhold.
+- **Standardfeil**: Match SE-estimatoren til datastrukturen – klyngerobuste SE-er for klynget eller flernivådata; forklar når klassiske SE-er er misvisende.
+- **p-verdfortolkning**: Korriger p-verdfortolkninger når de oppstår; krev alltid effektmål med konfidensintervaller, ikke p-verdier alene.
+- **Reproduserbar vitenskap**: Krev at alle analyser er fullstendig skriptede fra rådata til endelige resultater – hvert rensetrinn, modell, tabell og figur må kunne kjøres på nytt uten manuell intervensjon.
+- **Rapporteringsretningslinjer**: Referer til STROBE, RECORD og andre rapporteringsretningslinjer som passer studiedesignet.
+- **Intellektuell ærlighet**: Si «jeg vet ikke» eller «rådfør deg med en metodekspert» når spørsmål overskrider din ekspertise; fabrikker aldri referanser.
+```
+
+**Kunnskapsbase (utdrag):**
+
+Dette er de faktiske dokumentene (PDF-er eller helst markdown-filer, se [seksjonen om dokumentkvalitet](#tillegg-dokumentkvalitet)) lastet opp til den tilpassede chatboten. Når du stiller et spørsmål, bruker agenten de relevante avsnittene i svaret – slik at den kan sitere og resonnere fra det spesifikke innholdet i disse artiklene fremfor fra modellens generelle opplæring:
+
+- Hernán & Robins (2006). Estimating causal effects from epidemiological data.
+- Greenland, Pearl & Robins (1999). Causal diagrams for epidemiologic research.
+- Hernán & Robins (2016). Using big data to emulate a target trial.
+- STROBE og RECORD rapporteringssjekklister
+
+Effekten er betydelig. I stedet for å gi et generisk svar på «bør jeg justere for X i regresjonen?», vil denne chatboten spørre om din DAG, identifisere om X er en konfunder, mediator eller kollider, og forklare konsekvensene av å betinge på hver – akkurat som en god metodiker ville gjort.
+
+#### Alle tilgjengelige chatboter
+
+Chatbotene nedenfor ble generert med KI-assistanse og gjennomgått én gang. Behandle dem som startpunkter: les instruksjonene, test dem på en reell oppgave, og juster der de faller kort for ditt fagfelt eller arbeidsflyt.
+
+| Chatbot | Formål |
+|---|---|
+| Søknadsgjennomganger | Kritisk gjennomgang mot finansiørkriterier (NFR, ERC, NIH) |
+| Litteratursyntesator | Strukturert utvinning og syntese fra opplastede PDF-er med streng sporbarhet – studiedesign, estimand, funn, begrensninger i sammenlignbare tabeller |
+| Narrativ litteraturgjennomganger | Kritiske narrative gjennomganger fra opplastede kilder, med vekt på motsetninger, pågående debatter og metodisk kvalitet |
+| Metodekonsulent | Generell statistikk og studiedesign for samfunns- og helsevitenskap |
+| Metodekonsulent – Psykologi | Psykologispesifikk, med vekt på åpen vitenskap og lærdommer fra replikasjonskrisen |
+| Metodekonsulent – Epidemiologi | Kausal inferens, DAG-er og epidemiologiske studiedesign |
+| Metodekonsulent – Økonometri | Kausale identifikasjonsstrategier: IV, DiD, RDD, programevaluering |
+| SAP/Prereg-utkaster | Formaliserer en avtalt analyseplan til et strukturert SAP eller OSF-forhåndsregistrering med hypoteser, estimander og beslutningsregler |
+| Dataanalytiker – R | Interaktiv steg-for-steg kodingsassistent for R-pipelines – arbeider gjennom dataforbehandling og analyse ved hjelp av data.table, ggplot2 og targets-rammeverket; ber om SAP før analysekode |
+| Resultatskriver | Interaktiv assistent for resultatdeler: hjelper med å skissere hva som skal rapporteres, gir deretter strukturert tilbakemelding (fullstendighet, nøyaktighet, SAP-troskap, stil) på utarbeidet tekst |
+| Tekstredaktør – Engelsk | Akademisk tekstkorrektur for engelske manuskripter – klarhet, grammatikk og stil med bevaring av vitenskapelig mening |
+| Tekstredaktør – Enkelt Språk | Klarspråksomskriving på norsk for allmenne eller ikke-spesialiserte målgrupper |
+| Kodeskriver | Generell reproduserbar kodingsassistent for R eller Python – bruk når den interaktive Dataanalytiker – R-arbeidsflyten ikke er nødvendig eller ved arbeid i Python |
+
+Disse chatbot-spesifikasjonene ble i stor grad generert med KI-assistanse og bør behandles som startpunkter, ikke ferdige produkter. Gjennomgå instruksjonene, tilpass dem til ditt fagfelt og arbeidsflyt, og forbedre dem etter hvert som du oppdager der standardinnstillingene faller kort.
+
+### Dokumentkvalitet for kunnskapsbaser {#tillegg-dokumentkvalitet}
+
+Kunnskapsbasen i en tilpasset chatbot eller RAG-system er bare så god som teksten plattformen faktisk kan trekke ut fra den. Når du laster opp en PDF til Copilot Studio, NotebookLM eller en lignende plattform, trekker plattformen ut teksten automatisk før den indekserer den. Denne utvinningen er ofte dårlig: ligninger blir forvridd, tabeller mister strukturen, og flerspaltedesign gir rotet, uordnet tekst. Chatboten resonnerer deretter fra denne forringede versjonen – ikke fra artikkelen slik du leser den.
+
+En bedre tilnærming er å laste opp en ren **Markdown**-versjon i stedet for den rå PDF-en. Markdown er ren tekst med enkel formatering som plattformer kan indeksere nøyaktig, uten noe tapsbringende utvinningstrinn.
+
+[`pdfParser`](https://github.com/gbiele/pdfParser) er en R-pakke som konverterer PDF-er til semantisk Markdown ved hjelp av [Docling](https://github.com/DS4SD/docling) for layoutanalyse og brødtekst, og Google Gemini for tabell- og figurutvinning. Resultatet bevarer det semantiske innholdet i en artikkel – tabeller med korrekt celleutligning, figurtekster og seksjonsstruktur – i et format som chatbot-plattformer kan indeksere rent. Den inkluderer en `pdf_dir_to_markdown_docling()`-funksjon som behandler alle PDF-er i en mappe i ett steg, noe som gjør det enkelt å forberede en hel kunnskapsbase på en gang.
+
+For kunnskapsbasedokumenter du vender tilbake til gjentatte ganger – sentrale metodeartikler, rapporteringssjekklister, lærebøker – er det verdt det ekstra trinnet å konvertere dem én gang med `pdfParser` og laste opp Markdown-versjonene.
+
+### Programmatisk verifisering med tblscribe {#tillegg-tblscribe}
+
+En av de mest praktisk nyttige anvendelsene av LLM-er i forskning er å generere tekst fra statistiske resultater – utarbeide resultatdeler, kommunespesifikke rapporter eller undergruppesammendrag fra tabellerte utdata. Risikoen er numerisk hallusinasjon: en LLM gitt en resultatstabell kan feillese en verdi, transponere siffer eller dikte opp statistikk.
+
+Ved Folkehelseinstituttet (FHI) er dette problemet konkret: FHI produserer rapporter for hundrevis av kommuner, skoler og befolkningsundergrupper. Å skrive undergrupspesifikk tekst for hånd skalerer ikke; LLM-generert tekst er rask, men kan introdusere numeriske feil.
+
+[`tblscribe`](https://github.com/gbiele/tblscribe) er en R-pakke som adresserer dette direkte. Den:
+
+1. Formaterer en dataramme eller statistisk tabell til en instruksjonssikker representasjon
+2. Sender den til en LLM (OpenAI, Anthropic eller Google) med en instruksjonsmal
+3. **Verifiserer den genererte teksten** ved å sjekke at hvert numerisk token i prosaen samsvarer med kildetabellen innenfor angitte toleranser – deterministisk, uten å spørre modellen på nytt
+
+Du sender en dataramme og en instruksjon til `tblscribe`s hovedfunksjon; den sender begge til LLM-en, mottar den genererte prosaen og sjekker deretter hvert tall i prosaen mot kildetabellen. Dersom det er avvik – modellen skriver 0,32 når tabellen sier 0,31 – flagger `tblscribe` det, prøver eventuelt på nytt med korrigerende tilbakemelding og kan sette en advarsel foran utdataene slik at nedstrøms brukere vet at verifiseringen mislyktes.
+
+Dette er det som gjør KI-assistert tekstgenerering trygg i stor skala: LLM-en genererer prosaen, deterministisk kode verifiserer tallene, og mennesker gjennomgår flaggede utdata. Intet steg alene er tilstrekkelig.
+
+
+### Agentbaserte systemer {#tillegg-agentbaserte-systemer}
+
+Et agentbasert KI-system går lenger enn å svare på spørsmål i et chatvindu. Det kan bruke verktøy – nettsøk, kodekjøring, fillesing og -skriving – og utføre sekvenser av handlinger autonomt, korrigere seg selv når noe feiler og fortsette til oppgaven er ferdig. PISA/HBSC-figuren øverst i dette innlegget illustrerer hvordan dette ser ut i praksis: gitt nedlastings-URL-ene og en beskrivelse av ønsket utdata, lastet agenten ned to internasjonale datasett, skrev R-kode for å rense og slå dem sammen, bygde sammensatte mål, produserte et merket spredningsplott, rettet feilene som oppstod, og lagret figuren og skriptet – alt fra en enkelt instruksjon, uten manuell intervensjon på noe tidspunkt.
+
+![En oversikt over Cursor agentbaserte kodningsmiljø, som viser dets KI-native redigeringsgrensesnitt med innebygd kodegenerering og feilsøkingskapasiteter.](figures/Cursor.png)
+
+### Verktøyoversikt
+
+De viktigste agentbaserte kodningsmiljøene brukt i forskningssammenhenger er [Claude Code](https://claude.ai/download) (Anthropic), som er særlig sterkt for R og Python datapipelines og kan brukes direkte i en terminal eller IDE; [Cursor](https://www.cursor.com), et KI-nativt kode-redigeringsprogram som skriver, kjører og feilsøker kode innebygd; [GitHub Copilot Workspace](https://githubnext.com/projects/copilot-workspace), som fungerer innenfor GitHubs økosystem; og Microsoft Copilot med Code Interpreter, tilgjengelig i noen Microsoft 365-konfigurasjoner. Alle støtter den samme kjerneworkflyten: beskriv oppgaven, la agenten skrive og kjøre koden, gjennomgå utdataene. Er du allerede vant til Visual Studio Code, er det enkleste inngangspunktet å installere [Claude Code-utvidelsen](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) direkte i editoren – da får du agentfunksjonaliteten uten å forlate arbeidsflaten du kjenner fra før.
+
+### Hva agentbaserte systemer er best på
+
+Agentbaserte systemer er sterkest på oppgaver som er veldefinerte, repetitive og verifiserbare. Å automatisere en datapipeline – laste ned, rense, utlede variabler, tilpasse modeller, produsere tabeller og figurer – er nøyaktig den typen arbeid de håndterer godt. De oversetter en verbal beskrivelse av en analyse til kjørbar kode, itererer til den kjører, og produserer utdata som kan inspiseres direkte. Jo mer presist oppgaven er spesifisert, jo nærmere resultatet er hva en omhyggelig analytiker ville produsert.
+
+### Agentbaserte systemer som ekspert-kolleger
+
+Med riktig kontekst lastet kan et agentbasert system fungere som noe nærmere en kunnskapsrik samtalepartner enn en kodegenerator. Dersom du gir analyseplanen, beskriver datastrukturen og laster opp relevant bakgrunnslitteratur – metodeartiklene som definerer estimanden, rapporteringsretningslinjene for ditt fagfelt, forhåndsregistreringsdokumentet – kan agenten gjennomgå modellspesifikasjoner og flagge avvik fra det angitte forskningsspørsmålet, foreslå alternative analytiske tilnærminger forankret i de opplastede metodeartiklene, og fange vanlige implementeringsfeil før de forplanter seg. Nøkkelen er at agenten resonnerer fra det som er i kontekstvinduet. En agent som bare har fått dataene og en vag instruksjon, vil produsere noe plausibelt; en agent gitt analyseplanen, de relevante metodeartiklene og eksplisitte kriterier for hva en korrekt implementering ser ut som, vil produsere noe som kan evalueres mot en standard. Kvaliteten på konteksten du gir, bestemmer direkte kvaliteten på gjennomgangen du får tilbake.
+
+For å få dette til å fungere godt i praksis, hjelper det å legge til *ferdigheter* i et prosjekt. De fleste agentverktøy støtter en versjon av denne ideen: i Claude Code er de markdown-filer i `.claude/commands/`; i Cursor kalles de Regler og bor i `.cursor/rules/` som `.mdc`-filer med frontmatter som kontrollerer når de aktiveres. I begge tilfeller definerer en ferdighet eller regel et sett med instruksjoner for en bestemt oppgave – «gjennomgå en analyseplan mot forhåndsregistreringen», «sjekk R-kode for targets-pipeline-konvensjoner» – og agenten laster dem automatisk inn når de er relevante, uten å bli eksplisitt fortalt det.[^11] For et forskningsprosjekt betyr et lite bibliotek med ferdigheter – én for analyseplangjennomgang, én for resultatrapportering, én for kodestil – at domene-spesifikke standarder anvendes konsekvent uten å gjenta dem i hver instruksjon.
+
+### Hva de fortsatt ikke er gode på
+
+Selv med rik kontekst faller agentbaserte systemer kort på måter som betyr noe for forskning. De tenderer til ikke å generere genuint nye vitenskapelige ideer – regresjon mot det typiske betyr at resultatene graviterer mot det som allerede er vanlig i litteraturen. En erfaren forsker legger umiddelbart merke til når et resultat er implausibelt; en agent uten den akkumulerte bakgrunnskunnskapen kan ikke det. Å oversette en teoretisk prediksjon til en presis, testbar statistisk påstand krever konseptuell resonnering som LLM-er håndterer dårlig uten svært eksplisitt stillasbygging. Og agenter arbeider med det som er foran dem: de vil ikke flagge at et kritisk konfunderende element aldri ble målt, at en sensitivitetsanalyse mangler fra planen, eller at diskusjonen ignorerer en rivaliserende forklaring. LLM-er multipliserer kompetansene du allerede har – de leverer ikke nye. Verdien av agentbaserte systemer skalerer med din evne til å evaluere det de produserer.
+
+[^1]: En **instruksjon** er tekstinndataene du gir til en KI-modell – spørsmålet, instruksjonen eller oppgavebeskrivelsen din. Kvaliteten på instruksjonen påvirker sterkt kvaliteten på resultatet.
+
+[^2]: Full instruksjon: «Download hsbc data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv. Then extract data for 15 year olds — who-5-well-being-index, life satisfaction, self efficacy (2 measures) — from the data and calculate a composite score for each country. Next go to https://zenodo.org/records/13382904 and download the PISA 2022 student file. Build a composite score from reading, mathematics and science, and compute the average for each European country. Finally, plot a scatterplot with the composite HBSC score on the x-axis and the composite PISA score on the y-axis. Label all the Nordic countries and highlight Norway and save the figure as figures/scatter_pisa_hsbc.png. Use R to do this. Document all steps in a script, which you save as scripts/pisa_hbsc_scatter. Save all data in the data folder.»
+
+[^3]: Et **agentbasert KI-system** kan autonomt planlegge og utføre en sekvens av handlinger – nettsøk, kodekjøring, fillesing og -skriving – for å fullføre en kompleks flertrinnsoppgave, i stedet for å bare svare på en enkelt forespørsel.
+
+[^4]: **Store språkmodeller (LLM-er)** er KI-modeller trent på enorme mengder tekst for å forutsi og generere språk. De driver verktøy som ChatGPT, Claude, Gemini og Microsoft Copilot.
+
+[^5]: Et **token** er den grunnleggende enheten en LLM behandler – grovt sett et ord eller ordfragment. I gjennomsnitt er ett engelsk ord omtrent 1,3 token. LLM-er leser ikke hele ord; de leser sekvenser av token.
+
+[^6]: **Kontekstvinduet** er den totale mengden tekst en LLM kan behandle på én gang – instruksjonen din, eventuelle opplastede dokumenter og samtalehistorikken. Informasjon utenfor kontekstvinduet er usynlig for modellen. Moderne LLM-er har store kontekstvinduer (hundretusener av token), men det er fortsatt grenser, og hva som er i vinduet, betyr noe for svarkvaliteten.
+
+[^8]: En **systeminstruksjon** er et sett med instruksjoner gitt til modellen før samtalen begynner. Den er alltid aktiv, men ikke direkte synlig i chatten. Tilpassede instruksjoner i Copilot, ChatGPT og Claude fungerer alle ved å angi en systeminstruksjon.
+
+[^9]: I Microsoft Copilot-konteksten er en **agent** en tilpasset chatbot som også kan utføre handlinger – opprette eller redigere dokumenter, sende e-post, spørre SharePoint – ikke bare generere tekst i en samtale.
+
+[^10]: Teknisk sett: spørsmålet ditt konverteres til en **vektorrepresentasjon** – en numerisk representasjon av meningen – og matches mot representasjoner av dokumentfragmenter. Avsnitt med høyest semantisk likhet hentes og settes inn i kontekstvinduet før modellen svarer. Dette betyr at modellen arbeider fra: «Gitt disse spesifikke avsnittene, svar på dette spørsmålet», snarere enn fra treningsdata alene.
+
+[^11]: I motsetning til en tilpasset chatbot er ikke en ferdighet et separat chat-grensesnitt: den kjører inne i det agentbaserte systemet, med full tilgang til alle prosjektfiler og verktøy. Sammenligningen med tilpassede chatboter (beskrevet i den foregående tilleggsseksjonen) er nyttig her: en chatbot gir en spesialistpersona for en fokusert samtale; en ferdighet gir det agentbaserte systemet en stående instruksjon det kan benytte seg av midt i en oppgave, kombinert med alt det allerede vet om filene og koden dine.
