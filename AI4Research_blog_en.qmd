@@ -99,7 +99,7 @@ Here's a set of custom instructions designed for researchers:
 - Do not suggest next steps or offer further help unless asked
 ```
 
-These instructions tackle hallucination directly ("never fabricate citations"), counter the tendency toward overconfident synthesis ("push back on flawed reasoning"), and cut noise ("do not pad responses"). A model following these behaves quite differently from the default.
+These instructions tackle hallucination directly ("never fabricate citations"), counter the tendency toward uncritical summary ("push back on flawed reasoning"), and cut noise ("do not pad responses"). A model following these behaves quite differently from the default.
 
 ### Setting custom instructions in Microsoft Copilot
 
