@@ -8,6 +8,12 @@ format:
 ---
 
 
+This post works through what makes LLMs both useful and unreliable for research — the same architecture that produces fluent, confident output also produces hallucinations and conservative synthesis. It then covers three practical levers for controlling those risks: writing better instructions, building custom chatbots, and grounding the model in your own documents.
+
+::: {.callout-tip}
+If you want the actionable steps without the background, skip ahead to [Getting Started](#getting-started).
+:::
+
 ## The Future Is Already Here
 
 Suppose you want to quickly put together a figure showing how Norway and other European countries compare on student learning and well-being — combining PISA academic achievement data with HBSC well-being data. Downloading the files, wrangling two large international datasets, constructing composite scores, and producing a labelled scatterplot would normally take an afternoon of coding. How quickly can this actually be done?
@@ -35,8 +41,6 @@ The PISA example used agentic tools. Most of what follows doesn't. Paste a set o
 This is not a demo. It's what current agentic AI systems[^3] can do. The question is no longer whether AI will change how we do research, but how to use it in ways that are actually reliable.
 
 But powerful doesn't mean problem-free. The limitations matter, especially for researchers.
-
-This post works through what makes LLMs both useful and unreliable for research — the same architecture that produces fluent, confident output also produces hallucinations, conservative synthesis, and reasoning you cannot inspect. It then covers three practical levers for controlling those risks: writing better instructions, grounding the model in your own documents, and verifying outputs programmatically. If you want the actionable steps without the background, skip ahead to [Getting Started](#getting-started).
 
 ## Why LLMs Are Tricky for Researchers
 
@@ -277,9 +281,9 @@ Instructions shape model behaviour, context windows filled with reliable informa
 
 Most of the benefit described in this post comes from two steps that together take under an 30 minutes.
 
-**Step 1: Set up custom instructions.** Copy the example from the Lever 1 section, paste it into Copilot's settings (or whichever tool you use), and adjust a line or two to fit your field. Done. Every conversation from this point starts with a model that's more careful, more honest about uncertainty, and less likely to pad its answers. 
+**[Step 1: Set up custom instructions.](#lever-1-custom-instructions)** Copy the example from the Lever 1 section, paste it into Copilot's settings (or whichever tool you use), and adjust a line or two to fit your field. Done. Every conversation from this point starts with a model that's more careful, more honest about uncertainty, and less likely to pad its answers. 
 
-**Step 2: Create one to three custom chatbots.** Think about the research tasks you turn to an LLM for most often — literature questions, methods advice, writing feedback, code help. Pick one to three. Then describe what you need to an LLM and ask it to write a custom chatbot specification for that task. Paste the result into Copilot Studio as a new agent, and you have a purpose-built assistant ready to use. It doesn't need to be perfect — it needs to be good enough to start. You'll notice quickly when it falls short, and a short conversation with the LLM is usually enough to improve the instructions.
+**[Step 2: Create one to three custom chatbots.](#lever-2-custom-chatbots)** Think about the research tasks you turn to an LLM for most often — literature questions, methods advice, writing feedback, code help. Pick one to three. Then describe what you need to an LLM and ask it to write a custom chatbot specification for that task. Paste the result into Copilot Studio as a new agent, and you have a purpose-built assistant ready to use. It doesn't need to be perfect — it needs to be good enough to start. You'll notice quickly when it falls short, and a short conversation with the LLM is usually enough to improve the instructions.
 
 The chatbots in the `chatbots/` directory are ready-made starting points if you want to skip even that first step. Take one that fits a task you already do, adjust the instructions to match your field and habits, and you're done.
 

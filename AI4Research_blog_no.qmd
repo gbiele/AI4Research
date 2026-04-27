@@ -8,6 +8,12 @@ format:
 ---
 
 
+Dette innlegget tar for seg hva som gjør LLM-er både nyttige og upålitelige for forskning — den samme arkitekturen som produserer flytende, selvsikker tekst, produserer også hallusinasjoner og konservativ syntese. Deretter gjennomgår det tre praktiske trinn for å kontrollere disse risikoene: å skrive bedre instruksjoner, bygge tilpassede chatboter og forankre modellen i egne dokumenter.
+
+::: {.callout-tip}
+Vil du ha de praktiske stegene uten bakgrunnen, hopp frem til [Kom i gang](#kom-i-gang).
+:::
+
 ## Fremtiden er allerede her
 
 La oss si at du raskt vil lage en figur som viser hvordan Norge og andre europeiske land sammenligner seg på elevers læring og trivsel – ved å kombinere PISA-data om faglig prestasjon med HBSC-data om velvære. Å laste ned filene, bearbeide to store internasjonale datasett, konstruere sammensatte mål og lage et merket spredningsplott ville normalt ta en ettermiddag med koding. Hvor raskt kan dette faktisk gjøres?
@@ -36,8 +42,6 @@ Dette er ikke en demo. Det er hva dagens agentbaserte KI-systemer[^3] kan gjøre
 
 Men kraftfullt betyr ikke problemfritt. Begrensningene er viktige, særlig for forskere.
 
-Dette innlegget tar for seg hva som gjør LLM-er både nyttige og upålitelige for forskning — den samme arkitekturen som produserer flytende, selvsikker tekst, produserer også hallusinasjoner, konservativ syntese og resonnering du ikke kan inspisere. Deretter gjennomgår det tre praktiske trinn for å kontrollere disse risikoene: å skrive bedre instruksjoner, forankre modellen i egne dokumenter og verifisere resultater programmatisk. Vil du ha de praktiske stegene uten bakgrunnen, hopp frem til [Kom i gang](#kom-i-gang).
-
 ## Hvorfor store språkmodeller er utfordrende for forskere
 
 Den samme arkitekturen som gjør store språkmodeller (LLM-er)[^4] flytende, gjør dem også upålitelige på bestemte måter – og begge egenskapene stammer fra samme kilde.
@@ -62,9 +66,9 @@ For forskere er dette ikke bare pinlig – det er en trussel mot gyldigheten. En
 
 Begge problemene har praktiske løsninger – tre trinn, i stigende rekkefølge av innsats:
 
-- **Spak 1: Tilpassede instruksjoner, utvidet resonnering og gode instruksjoner** – setter hvordan modellen oppfører seg i alle samtaler.
-- **Spak 2: Tilpassede chatboter** – formålsbygde spesialister med innebygd domeneekspertise.
-- **Spak 3: Forankre modellen i egne dokumenter** – slik at svarene trekker fra dine artikler, ikke modellens treningshukommelse.
+- **Trinn 1: Tilpassede instruksjoner, utvidet resonnering og gode instruksjoner** – setter hvordan modellen oppfører seg i alle samtaler.
+- **Trinn 2: Tilpassede chatboter** – formålsbygde spesialister med innebygd domeneekspertise.
+- **Trinn 3: Forankre modellen i egne dokumenter** – slik at svarene trekker fra dine artikler, ikke modellens treningshukommelse.
 
 Det som følger, går gjennom hvert trinn, fra det enkleste til det mest krevende. Vil du ha en rask oversikt, hopp frem til [Kom i gang](#kom-i-gang).
 
@@ -80,23 +84,23 @@ Følg FHIs retningslinjer for KI-bruk. Er du usikker på om en bestemt bruk er t
 :::
 
 
-## Spak 1: Tilpassede instruksjoner
+## Trinn 1: Tilpassede instruksjoner
 
 *~5 min · nybegynner · Hver samtale starter bedre*
 
 Alle større LLM-grensesnitt lar deg nå angi tilpassede instruksjoner[^8] – instruksjoner som gjelder for alle samtaler. Det er det enkleste, mest virkningsfulle en forsker kan gjøre.
 
-Her er et sett med tilpassede instruksjoner utformet for forskere:
+Her er et sett med tilpassede instruksjoner utformet for forskere – skrevet på engelsk, fordi modeller følger engelske instruksjoner mer presist og konsekvent, selv når de svarer på norsk:
 
 ```
-- Si "jeg vet ikke" fremfor å gjette; fabrikker aldri referanser eller statistikk
-- Bruk nettsøk og verktøy for å verifisere fakta før de oppgis
-- Siter primærlitteratur; foretrekk fagfellevurderte kilder fremfor oppsummeringer
-- Utfordre feilaktig resonnering eller påstander uten støtte
-- Tenk steg for steg og sjekk resonnementet ditt før du svarer
-- Les artikler kritisk: flag når konklusjoner overskrider bevisene, når studiedesign ikke kan underbygge kausale påstander, eller når begrensninger underkommuniseres
-- Vær konsis; ikke fyll ut svar eller still unødvendige oppfølgingsspørsmål
-- Ikke foreslå neste steg eller tilby videre hjelp med mindre du blir bedt om det
+- Say "I don't know" rather than guessing; never fabricate citations or statistics
+- Use web search and tools to verify facts before stating them
+- Cite primary literature; prefer peer-reviewed sources over summaries
+- Push back on flawed reasoning or unsupported claims
+- Think step by step and check your reasoning before answering
+- Read papers critically: flag when conclusions outrun the evidence, when study designs cannot support causal claims, or when limitations are understated
+- Be concise; do not pad responses or ask unnecessary follow-up questions
+- Do not suggest next steps or offer further help unless asked
 ```
 
 Disse instruksjonene adresserer hallusinasjon direkte («fabrikker aldri referanser»), motvirker tendensen mot ukritisk sammenfatning («utfordre feilaktig resonnering»), og kutter støy («ikke fyll ut svar»). En modell som følger disse, oppfører seg ganske annerledes enn standarden.
@@ -188,7 +192,7 @@ Forskjellen handler ikke om lengde for lengdens skyld. Hvert tillegg gjør en jo
 
 > **Tips:** Start en ny chat for hvert nye spørsmål eller oppgave. Lange samtaler som spenner over flere emner, akkumulerer kontekst som kan dra modellen av sporet – tidligere utvekslinger henger igjen i kontekstvinduet og kan skjevstille senere svar. En fersk chat holder konteksten fokusert.
 
-## Spak 2: Tilpassede chatboter
+## Trinn 2: Tilpassede chatboter
 
 *~15 min · nybegynner · Gjenbrukbar spesialist tilgjengelig når som helst*
 
@@ -230,7 +234,7 @@ Microsoft Copilot støtter tilpassede konfigurasjoner (kalt **Copilot-agenter** 
 > **Tips:** For best resultat, last opp Markdown i stedet for rå PDF-er – PDF-tekstutvinning er ofte dårlig og kan forringe kvaliteten på svarene. Se [Dokumentkvalitet for kunnskapsbaser](#tillegg-dokumentkvalitet) i Tillegget.
 
 
-## Spak 3: Forankre modellen i egne dokumenter
+## Trinn 3: Forankre modellen i egne dokumenter
 
 *~10–30 min · nybegynner · Modellen svarer fra dine artikler, ikke treningshukommelsen*
 
@@ -279,9 +283,9 @@ Instruksjoner former modelladferd, kontekstvinduer fylt med pålitelig informasj
 
 Det meste av fordelen beskrevet i dette innlegget kommer fra to steg som til sammen tar under 30 minutter.
 
-**Steg 1: Sett opp tilpassede instruksjoner.** Kopier eksempelet fra Spak 1-seksjonen, lim det inn i Copilots innstillinger (eller hvilket verktøy du bruker), og juster en linje eller to for å passe ditt fagfelt. Ferdig. Alle samtaler fra dette tidspunktet starter med en modell som er mer forsiktig, mer ærlig om usikkerhet og mindre tilbøyelig til å fylle ut svarene.
+**[Steg 1: Sett opp tilpassede instruksjoner.](#trinn-1-tilpassede-instruksjoner)** Kopier eksempelet fra Trinn 1-seksjonen, lim det inn i Copilots innstillinger (eller hvilket verktøy du bruker), og juster en linje eller to for å passe ditt fagfelt. Ferdig. Alle samtaler fra dette tidspunktet starter med en modell som er mer forsiktig, mer ærlig om usikkerhet og mindre tilbøyelig til å fylle ut svarene.
 
-**Steg 2: Opprett én til tre tilpassede chatboter.** Tenk på hvilke forskningsoppgaver du oftest vender deg til en LLM for – litteraturspørsmål, metodisk råd, skrivetilbakemelding, kodehjelp. Velg én til tre. Beskriv deretter hva du trenger til en LLM og be den skrive en chatbot-spesifikasjon for den oppgaven. Lim resultatet inn i Copilot Studio som en ny agent, og du har en formålsbygd assistent klar til bruk. Den trenger ikke å være perfekt – den trenger å være god nok til å komme i gang. Du vil raskt legge merke til når den faller kort, og en kort samtale med LLM-en er vanligvis nok til å forbedre instruksjonene.
+**[Steg 2: Opprett én til tre tilpassede chatboter.](#trinn-2-tilpassede-chatboter)** Tenk på hvilke forskningsoppgaver du oftest vender deg til en LLM for – litteraturspørsmål, metodisk råd, skrivetilbakemelding, kodehjelp. Velg én til tre. Beskriv deretter hva du trenger til en LLM og be den skrive en chatbot-spesifikasjon for den oppgaven. Lim resultatet inn i Copilot Studio som en ny agent, og du har en formålsbygd assistent klar til bruk. Den trenger ikke å være perfekt – den trenger å være god nok til å komme i gang. Du vil raskt legge merke til når den faller kort, og en kort samtale med LLM-en er vanligvis nok til å forbedre instruksjonene.
 
 Chatbotene i `chatbots/`-katalogen er ferdige startpunkter om du vil hoppe over selv det første steget. Ta én som passer en oppgave du allerede gjør, juster instruksjonene til ditt fagfelt og dine vaner, og du er ferdig.
 
