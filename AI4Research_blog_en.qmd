@@ -5,6 +5,7 @@ author: "Guido Biele"
 format:
   html:
     embed-resources: true
+    code-copy: true
 ---
 
 
@@ -48,7 +49,7 @@ The same architecture that makes large language models (LLMs)[^4] fluent also ma
 
 ### Regression to the Mode
 
-LLMs are trained to predict the next most-likely token[^5] (word fragment) given everything that came before. That's what makes them fluent. It's also what makes them conservative.
+LLMs are trained to predict the next most-likely token[^5] (word fragment) given everything that came before. That's what makes them fluent. It's also what makes them conservative: output gravitates toward what is already common in the training data — for a research topic, toward what is already common in the literature.
 
 Ask an LLM to summarise evidence on a contested topic and it will often produce a smooth, confident synthesis that papers over genuine scientific disagreement. Ask it to generate a novel hypothesis and it'll tend toward ideas that are already well-represented in the literature.
 
@@ -70,6 +71,8 @@ Both problems have practical fixes — three levers, in increasing order of effo
 - **Lever 2: Custom chatbots** — purpose-built specialists with domain expertise baked in.
 - **Lever 3: Ground the model in your own documents** — so answers draw from your papers, not the model's training memory.
 
+The levers are ordered by effort, but they are complementary rather than alternative: most regular users end up using all three. Custom instructions are always on in the background, custom chatbots take over recurring specialist tasks, and document grounding handles work where the model needs to reason from specific source material rather than from its training memory. The progression below is about the order in which to adopt them, not about choosing one.
+
 What follows works through each lever, from the simplest to the most involved. If you want the quick version, skip ahead to [Getting Started](#getting-started).
 
 
@@ -84,18 +87,24 @@ Follow FHI's guidelines on AI use. If you're uncertain whether a particular use 
 :::
 
 
+::: {.callout-note}
+## A note on tool choice
+
+This post uses Microsoft Copilot for the worked examples because it is the AI assistant that FHI staff already have access to, and the workflows below are designed to be usable by readers without any additional licensing or setup. The same patterns — custom instructions, custom chatbots, and document grounding — port directly to ChatGPT (OpenAI), Claude (Anthropic), and Gemini (Google), often with somewhat stronger underlying models for analytical and synthesis tasks. If you have access to one of these and your data-handling situation allows it, the same instructions and chatbot specifications work there with minimal adjustment.
+:::
+
 ## Lever 1: Custom Instructions
 
 *~5 min · beginner · Every conversation starts better-behaved*
 
-Every major LLM interface now lets you set custom instructions[^8] — instructions that apply to every conversation. It's the easiest, highest-leverage thing a researcher can do.
+Every major LLM interface now lets you set custom instructions[^6] — instructions that apply to every conversation. It's the easiest, highest-leverage thing a researcher can do.
 
 Here's a set of custom instructions designed for researchers:
 
-```
+```text
 - Say "I don't know" rather than guessing; never fabricate citations or statistics
-- Use web search and tools to verify facts before stating them
-- Cite primary literature; prefer peer-reviewed sources over summaries
+- For empirical claims, use web search and quote the source. If search is unavailable, prefix the claim with "unverified:"
+- If you include a citation, first use web search to confirm the paper exists; quote one sentence from it. If you cannot verify, write "[unverified — please check]" rather than including the citation
 - Push back on flawed reasoning or unsupported claims
 - Think step by step and check your reasoning before answering
 - Read papers critically: flag when conclusions outrun the evidence, when study designs cannot support causal claims, or when limitations are understated
@@ -104,6 +113,8 @@ Here's a set of custom instructions designed for researchers:
 ```
 
 These instructions tackle hallucination directly ("never fabricate citations"), counter the tendency toward uncritical summary ("push back on flawed reasoning"), and cut noise ("do not pad responses"). A model following these behaves quite differently from the default.
+
+Custom instructions are nudges, not hard constraints, but the effects are substantial in practice. They work best when they specify behaviors the model can perform — invoke a tool, decline, flag uncertainty, ask before answering — or fallbacks it can take, like "say 'I don't know'" or "prefix with 'unverified:'." Where they ask the model to verify something it cannot check internally, pair the request with an action (search and quote) and a fallback (flag as unverified) — that is what makes the instruction enforceable rather than aspirational.
 
 ### Setting custom instructions in Microsoft Copilot
 
@@ -118,7 +129,7 @@ Microsoft Copilot (available at [copilot.microsoft.com](https://copilot.microsof
 5. In the text field, paste your custom instructions. You can include multiple bullet points; the model will apply them persistently.
 6. Save your settings. From this point on, every new Copilot conversation will start with these instructions already in effect.
 
-<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;" title="Step-by-step: opening Copilot settings, navigating to Personalization, and pasting custom instructions into the text field" aria-label="Screen recording showing how to set custom instructions in Microsoft Copilot 365: open Settings via the profile icon, select Personalization, click Revise instructions, paste the instructions, and save.">
   <source src="figures/CustomInstructions.mp4" type="video/mp4">
 </video>
 
@@ -134,7 +145,7 @@ This is where extended reasoning pays off: evaluating a causal argument, working
 
 It's a single toggle. Enable it by default for anything methodologically demanding; turn it off for simple drafting tasks where speed matters more.
 
-<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;" title="Step-by-step: locating the reasoning mode toggle in Microsoft Copilot 365 and selecting extended thinking" aria-label="Screen recording showing how to enable extended reasoning in Microsoft Copilot 365: finding the thinking or deep think toggle in the chat interface and switching it on for a new conversation.">
   <source src="figures/Thinking.mp4" type="video/mp4">
 </video>
 
@@ -145,7 +156,7 @@ Custom instructions shape how the model behaves across all conversations; a good
 What distinguishes a good prompt from a weak one:
 
 - **State the goal, not the procedure.** Describe what a correct output looks like, not the steps you assume the model should follow. The model will often find a better path than the one you'd have prescribed.
-- **Provide the relevant context.** Include the research question, the data structure, the relevant constraints, and any domain knowledge the model would otherwise lack. An agent reasons from what's in the context window[^6]; context you omit is context it can't use.
+- **Provide the relevant context.** Include the research question, the data structure, the relevant constraints, and any domain knowledge the model would otherwise lack. An agent reasons from what's in the context window[^7]; context you omit is context it can't use.
 - **Define the output format explicitly.** Specify length, structure, and medium: a table, a prose paragraph, executable R code, a bulleted list with citations. Vague requests produce variable outputs.
 - **Flag what to avoid.** If there are common errors, off-target interpretations, or things you already know don't apply, say so.
 - **For complex tasks, break the task into explicit steps.** A single long prompt asking for multiple things tends to produce uneven output.
@@ -212,7 +223,7 @@ A full worked example — the *Methods Consultant — Epidemiology* specificatio
 
 ### Setting up custom chatbots and agents in Microsoft Copilot
 
-Microsoft Copilot supports custom configurations (called **Copilot Agents** in Copilot 365) that embed persistent instructions, knowledge, and tools. For most research use cases, a **custom chatbot** is what you need: a named assistant with fixed instructions and an uploaded knowledge base that you interact with conversationally. This becomes a true **agent**[^9] when you also grant it the ability to take actions — generating and editing Word or PowerPoint files, sending emails, querying SharePoint. For a methods consultant or copy editor, the chatbot form is usually enough. The agent form becomes useful when you want the AI to produce a draft document, not just advise on its content.
+Microsoft Copilot supports custom configurations (called **Copilot Agents** in Copilot 365) that embed persistent instructions, knowledge, and tools. For most research use cases, a **custom chatbot** is what you need: a named assistant with fixed instructions and an uploaded knowledge base that you interact with conversationally. This becomes a true **agent**[^8] when you also grant it the ability to take actions — generating and editing Word or PowerPoint files, sending emails, querying SharePoint. For a methods consultant or copy editor, the chatbot form is usually enough. The agent form becomes useful when you want the AI to produce a draft document, not just advise on its content.
 
 **Step-by-step (Copilot Studio / Microsoft 365 Copilot):**
 
@@ -224,7 +235,7 @@ Microsoft Copilot supports custom configurations (called **Copilot Agents** in C
 6. Configure **Actions** (tools) as needed: web search, file access, or code interpreter if available in your tenant.
 7. Click **Create** to make the agent available.
 
-<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;" title="Step-by-step: creating a custom agent in Microsoft Copilot 365 with a name, instructions, and uploaded knowledge documents" aria-label="Screen recording showing how to create a custom agent in Microsoft Copilot 365: clicking New agent in the sidebar, entering a name and description, pasting instructions, uploading knowledge documents, and clicking Create.">
   <source src="figures/CustomChatbot.mp4" type="video/mp4">
 </video>
 
@@ -237,7 +248,9 @@ Microsoft Copilot supports custom configurations (called **Copilot Agents** in C
 
 *~10–30 min · beginner · Model answers from your papers, not its training memory*
 
-Custom chatbots with a fixed knowledge base are powerful, but they require you to anticipate which documents you need. RAG — Retrieval Augmented Generation — systems go further: they maintain a searchable knowledge base and retrieve relevant passages *at query time* using semantic search.[^10]
+This is also where the limitation of custom instructions stops mattering: with RAG, the model is no longer being asked to behave a certain way around its training memory — it is working from text it can point to. Properties the model could not verify under Lever 1 (is this paper real, does this passage actually say what I claim) become checkable, because the source is in the context window.
+
+Custom chatbots with a fixed knowledge base are powerful, but they require you to anticipate which documents you need. RAG — Retrieval Augmented Generation — systems go further: they maintain a searchable knowledge base and retrieve relevant passages *at query time* using semantic search.[^9]
 
 When you ask a question, the system retrieves the passages most relevant to your query and places them in the model's context window before it generates its answer — so the model works from your documents, not its training memory. The practical effect is direct: instead of hallucinating a citation from memory, the model is constrained to reason from text you supplied and can verify.
 
@@ -251,9 +264,9 @@ Use it for:
 - Drafting introductions or discussion sections grounded in your reference list
 - Answering specific questions about uploaded documents, which can be papers, textbooks, or documentations for software like R-packages
 
-<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+<video autoplay loop muted playsinline width="60%" style="display: block; margin: 0 auto;" title="NotebookLM interface: uploading sources, asking a question, and clicking cited passages to verify the source text" aria-label="Screen recording showing the NotebookLM interface: uploading PDF sources, typing a research question, receiving an answer with inline citations, and clicking a citation to see the exact quoted passage in the original document.">
   <source src="figures/NotebookLM.mp4" type="video/mp4">
-</video>
+
 
 **[Elicit](https://elicit.com/)** is purpose-built for research. It searches a large academic database and extracts structured information — outcomes, population, methods, effect sizes — from papers in a way that's directly useful for systematic reviews and evidence synthesis. The trade-off is cost and setup: to use Elicit effectively, you need one of the better paid plans (around 4,500 NOK/year), and cheaper accounts analyse only a small number of full texts per month. Even with a more expensive plan, getting full-text reasoning often means uploading PDFs yourself. That extra step is worth it for systematic review work, but Elicit rewards deliberate setup rather than casual use.
 
@@ -284,7 +297,7 @@ Instructions shape model behaviour, context windows filled with reliable informa
 
 ## Getting Started
 
-Most of the benefit described in this post comes from two steps that together take under an 30 minutes.
+Most of the benefit described in this post comes from two steps that together take under 30 minutes.
 
 **[Step 1: Set up custom instructions.](#lever-1-custom-instructions)** Copy the example from the Lever 1 section, paste it into Copilot's settings (or whichever tool you use), and adjust a line or two to fit your field. Done. Every conversation from this point starts with a model that's more careful, more honest about uncertainty, and less likely to pad its answers. 
 
@@ -302,7 +315,7 @@ The tools described here don't change what good research looks like — they cha
 
 What that frees up is the work that still requires a researcher: identifying the right question, judging whether a result is plausible, deciding what the evidence actually implies. LLMs are amplifiers — they multiply the competences you already have. Used carelessly, they scale your weaknesses just as readily. Used well, they give you back the time to focus on the part of the work that no model can replace.
 
-Start with [Step 1 in Getting Started](#getting-started). Five minutes of setup changes every conversation that follows.
+Start with [Step 1 in Getting Started](#getting-started). Five minutes of setup, and every conversation that follows starts better-behaved.
 
 *The chatbot specifications referenced in this post are available in the `chatbots/` directory. The `pdfParser` and `tblscribe` R packages are available on GitHub.*
 
@@ -315,7 +328,7 @@ Start with [Step 1 in Getting Started](#getting-started). Five minutes of setup 
 **Instructions** 
 (One example per theme (full instructions available in the [`chatbots/` directory](chatbots/methods_consultant_epidemiology.md))):
 
-```
+```text
 - **Role**: You are an expert in epidemiological methods and causal inference for population health research.
 - **Clarifying before answering**: Ask clarifying questions about the research question, target population, exposure, outcome, time horizon, and available data before recommending methods.
 - **Causal reasoning with DAGs**: For causal questions, require the researcher to draw or describe a DAG before recommending adjustment sets; explain the difference between confounders, mediators, and colliders.
@@ -406,7 +419,7 @@ Agentic systems are strongest at tasks that are well-defined, repetitive, and ve
 
 With the right context loaded, an agentic system can act as something closer to a knowledgeable sparring partner than a code generator. If you provide the analysis plan, describe the data structure, and upload relevant background literature — the methods papers that define the estimand, the reporting guidelines for your field, the preregistration document — the agent can review model specifications and flag mismatches with the stated research question, propose alternative analytical approaches grounded in the uploaded methods papers, and catch common implementation errors before they propagate. The key is that the agent reasons from what is in the context window. An agent given only the data and a vague instruction will produce something plausible; an agent given the analysis plan, the relevant methods papers, and explicit criteria for what a correct implementation looks like will produce something that can be evaluated against a standard. The quality of the context you provide directly determines the quality of the review you get back.
 
-To make this work well in practice, it helps to add *skills* to a project. Most agentic tools support some version of this idea: in Claude Code they are markdown files in `.claude/commands/`; in Cursor they are called Rules and live in `.cursor/rules/` as `.mdc` files with frontmatter that controls when they activate. In both cases, a skill or rule defines a set of instructions for a specific task — "review an analysis plan against the preregistration", "check R code for targets pipeline conventions" — and the agent loads them automatically when they are relevant, without being told explicitly.[^11] For a research project, a small library of skills — one for analysis plan review, one for results reporting, one for code style — means that domain-specific standards are applied consistently without having to repeat them in every prompt.
+To make this work well in practice, it helps to add *skills* to a project. Most agentic tools support some version of this idea: in Claude Code they are markdown files in `.claude/commands/`; in Cursor they are called Rules and live in `.cursor/rules/` as `.mdc` files with frontmatter that controls when they activate. In both cases, a skill or rule defines a set of instructions for a specific task — "review an analysis plan against the preregistration", "check R code for targets pipeline conventions" — and the agent loads them automatically when they are relevant, without being told explicitly.[^10] For a research project, a small library of skills — one for analysis plan review, one for results reporting, one for code style — means that domain-specific standards are applied consistently without having to repeat them in every prompt.
 
 ### What They're Still Not Good At
 
@@ -414,7 +427,7 @@ Even with rich context, agentic systems fall short in ways that matter for resea
 
 [^1]: A **prompt** is the text input you give to an AI model — your question, instruction, or task description. The quality of the prompt strongly influences the quality of the output.
 
-[^2]: Full prompt: "Download hsbc data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv. Then extract data for 15 year olds — who-5-well-being-index, life satisfaction, self efficacy (2 measures) — from the data and calculate a composite score for each country. Next go to https://zenodo.org/records/13382904 and download the PISA 2022 student file. Build a composite score from reading, mathematics and science, and compute the average for each European country. Finally, plot a scatterplot with the composite HBSC score on the x-axis and the composite PISA score on the y-axis. Label all the Nordic countries and highlight Norway and save the figure as figures/scatter_pisa_hsbc.png. Use R to do this. Document all steps in a script, which you save as scripts/pisa_hbsc_scatter. Save all data in the data folder."
+[^2]: Full prompt: "Download HBSC data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv. Then extract data for 15 year olds — who-5-well-being-index, life satisfaction, self efficacy (2 measures) — from the data and calculate a composite score for each country. Next go to https://zenodo.org/records/13382904 and download the PISA 2022 student file. Build a composite score from reading, mathematics and science, and compute the average for each European country. Finally, plot a scatterplot with the composite HBSC score on the x-axis and the composite PISA score on the y-axis. Label all the Nordic countries and highlight Norway and save the figure as figures/scatter_pisa_hsbc.png. Use R to do this. Document all steps in a script, which you save as scripts/pisa_hbsc_scatter. Save all data in the data folder."
 
 [^3]: An **agentic AI system** can autonomously plan and execute a sequence of actions — web searches, code execution, file reading and writing — to complete a complex multi-step task, rather than just responding to a single query.
 
@@ -422,12 +435,12 @@ Even with rich context, agentic systems fall short in ways that matter for resea
 
 [^5]: A **token** is the basic unit an LLM processes — roughly a word or word fragment. On average, one English word is about 1.3 tokens. LLMs don't read full words; they read sequences of tokens.
 
-[^6]: The **context window** is the total amount of text an LLM can process at once — your prompt, any uploaded documents, and the conversation history. Information outside the context window is invisible to the model. Modern LLMs have large context windows (hundreds of thousands of tokens), but there are still limits, and what's in the window matters for answer quality.
+[^7]: The **context window** is the total amount of text an LLM can process at once — your prompt, any uploaded documents, and the conversation history. Information outside the context window is invisible to the model. Modern LLMs have large context windows (hundreds of thousands of tokens), but there are still limits, and what's in the window matters for answer quality.
 
-[^8]: A **system prompt** is a set of instructions provided to the model before the conversation begins. It's always active but not directly visible in the chat. Custom instructions in Copilot, ChatGPT, and Claude all work by setting a system prompt.
+[^6]: A **system prompt** is a set of instructions provided to the model before the conversation begins. It's always active but not directly visible in the chat. Custom instructions in Copilot, ChatGPT, and Claude all work by setting a system prompt.
 
-[^9]: In the Microsoft Copilot context, an **agent** is a custom chatbot that can also take actions — creating or editing documents, sending emails, querying SharePoint — not just generate text in a conversation.
+[^8]: In the Microsoft Copilot context, an **agent** is a custom chatbot that can also take actions — creating or editing documents, sending emails, querying SharePoint — not just generate text in a conversation.
 
-[^10]: Technically: your question is converted to a **vector embedding** — a numerical representation of its meaning — and matched against embeddings of document chunks. Passages with the highest semantic similarity are retrieved and inserted into the context window before the model answers. This means the model works from: "Given these specific passages, answer this question," rather than from training data alone.
+[^9]: Technically: your question is converted to a **vector embedding** — a numerical representation of its meaning — and matched against embeddings of document chunks. Passages with the highest semantic similarity are retrieved and inserted into the context window before the model answers. This means the model works from: "Given these specific passages, answer this question," rather than from training data alone.
 
-[^11]: Unlike a custom chatbot, a skill is not a separate chat interface: it runs inside the agentic system, with full access to all project files and tools. The comparison to custom chatbots (described in the preceding appendix section) is useful here: a chatbot gives a specialist persona for a focused conversation; a skill gives the agentic system a standing instruction it can call on mid-task, combined with everything it already knows about your files and code.
+[^10]: Unlike a custom chatbot, a skill is not a separate chat interface: it runs inside the agentic system, with full access to all project files and tools. The comparison to custom chatbots (described in the preceding appendix section) is useful here: a chatbot gives a specialist persona for a focused conversation; a skill gives the agentic system a standing instruction it can call on mid-task, combined with everything it already knows about your files and code.
