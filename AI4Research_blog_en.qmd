@@ -112,10 +112,11 @@ Microsoft Copilot (available at [copilot.microsoft.com](https://copilot.microsof
 **Step-by-step:**
 
 1. Open Microsoft Copilot 365.
-2. Click the three dots beside your **profile icon** and select **Settings** (or the gear icon).
-3. Click on **Personalization** in the left side bar and then click on **Revise instructions** (under **Custom instructions**) on the right side.
-4. In the text field, paste your custom instructions. You can include multiple bullet points; the model will apply them persistently.
-5. Save your settings. From this point on, every new Copilot conversation will start with these instructions already in effect.
+2. Click on the **New chat** button.
+3. Click the three dots beside your **profile icon** and select **Settings** (or the gear icon).
+4. Click on **Personalization** in the left side bar and then click on **Revise instructions** (under **Custom instructions**) on the right side.
+5. In the text field, paste your custom instructions. You can include multiple bullet points; the model will apply them persistently.
+6. Save your settings. From this point on, every new Copilot conversation will start with these instructions already in effect.
 
 <video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
   <source src="figures/CustomInstructions.mp4" type="video/mp4">
@@ -249,6 +250,10 @@ Use it for:
 - Literature synthesis from a curated set of papers
 - Drafting introductions or discussion sections grounded in your reference list
 - Answering specific questions about uploaded documents, which can be papers, textbooks, or documentations for software like R-packages
+
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+  <source src="figures/NotebookLM.mp4" type="video/mp4">
+</video>
 
 **[Elicit](https://elicit.com/)** is purpose-built for research. It searches a large academic database and extracts structured information — outcomes, population, methods, effect sizes — from papers in a way that's directly useful for systematic reviews and evidence synthesis. The trade-off is cost and setup: to use Elicit effectively, you need one of the better paid plans (around 4,500 NOK/year), and cheaper accounts analyse only a small number of full texts per month. Even with a more expensive plan, getting full-text reasoning often means uploading PDFs yourself. That extra step is worth it for systematic review work, but Elicit rewards deliberate setup rather than casual use.
 

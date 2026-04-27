@@ -61,7 +61,6 @@ Fordi LLM-er er trent til å produsere plausible fortsettelser snarere enn fakta
 For forskere er dette ikke bare pinlig – det er en trussel mot gyldigheten. En resultatdel som finner opp tall, eller en litteraturgjennomgang som siterer spøkelsesartikler, kan undergrave forskningsintegritet. Det gode er at det finnes praktiske måter å gjøre LLM-bruk tryggere på, og de fleste krever ikke stor innsats.
 
 
-
 ## Et rammeverk for ansvarlig bruk
 
 Begge problemene har praktiske løsninger – tre trinn, i stigende rekkefølge av innsats:
@@ -112,10 +111,11 @@ Microsoft Copilot (tilgjengelig på [copilot.microsoft.com](https://copilot.micr
 **Steg for steg:**
 
 1. Åpne MS Copilot 365.
-2. Klikk på de tre prikkene ved siden av **profilbildet** og velg **Innstillinger** (eller tannhjulikonet).
-3. Klikk på **Personalisering** i venstrekolonnen og deretter **Endre instruksjoner** (under **Egendefinerte instruksjoner**) til høyre.
-4. Lim inn de tilpassede instruksjonene i tekstfeltet. Du kan inkludere flere punkter; modellen vil anvende dem vedvarende.
-5. Lagre innstillingene. Fra dette tidspunktet vil alle nye Copilot-samtaler starte med disse instruksjonene allerede aktive.
+2. Click on the **Ny chat** button.
+3. Klikk på de tre prikkene ved siden av **profilbildet** og velg **Innstillinger** (eller tannhjulikonet).
+4. Klikk på **Personalisering** i venstrekolonnen og deretter **Endre instruksjoner** (under **Egendefinerte instruksjoner**) til høyre.
+5. Lim inn de tilpassede instruksjonene i tekstfeltet. Du kan inkludere flere punkter; modellen vil anvende dem vedvarende.
+6. Lagre innstillingene. Fra dette tidspunktet vil alle nye Copilot-samtaler starte med disse instruksjonene allerede aktive.
 
 <video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
   <source src="figures/CustomInstructions.mp4" type="video/mp4">
@@ -251,6 +251,10 @@ Bruk det til:
 - Litteratursyntese fra et kuratert sett med artikler
 - Utarbeide innledninger eller diskusjonsdeler forankret i referanselisten din
 - Besvare konkrete spørsmål om opplastede dokumenter – artikler, lærebøker eller dokumentasjon for programvare som R-pakker
+
+<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;">
+  <source src="figures/NotebookLM.mp4" type="video/mp4">
+</video>
 
 **[Elicit](https://elicit.com/)** er spesialbygget for forskning. Det søker i en stor akademisk database og trekker ut strukturert informasjon – utfall, populasjon, metoder, effektstørrelser – fra artikler på en måte som er direkte nyttig for systematiske oversikter og evidenssyntese. Avveiningen er kostnad og oppsett: for å bruke Elicit effektivt trenger du en av de bedre betalingsplanene (rundt 4 500 NOK/år), og billigere kontoer analyserer bare et lite antall fulltekster per måned. Selv med en dyrere plan betyr det å få full tekstresonnering ofte at du må laste opp PDF-er selv. Det ekstra trinnet er verdt det for systematisk oversiktsarbeid, men Elicit belønner gjennomtenkt oppsett fremfor sporadisk bruk.
 
