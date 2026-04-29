@@ -63,6 +63,24 @@ Som forskere ønsker vi å utnytte nytten av LLM-er samtidig som vi kontrollerer
 
 ---
 
+## Utvidet resonnering
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* De fleste chatboter tilbyr en **utvidet resonneringsmodus**^[kalt «tenkemodus», «dyp forskning» e.l. avhengig av leverandør]
+* Modellen arbeider steg for steg **før** den genererer svar
+* Noen tjenester har **auto**-innstilling — for krevende oppgaver, velg høyere nivå eksplisitt
+:::
+
+::: {.column width="50%"}
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Utvidet resonnering i Copilot">
+  <source src="figures/Thinking.mp4" type="video/mp4" />
+</video>
+:::
+
+::::
+
 ## Egendefinerte instruksjoner
 
 :::: {.columns}
@@ -74,28 +92,9 @@ Som forskere ønsker vi å utnytte nytten av LLM-er samtidig som vi kontrollerer
 :::
 
 ::: {.column width="40%"}
-<div id="ci-wrap-instructions" style="width:100%;">
-  <img src="figures/CustomInstructions1.png" style="width:100%;"/>
-  <img src="figures/CustomInstructions2.png" style="width:100%;display:none;"/>
-  <img src="figures/CustomInstructions3.png" style="width:100%;display:none;"/>
-  <img src="figures/CustomInstructions4.png" style="width:100%;display:none;"/>
-</div>
-<div id="ci-caption-instructions" style="text-align:center;font-size:0.8em;color:#555;">1 / 4</div>
-<script>
-(function(){
-  var wrap = document.getElementById('ci-wrap-instructions');
-  var slides = wrap.querySelectorAll('img');
-  var cap = document.getElementById('ci-caption-instructions');
-  var n = slides.length;
-  var i = 0;
-  setInterval(function(){
-    slides[i].style.display = 'none';
-    i = (i+1) % n;
-    slides[i].style.display = 'block';
-    cap.textContent = (i+1) + " / " + n;
-  }, 3000);
-})();
-</script>
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Egendefinerte instruksjoner i Copilot">
+  <source src="figures/CustomInstructions.mp4" type="video/mp4" />
+</video>
 :::
 
 ::::
@@ -120,28 +119,10 @@ Som forskere ønsker vi å utnytte nytten av LLM-er samtidig som vi kontrollerer
   * Metodekonsulent, kopiredaktør engelsk, søknadsrådgiver, kopiredaktør «enkelt språk»
 :::
 
-::: {.column width="40%"}
-<div id="ci-wrap-chats" style="width:100%;">
-  <img src="figures/CustomChats1.png" style="width:100%;"/>
-  <img src="figures/CustomChats2.png" style="width:100%;display:none;"/>
-  <img src="figures/CustomChats3.png" style="width:100%;display:none;"/>
-</div>
-<div id="ci-caption-chats" style="text-align:center;font-size:0.8em;color:#555;">1 / 3</div>
-<script>
-(function(){
-  var wrap = document.getElementById('ci-wrap-chats');
-  var slides = wrap.querySelectorAll('img');
-  var cap = document.getElementById('ci-caption-chats');
-  var n = slides.length;
-  var i = 0;
-  setInterval(function(){
-    slides[i].style.display = 'none';
-    i = (i+1) % n;
-    slides[i].style.display = 'block';
-    cap.textContent = (i+1) + " / " + n;
-  }, 3000);
-})();
-</script>
+::: {.column width="50%"}
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Egendefinerte instruksjoner i Copilot">
+  <source src="figures/CustomChatbot.mp4" type="video/mp4" />
+</video>
 :::
 
 ::::
@@ -173,33 +154,15 @@ Chatbot-innhold
 
 :::: {.columns}
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 * Begrenser svar til relevant tekst fra de oppgitte dokumentene
 * Bruker semantisk søk for å finne relevant tekst i en kunnskapsbase
 :::
 
-::: {.column width="40%"}
-<div id="ci-wrap-notebooklm" style="width:100%;">
-  <img src="figures/NotbookLM1.png" style="width:100%;"/>
-  <img src="figures/NotbookLM2.png" style="width:100%;display:none;"/>
-  <img src="figures/NotbookLM3.png" style="width:100%;display:none;"/>
-</div>
-<div id="ci-caption-notebooklm" style="text-align:center;font-size:0.8em;color:#555;">1 / 3</div>
-<script>
-(function(){
-  var wrap = document.getElementById('ci-wrap-notebooklm');
-  var slides = wrap.querySelectorAll('img');
-  var cap = document.getElementById('ci-caption-notebooklm');
-  var n = slides.length;
-  var i = 0;
-  setInterval(function(){
-    slides[i].style.display = 'none';
-    i = (i+1) % n;
-    slides[i].style.display = 'block';
-    cap.textContent = (i+1) + " / " + n;
-  }, 3000);
-})();
-</script>
+::: {.column width="50%"}
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Egendefinerte instruksjoner i Copilot">
+  <source src="figures/NotebookLM.mp4" type="video/mp4" />
+</video>
 :::
 ::::
 
@@ -215,8 +178,7 @@ Chatbot-innhold
 * Rapporter for hundrevis av kommuner, skoler, ... — å skrive undergruppespecifik tekst for hånd skalerer ikke
 * LLM-er kan generere denne teksten automatisk fra statistiske tabeller
 * Også nyttig for å utarbeide resultatdeler fra analyseresultater
-* Risiko: Hallusinasjon av tall: **programmatisk verifisering**
-* I R: `tblscribe`^[sammenligner tall i generert tekst mot kildetabellen]
+* Risiko: Hallusinasjon av tall: **programmatisk verifisering** ^[I R: `tblscribe`sammenligner tall i generert tekst mot kildetabellen]
 
 ## Agentbaserte systemer
 

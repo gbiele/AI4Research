@@ -64,6 +64,27 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 
 ---
 
+## Extended reasoning
+
+:::: {.columns}
+
+::: {.column width="50%"}
+* Most chatbots offer an **extended reasoning mode**^[Labels vary — *thinking*, *deep think*, *extended thinking*, *deep research*, depending on provider.]
+* With it on, the model works **step by step before** answering 
+:::
+
+::: {.column width="50%"}
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Extended reasoning in Copilot">
+  <source src="figures/Thinking.mp4" type="video/mp4" />
+</video>
+:::
+
+::::
+
+* **Auto** lets the model pick depth; for **demanding analytic work**, **choose a higher setting explicitly**
+
+---
+
 ## Custom instructions
 
 :::: {.columns}
@@ -75,28 +96,9 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 :::
 
 ::: {.column width="40%"}
-<div id="ci-wrap-instructions" style="width:100%;">
-  <img src="figures/CustomInstructions1.png" style="width:100%;"/>
-  <img src="figures/CustomInstructions2.png" style="width:100%;display:none;"/>
-  <img src="figures/CustomInstructions3.png" style="width:100%;display:none;"/>
-  <img src="figures/CustomInstructions4.png" style="width:100%;display:none;"/>
-</div>
-<div id="ci-caption-instructions" style="text-align:center;font-size:0.8em;color:#555;">1 / 4</div>
-<script>
-(function(){
-  var wrap = document.getElementById('ci-wrap-instructions');
-  var slides = wrap.querySelectorAll('img');
-  var cap = document.getElementById('ci-caption-instructions');
-  var n = slides.length;
-  var i = 0;
-  setInterval(function(){
-    slides[i].style.display = 'none';
-    i = (i+1) % n;
-    slides[i].style.display = 'block';
-    cap.textContent = (i+1) + " / " + n;
-  }, 3000);
-})();
-</script>
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Step-by-step: opening Copilot settings, navigating to Personalization, and pasting custom instructions into the text field" aria-label="Screen recording showing how to set custom instructions in Microsoft Copilot 365: open Settings via the profile icon, select Personalization, click Revise instructions, paste the instructions, and save.">
+  <source src="figures/CustomInstructions.mp4" type="video/mp4" />
+</video>
 :::
 
 ::::
@@ -121,28 +123,10 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
   * Methods consultant, copy editor English, grant reviewer, copy editor plain language
 :::
 
-::: {.column width="40%"}
-<div id="ci-wrap-chats" style="width:100%;">
-  <img src="figures/CustomChats1.png" style="width:100%;"/>
-  <img src="figures/CustomChats2.png" style="width:100%;display:none;"/>
-  <img src="figures/CustomChats3.png" style="width:100%;display:none;"/>
-</div>
-<div id="ci-caption-chats" style="text-align:center;font-size:0.8em;color:#555;">1 / 3</div>
-<script>
-(function(){
-  var wrap = document.getElementById('ci-wrap-chats');
-  var slides = wrap.querySelectorAll('img');
-  var cap = document.getElementById('ci-caption-chats');
-  var n = slides.length;
-  var i = 0;
-  setInterval(function(){
-    slides[i].style.display = 'none';
-    i = (i+1) % n;
-    slides[i].style.display = 'block';
-    cap.textContent = (i+1) + " / " + n;
-  }, 3000);
-})();
-</script>
+::: {.column width="50%"}
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Step-by-step: creating a custom agent in Microsoft Copilot 365 with a name, instructions, and uploaded knowledge documents" aria-label="Screen recording showing how to create a custom agent in Microsoft Copilot 365: clicking New agent in the sidebar, entering a name and description, pasting instructions, uploading knowledge documents, and clicking Create.">
+  <source src="figures/CustomChatbot.mp4" type="video/mp4" />
+</video>
 :::
 
 ::::
@@ -174,33 +158,15 @@ Chatbot contents
 
 :::: {.columns}
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 * Limits answers to those derived from provided text
 * Uses semantic search to find relevant text in a knowledge base
 :::
 
-::: {.column width="40%"}
-<div id="ci-wrap-notebooklm" style="width:100%;">
-  <img src="figures/NotbookLM1.png" style="width:100%;"/>
-  <img src="figures/NotbookLM2.png" style="width:100%;display:none;"/>
-  <img src="figures/NotbookLM3.png" style="width:100%;display:none;"/>
-</div>
-<div id="ci-caption-notebooklm" style="text-align:center;font-size:0.8em;color:#555;">1 / 3</div>
-<script>
-(function(){
-  var wrap = document.getElementById('ci-wrap-notebooklm');
-  var slides = wrap.querySelectorAll('img');
-  var cap = document.getElementById('ci-caption-notebooklm');
-  var n = slides.length;
-  var i = 0;
-  setInterval(function(){
-    slides[i].style.display = 'none';
-    i = (i+1) % n;
-    slides[i].style.display = 'block';
-    cap.textContent = (i+1) + " / " + n;
-  }, 3000);
-})();
-</script>
+::: {.column width="50%"}
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="NotebookLM interface: uploading sources, asking a question, and clicking cited passages to verify the source text" aria-label="Screen recording showing the NotebookLM interface: uploading PDF sources, typing a research question, receiving an answer with inline citations, and clicking a citation to see the exact quoted passage in the original document.">
+  <source src="figures/NotebookLM.mp4" type="video/mp4" />
+</video>
 :::
 ::::
 
@@ -216,8 +182,7 @@ Chatbot contents
 * FHI produces reports for hundreds of municipalities, schools, ... — writing subgroup-specific text by hand doesn't scale
 * LLMs can generate this text automatically from statistical tables
 * Also useful for drafting results sections from analysis output
-* Risk: LLMs can hallucinate numbers —> **programmatic verification** 
-* In R: `tblscribe` ^[compares numbers in generated text against source table]
+* Risk: LLMs can hallucinate numbers —> **programmatic verification** ^[In R: `tblscribe` compares numbers in generated text against source table]
 
 ## Agentic systems
 

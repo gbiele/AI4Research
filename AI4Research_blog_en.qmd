@@ -129,8 +129,8 @@ Microsoft Copilot (available at [copilot.microsoft.com](https://copilot.microsof
 5. In the text field, paste your custom instructions. You can include multiple bullet points; the model will apply them persistently.
 6. Save your settings. From this point on, every new Copilot conversation will start with these instructions already in effect.
 
-<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;" title="Step-by-step: opening Copilot settings, navigating to Personalization, and pasting custom instructions into the text field" aria-label="Screen recording showing how to set custom instructions in Microsoft Copilot 365: open Settings via the profile icon, select Personalization, click Revise instructions, paste the instructions, and save.">
-  <source src="figures/CustomInstructions.mp4" type="video/mp4">
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Custom instructions in Copilot">
+  <source src="figures/CustomInstructions.mp4" type="video/mp4" />
 </video>
 
 > **Tip:** Custom instructions in Copilot apply across sessions but not across all Microsoft 365 entry points (e.g., Copilot in Word may not inherit browser-based instructions). Check the specific integration you are using.
@@ -145,8 +145,8 @@ This is where extended reasoning pays off: evaluating a causal argument, working
 
 It's a single toggle. Enable it by default for anything methodologically demanding; turn it off for simple drafting tasks where speed matters more.
 
-<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;" title="Step-by-step: locating the reasoning mode toggle in Microsoft Copilot 365 and selecting extended thinking" aria-label="Screen recording showing how to enable extended reasoning in Microsoft Copilot 365: finding the thinking or deep think toggle in the chat interface and switching it on for a new conversation.">
-  <source src="figures/Thinking.mp4" type="video/mp4">
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Extended reasoning in Copilot">
+  <source src="figures/Thinking.mp4" type="video/mp4" />
 </video>
 
 ### Writing Good Prompts
@@ -235,8 +235,8 @@ Microsoft Copilot supports custom configurations (called **Copilot Agents** in C
 6. Configure **Actions** (tools) as needed: web search, file access, or code interpreter if available in your tenant.
 7. Click **Create** to make the agent available.
 
-<video autoplay loop muted playsinline width="50%" style="display: block; margin: 0 auto;" title="Step-by-step: creating a custom agent in Microsoft Copilot 365 with a name, instructions, and uploaded knowledge documents" aria-label="Screen recording showing how to create a custom agent in Microsoft Copilot 365: clicking New agent in the sidebar, entering a name and description, pasting instructions, uploading knowledge documents, and clicking Create.">
-  <source src="figures/CustomChatbot.mp4" type="video/mp4">
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Custom agent in Copilot">
+  <source src="figures/CustomChatbot.mp4" type="video/mp4" />
 </video>
 
 > **Tip:** Copilot agents can be scoped to your organisation, shared with a team, or kept private. For a methods consultant that references your institution's statistical guidelines, keeping it within your organisation makes sense.
@@ -264,9 +264,9 @@ Use it for:
 - Drafting introductions or discussion sections grounded in your reference list
 - Answering specific questions about uploaded documents, which can be papers, textbooks, or documentations for software like R-packages
 
-<video autoplay loop muted playsinline width="60%" style="display: block; margin: 0 auto;" title="NotebookLM interface: uploading sources, asking a question, and clicking cited passages to verify the source text" aria-label="Screen recording showing the NotebookLM interface: uploading PDF sources, typing a research question, receiving an answer with inline citations, and clicking a citation to see the exact quoted passage in the original document.">
-  <source src="figures/NotebookLM.mp4" type="video/mp4">
-
+<video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="NotebookLM">
+  <source src="figures/NotebookLM.mp4" type="video/mp4" />
+</video>
 
 **[Elicit](https://elicit.com/)** is purpose-built for research. It searches a large academic database and extracts structured information — outcomes, population, methods, effect sizes — from papers in a way that's directly useful for systematic reviews and evidence synthesis. The trade-off is cost and setup: to use Elicit effectively, you need one of the better paid plans (around 4,500 NOK/year), and cheaper accounts analyse only a small number of full texts per month. Even with a more expensive plan, getting full-text reasoning often means uploading PDFs yourself. That extra step is worth it for systematic review work, but Elicit rewards deliberate setup rather than casual use.
 
