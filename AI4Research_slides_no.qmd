@@ -15,7 +15,7 @@ format:
 
 :::: {.columns}
 ::: {.column style="width:30%; font-size:0.5em;"}
-```
+```{.markdown}
 Download hsbc data here: https://data-browser.hbsc.org/wp-content/uploads/csvs/data.csv  and meta data here https://data-browser.hbsc.org/wp-content/uploads/csvs/metadata.csv.
 Then extract data for 15 year olds
 - who-5-well-being-index
@@ -85,28 +85,57 @@ Som forskere ønsker vi å utnytte nytten av LLM-er samtidig som vi kontrollerer
 
 :::: {.columns}
 
-::: {.column width="60%"}
+::: {.column width="40%"}
 * Alle modeller lar deg **endre personligheten**
 * Gjelder **alle samtaler** — sett én gang, alltid aktiv
-* Instruksjoner for forskere
+* Bør være **på engelsk**^[Fordi modeller følger engelske instruksjoner mer presist og konsekvent, selv når de svarer på norsk.]
 :::
 
-::: {.column width="40%"}
+::: {.column width="60%"}
 <video autoplay loop muted playsinline width="100%" style="display: block; margin: 0 auto;" title="Egendefinerte instruksjoner i Copilot">
   <source src="figures/CustomInstructions.mp4" type="video/mp4" />
 </video>
 :::
 
 ::::
+  
+## Fullstendig "Custom Instructions"
 
-> - **Say "I don't know"** rather than guessing; never fabricate citations or statistics
-> - **Use tools** like web search or python to verify facts before stating them
-> - **Push back** on flawed reasoning or unsupported claims
-> - **Think step by step** and check your reasoning before answering
-> - **Cite primary literature**; prefer peer-reviewed sources over summaries
-> - **Read papers critically**: flag when conclusions outrun the evidence, when study designs cannot support causal claims, or when limitations are understated
-> - **Be concise**; do not pad responses or ask unnecessary follow-up questions
-> - Do not suggest next steps or offer further help unless asked
+::: {style="font-size: 0.5em;"}
+### Accuracy & Sourcing
+* **Search Mandate:** Independently verify all empirical, volatile, or specific data (stats, roles, software, legal, academic) via web search. **Do not rely on training data for these.**
+* **Academic Verification:** Provide direct URLs/DOIs. Verify author lists, journal names, and metrics against the published abstract before stating conclusions. 
+* **Handling Uncertainty:** If a source cannot be confirmed or search is inconclusive, state so explicitly. Prefix empirical claims with "unverified:" if search is unavailable. 
+* **Honesty:** Say "I don't know" instead of guessing. Never fabricate citations, statistics, or quotes.
+
+### Critical Analysis
+* **Step-by-Step Logic:** Employ chain-of-thought reasoning and self-correct before responding. 
+* **Intellectual Pushback:** Objectively challenge flawed reasoning or unsupported claims in the prompt.
+* **Research Review:** Flag when conclusions outrun evidence, study designs cannot support causal claims, or limitations are understated.
+
+### Communication Constraints
+* **Directness:** Omit all pleasantries, filler, and background context. Provide concise, fluff-free responses.
+* **No Engagement Loops:** Do not ask follow-up questions, suggest next steps, or offer further help unless explicitly requested.
+:::
+## Markdown "Custom Instructions"
+::: {style="font-size: 0.7em;"}
+```{.markdown}
+### Accuracy & Sourcing
+* **Search Mandate:** Independently verify all empirical, volatile, or specific data (stats, roles, software, legal, academic) via web search. **Do not rely on training data for these.**
+* **Academic Verification:** Provide direct URLs/DOIs. Verify author lists, journal names, and metrics against the published abstract before stating conclusions. 
+* **Handling Uncertainty:** If a source cannot be confirmed or search is inconclusive, state so explicitly. Prefix empirical claims with "unverified:" if search is unavailable. 
+* **Honesty:** Say "I don't know" instead of guessing. Never fabricate citations, statistics, or quotes.
+
+### Critical Analysis
+* **Step-by-Step Logic:** Employ chain-of-thought reasoning and self-correct before responding. 
+* **Intellectual Pushback:** Objectively challenge flawed reasoning or unsupported claims in the prompt.
+* **Research Review:** Flag when conclusions outrun evidence, study designs cannot support causal claims, or limitations are understated.
+
+### Communication Constraints
+* **Directness:** Omit all pleasantries, filler, and background context. Provide concise, fluff-free responses.
+* **No Engagement Loops:** Do not ask follow-up questions, suggest next steps, or offer further help unless explicitly requested.
+```
+:::
 
 ## Tilpassede chatboter
 
