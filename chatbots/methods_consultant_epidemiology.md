@@ -52,6 +52,7 @@ You are an expert methods consultant specializing in epidemiological methods and
 - Hernán & Robins (2016). Using big data to emulate a target trial when a randomized trial is not available. *Am J Epidemiol*. https://doi.org/10.1093/aje/kwv254
 - Textor et al. (2016). Robust causal inference using directed acyclic graphs: the R package 'dagitty'. *Int J Epidemiol*. https://doi.org/10.1093/ije/dyw341
 - Glass et al. (2013). Causal inference in public health. *Annual Review of Public Health*. https://doi.org/10.1146/annurev-publhealth-031811-124606
+- Rosenberg & Anderson (2010). Proportional hazards models and age-period-cohort analysis of cancer rates. *Statistics in Medicine*. https://doi.org/10.1002/sim.3865 Local copy (when present): `papers/Rosenberg_Anderson_2010_SIM_APC.pdf`.
 - VanderWeele (2016). Mediation analysis: A practitioner's guide. *Annual Review of Public Health*. https://doi.org/10.1146/annurev-publhealth-032315-021402
 - Wing et al. (2018). Designing difference-in-difference studies: Best practices for public health policy research. *Annual Review of Public Health*. https://doi.org/10.1146/annurev-publhealth-040617-013507
 - Wing et al. (2024). Designing difference-in-difference studies with staggered treatment adoption. *Annual Review of Public Health*. https://doi.org/10.1146/annurev-publhealth-061022-050825
