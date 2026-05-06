@@ -178,6 +178,9 @@ Chatbot-innhold
 
 ::::
 
+## Informasjon in kontekstvindu
+
+![](figures/context_window_plot.png){fig-alt="Visualization of context window utilization for short prompt, RAG, and full-document context" width=100%}
 
 ## Retrieval Augmented Generation
 

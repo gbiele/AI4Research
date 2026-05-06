@@ -256,6 +256,14 @@ Microsoft Copilot supports custom configurations (called **Copilot Agents** in C
 
 This is also where the limitation of custom instructions stops mattering: with RAG, the model is no longer being asked to behave a certain way around its training memory — it is working from text it can point to. Properties the model could not verify under Lever 1 (is this paper real, does this passage actually say what I claim) become checkable, because the source is in the context window.
 
+The figure below illustrates three distinct methodologies for providing information to a Large Language Model (LLM) relative to its total context window length. The Short prompt configuration shows a minimal input that leaves most of the context window empty, requiring the model to rely almost entirely on its internal pre-trained knowledge. This is how LLMs are mostly used, but it is not optimal if veracity is important. 
+
+The RAG approach (Retrieval-Augmented Generation) fills a portion of the window with specific, relevant "snippets" (orange bars) retrieved from an external document database, allowing the model to ground its response in specific facts without needing to process the entire dataset. This can be used in custom chatbots with uploaded documents as knowledge base or in tools like NotebookLM.  
+
+Finally, the Full doc in context window approach depicts a model with a massive context window (currently mostly google gemini models) capable of ingesting the entire document database at once, providing the LLM with complete global awareness of the data without the need for a separate retrieval step. This comprehensive approach allows the model to "reason" across all text simultaneously—making it ideal for synthesizing information from roughly 50 to 100 journal articles—though it is currently not suited for massive datasets on the scale of 5,000 articles.
+
+![](figures/context_window_plot.png){fig-alt="Visualization of context window utilization for short prompt, RAG, and full-document context" width=100%}
+
 Custom chatbots with a fixed knowledge base are powerful, but they require you to anticipate which documents you need. RAG — Retrieval Augmented Generation — systems go further: they maintain a searchable knowledge base and retrieve relevant passages *at query time* using semantic search.[^9]
 
 When you ask a question, the system retrieves the passages most relevant to your query and places them in the model's context window before it generates its answer — so the model works from your documents, not its training memory. The practical effect is direct: instead of hallucinating a citation from memory, the model is constrained to reason from text you supplied and can verify.
