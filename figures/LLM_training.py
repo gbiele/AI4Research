@@ -9,6 +9,78 @@ def setup_ax(ax, xlim, ylim):
     ax.set_ylim(*ylim)
 
 
+def draw_mini_llm_icon(ax, x, y, width=2.45, height=1.25):
+    # Outer architecture block.
+    outer_y_shift = height * 0.10
+    outer = patches.FancyBboxPatch(
+        (x - width / 2, y - height / 2 + outer_y_shift),
+        width,
+        height,
+        boxstyle="round,pad=0.08",
+        linewidth=1.2,
+        edgecolor="#d62728",
+        facecolor="#f0fdf4",
+    )
+    ax.add_patch(outer)
+
+    # Thin inner boxes with slight offset to suggest repeated internal layers.
+    inner_w = width * 0.84
+    inner_h = height * 0.66
+    base_x = x - width / 2 + width * 0.06
+    base_y = y - height / 2 + height * 0.10 + outer_y_shift
+    inner_shift_x = width * 0.04
+    inner_shift_y = height * 0.035
+    for i in (2, 1, 0):
+        inner = patches.FancyBboxPatch(
+            (base_x + i * inner_shift_x, base_y - i * inner_shift_y),
+            inner_w,
+            inner_h,
+            boxstyle="round,pad=0.04",
+            linewidth=0.8,
+            edgecolor="#2ca02c",
+            facecolor="#e6f7ea",
+            alpha=0.85 if i > 0 else 0.95,
+        )
+        ax.add_patch(inner)
+
+    # Simple internal sketch: one MHA -> FFN block pair
+    inner_h = height * 0.20
+    inner_w = width * 0.34
+    left_x = x - width * 0.38
+    right_x = x + width * 0.04
+    inner_y = y + height * 0.05
+
+    mha = patches.FancyBboxPatch(
+        (left_x, inner_y - inner_h / 2),
+        inner_w,
+        inner_h,
+        boxstyle="round,pad=0.02",
+        linewidth=1.0,
+        edgecolor="#1f77b4",
+        facecolor="#e1f5fe",
+    )
+    ffn = patches.FancyBboxPatch(
+        (right_x, inner_y - inner_h / 2),
+        inner_w,
+        inner_h,
+        boxstyle="round,pad=0.02",
+        linewidth=1.0,
+        edgecolor="#ff7f0e",
+        facecolor="#fff3e0",
+    )
+    ax.add_patch(mha)
+    ax.add_patch(ffn)
+    ax.text(left_x + inner_w / 2, inner_y, "MHA", ha="center", va="center", fontsize=6.8, fontweight="bold")
+    ax.text(right_x + inner_w / 2, inner_y, "FFN", ha="center", va="center", fontsize=6.8, fontweight="bold")
+    ax.annotate(
+        "",
+        xy=(right_x - 0.02, inner_y),
+        xytext=(left_x + inner_w + 0.02, inner_y),
+        arrowprops=dict(arrowstyle="->", lw=1.0, color="#666666"),
+    )
+    ax.text(x, y + height * 0.50, "LLM", ha="center", va="center", fontsize=9, fontweight="bold", color="#166534")
+
+
 def draw_pretraining(ax):
     setup_ax(ax, (0, 12), (0.5, 8))
 
@@ -67,22 +139,16 @@ def draw_pretraining(ax):
         facecolor="#f0fdf4",
     )
     ax.add_patch(rect_model)
+    draw_mini_llm_icon(ax, x=5.0, y=3.25)
     ax.text(
-        6,
-        3.5,
-        "LLM Architecture (Stacked MHA & FFN)",
-        ha="center",
-        fontsize=12,
-        fontweight="bold",
+        6.5,
+        3.25,
+        "Weights updated to correctly\npredict the next token\nin the pre-training corpus",
+        ha="left",
+        va="center",
+        fontsize=16,
         color="#166534",
-    )
-    ax.text(
-        6,
-        3.0,
-        "Mathematical Interpolation / Statistical Pattern Matching",
-        ha="center",
-        fontsize=10,
-        style="italic",
+        fontweight="bold",
     )
 
     rect_out = patches.Rectangle(
@@ -140,7 +206,7 @@ def draw_sft(ax):
         8.2,
         "High-quality, human-curated (Prompt, Response) pairs",
         ha="center",
-        fontsize=10,
+        fontsize=11.5,
         style="italic",
     )
 
@@ -188,22 +254,16 @@ def draw_sft(ax):
         facecolor="#f0fdf4",
     )
     ax.add_patch(rect_model)
+    draw_mini_llm_icon(ax, x=5.0, y=3.25)
     ax.text(
-        6,
-        3.5,
-        "Pre-trained LLM Architecture",
-        ha="center",
-        fontsize=12,
-        fontweight="bold",
+        6.5,
+        3.25,
+        "Weights updated to match\ncurated responses",
+        ha="left",
+        va="center",
+        fontsize=16,
         color="#166534",
-    )
-    ax.text(
-        6,
-        3.0,
-        "Behavioral Mapping: Transitions from 'Completer' to 'Assistant'",
-        ha="center",
-        fontsize=10,
-        style="italic",
+        fontweight="bold",
     )
 
     rect_pred = patches.Rectangle(
@@ -353,10 +413,21 @@ def draw_rlhf(ax):
         1.0,
         9,
         1.2,
-        "Step 2: Update LLM via RL (PPO)",
-        "Uses the Reward Model's scores to adjust the LLM's internal weights.\nResult: Increases probability of generating 'A-like' responses in the future.",
+        "",
+        "",
         facecolor="#f0fdf4",
         edgecolor="#2ca02c",
+    )
+    draw_mini_llm_icon(ax, x=5.0, y=0.9, width=2.25, height=1.0)
+    ax.text(
+        7.4,
+        1.0,
+        "Policy weights updated\nusing reward scores",
+        ha="left",
+        va="center",
+        fontsize=16,
+        color="#166534",
+        fontweight="bold",
     )
 
     ax.annotate("", xy=(6, 3.5), xytext=(6, 4.5), arrowprops=dict(arrowstyle="->", lw=3, color="#777"))
@@ -459,10 +530,21 @@ def draw_rlvf(ax):
         1.0,
         9,
         1.2,
-        "Step 2: Update LLM via RL (e.g., PPO, REINFORCE)",
-        "Model weights update to INCREASE probability of reasoning paths that\nsolve the objective test cases and DECREASE paths that fail.",
+        "",
+        "",
         facecolor="#f0fdf4",
         edgecolor="#2ca02c",
+    )
+    draw_mini_llm_icon(ax, x=5.0, y=0.9, width=2.25, height=1.0)
+    ax.text(
+        7,
+        1,
+        "Policy weights updated to\nmaximize verifier success",
+        ha="left",
+        va="center",
+        fontsize=16,
+        color="#166534",
+        fontweight="bold",
     )
 
     ax.annotate("", xy=(6, 3.5), xytext=(6, 4.5), arrowprops=dict(arrowstyle="->", lw=3, color="#777"))
