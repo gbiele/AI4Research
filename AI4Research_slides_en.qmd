@@ -52,6 +52,31 @@ As researchers, we want to harness the usefulness of LLMs while controlling thei
 
 ---
 
+## LLM architecture (high level)
+
+![](figures/LLM_architecture.png){width=100% fig-align="center"}
+
+---
+
+## How training updates the model
+
+![](figures/LLM_training_all_stages.png){width=100% fig-align="center"}
+
+---
+
+## Training summary table
+
+::: {style="font-size:0.7em;"}
+| Stage | Data | Training objective | Failure mode |
+|---|---|---|---|
+| Pretraining | Large next-token corpus (web, books, code) | Minimize next-token prediction loss | Regression to the mode; inherited corpus bias |
+| SFT | Curated prompt-response examples | Match preferred assistant-style outputs | Overfitting to annotation style; reduced diversity |
+| RLHF | Human preference comparisons | Maximize reward model score via RL | Reward hacking; preference bias from raters |
+| RLVF | Verifiable tasks (tests, compilers, checkers) | Maximize objective verifier success via RL | Optimizing to the checker while missing broader quality |
+:::
+
+---
+
 ## Solutions for LLM problems
 
 * Enable **extended reasoning** for complex questions^[Called "thinking mode", "deep research", etc. depending on provider]
@@ -180,7 +205,7 @@ Chatbot contents
 
 ::::
 
-## Informasjon in kontekstvindu
+## Information in the context window
 
 ![](figures/context_window_plot.png){fig-alt="Visualization of context window utilization for short prompt, RAG, and full-document context" width=100%}
 

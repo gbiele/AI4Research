@@ -40,7 +40,7 @@ ax.text(
     "Main purpose:\nChooses which past\nwords/tokens matter\nmost for next-token\nprediction",
     ha='left',
     va='center',
-    fontsize=11,
+    fontsize=16,
     color="#333333",
 )
 
@@ -59,7 +59,7 @@ ax.text(
     "Main purpose (FFN):\nTransforms context into\nhigher-level patterns\n('working memory' for\nwhat to generate next)",
     ha='left',
     va='center',
-    fontsize=11,
+    fontsize=16,
     color="#333333",
 )
 

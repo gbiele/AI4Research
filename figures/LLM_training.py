@@ -2,11 +2,20 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from pathlib import Path
 
+FONT_SCALE = 1.2
+
 
 def setup_ax(ax, xlim, ylim):
     ax.axis("off")
     ax.set_xlim(*xlim)
     ax.set_ylim(*ylim)
+
+
+def apply_font_scale(fig, scale=1.0):
+    if scale == 1.0:
+        return
+    for artist in fig.findobj(lambda a: hasattr(a, "get_fontsize") and hasattr(a, "set_fontsize")):
+        artist.set_fontsize(artist.get_fontsize() * scale)
 
 
 def draw_mini_llm_icon(ax, x, y, width=2.45, height=1.25):
@@ -86,8 +95,8 @@ def draw_pretraining(ax):
 
     corpus_text = "The capital of France is Paris and the..."
     rect_corpus = patches.FancyBboxPatch(
-        (0.5, 6.5),
-        11,
+        (1.0, 6.5),
+        10,
         1.2,
         boxstyle="round,pad=0.1",
         linewidth=2,
@@ -100,7 +109,7 @@ def draw_pretraining(ax):
         7.3,
         "Large Text Corpus (Trillions of Tokens)",
         ha="center",
-        fontsize=12,
+        fontsize=16,
         fontweight="bold",
     )
     ax.text(
@@ -127,7 +136,7 @@ def draw_pretraining(ax):
         ax.add_patch(rect)
         ax.text(2.1 + i * 1.5, 5.3, token, ha="center", va="center", fontsize=11)
 
-    ax.text(6, 4.7, "Input Sequence (Context Window)", ha="center", fontsize=10, fontweight="bold")
+    ax.text(6, 4.5, "Input Sequence (Context Window)", ha="center", fontsize=10, fontweight="bold")
 
     rect_model = patches.FancyBboxPatch(
         (2, 2.5),
@@ -143,7 +152,7 @@ def draw_pretraining(ax):
     ax.text(
         6.5,
         3.25,
-        "Weights updated to correctly\npredict the next token\nin the pre-training corpus",
+        "Weights updated to\ncorrectly predict\nthe next token in\nthe pre-training corpus",
         ha="left",
         va="center",
         fontsize=16,
@@ -195,20 +204,13 @@ def draw_sft(ax):
     ax.text(
         6,
         8.6,
-        "Supervised Fine-Tuning (SFT) Dataset",
+        "High-quality, human-curated Prompt-Response-Pairs",
         ha="center",
-        fontsize=12,
+        fontsize=16,
         fontweight="bold",
         color="#4a148c",
     )
-    ax.text(
-        6,
-        8.2,
-        "High-quality, human-curated (Prompt, Response) pairs",
-        ha="center",
-        fontsize=11.5,
-        style="italic",
-    )
+
 
     ax.text(2.5, 7.7, "Prompt:", ha="right", fontsize=11, fontweight="bold")
     ax.text(2.7, 7.7, '"Explain gravity briefly."', ha="left", fontsize=11, family="monospace")
@@ -286,7 +288,7 @@ def draw_sft(ax):
     )
     ax.text(
         6.0,
-        0.7,
+        0.5,
         "Supervised Cross-Entropy Loss\n(Penalize deviation from curated response)",
         ha="center",
         fontsize=10,
@@ -335,8 +337,8 @@ def draw_rlhf(ax):
     setup_ax(ax, (0, 12), (0, 10))
 
     rect_data = patches.FancyBboxPatch(
-        (0.5, 4.5),
-        11,
+        (1.25, 4.5),
+        9.5,
         5.0,
         boxstyle="round,pad=0.1",
         linewidth=2,
@@ -351,13 +353,13 @@ def draw_rlhf(ax):
         "Human Preference Dataset",
         ha="center",
         va="center",
-        fontsize=14,
+        fontsize=16,
         fontweight="bold",
         color="#4a148c",
     )
     ax.text(
         6,
-        8.8,
+        8.9,
         "Millions of these records are collected to train the models",
         ha="center",
         va="center",
@@ -371,14 +373,14 @@ def draw_rlhf(ax):
         ax,
         3.5,
         6.4,
-        4.5,
+        4.1,
         1.0,
         "2. Response A (Model Generated)",
         '"Thank you for the invite, but I am\nunable to attend at this time..."',
         facecolor="#ffffff",
         edgecolor="#ccc",
     )
-    draw_box(ax, 8.5, 6.4, 4.5, 1.0, "3. Response B (Model Generated)", '"No, I won\'t come."', facecolor="#ffffff", edgecolor="#ccc")
+    draw_box(ax, 8.5, 6.4, 4.1, 1.0, "3. Response B (Model Generated)", '"No, I won\'t come."', facecolor="#ffffff", edgecolor="#ccc")
     draw_box(
         ax,
         6,
@@ -391,8 +393,8 @@ def draw_rlhf(ax):
         edgecolor="#ff7f0e",
     )
 
-    ax.text(3.5, 6.9, "[Preferred]", ha="center", va="center", fontsize=10, fontweight="bold", color="#2ca02c")
-    ax.text(8.5, 6.9, "[Rejected]", ha="center", va="center", fontsize=10, fontweight="bold", color="#d62728")
+    ax.text(3.5, 6.8, "[Preferred]", ha="center", va="center", fontsize=10, fontweight="bold", color="#2ca02c")
+    ax.text(8.5, 6.8, "[Rejected]", ha="center", va="center", fontsize=10, fontweight="bold", color="#d62728")
     ax.annotate("", xy=(4.5, 7.2), xytext=(6, 7.7), arrowprops=dict(arrowstyle="->", lw=2, color="#aaa"))
     ax.annotate("", xy=(7.5, 7.2), xytext=(6, 7.7), arrowprops=dict(arrowstyle="->", lw=2, color="#aaa"))
 
@@ -440,8 +442,8 @@ def draw_rlvf(ax):
     setup_ax(ax, (0, 12), (0, 10))
 
     rect_data = patches.FancyBboxPatch(
-        (0.5, 4.5),
-        11,
+        (1.25, 4.5),
+        9.5,
         5.0,
         boxstyle="round,pad=0.1",
         linewidth=2,
@@ -456,13 +458,13 @@ def draw_rlvf(ax):
         "Verifiable Tasks (Math, Code, Logic)",
         ha="center",
         va="center",
-        fontsize=14,
+        fontsize=16,
         fontweight="bold",
         color="#008b8b",
     )
     ax.text(
         6,
-        8.8,
+        8.9,
         "Tasks where the answer is objectively right or wrong, requiring System 2 reasoning",
         ha="center",
         va="center",
@@ -476,7 +478,7 @@ def draw_rlvf(ax):
         ax,
         3.5,
         6.4,
-        4.5,
+        4.1,
         1.0,
         "2. Reasoning Path A (Model)",
         "def sort(arr):\n    return sorted(arr)\n# [Outputs correct logic]",
@@ -487,7 +489,7 @@ def draw_rlvf(ax):
         ax,
         8.5,
         6.4,
-        4.5,
+        4.1,
         1.0,
         "3. Reasoning Path B (Model)",
         "def sort(arr):\n    return arr[0]\n# [Outputs flawed logic]",
@@ -506,8 +508,8 @@ def draw_rlvf(ax):
         edgecolor="#0052cc",
     )
 
-    ax.text(3.5, 7.0, "[Execution Success]", ha="center", va="center", fontsize=10, fontweight="bold", color="#2ca02c")
-    ax.text(8.5, 7.0, "[Execution Error]", ha="center", va="center", fontsize=10, fontweight="bold", color="#d62728")
+    ax.text(3.5, 6.8, "[Execution Success]", ha="center", va="center", fontsize=10, fontweight="bold", color="#2ca02c")
+    ax.text(8.5, 6.8, "[Execution Error]", ha="center", va="center", fontsize=10, fontweight="bold", color="#d62728")
     ax.annotate("", xy=(4.5, 7.2), xytext=(6, 7.7), arrowprops=dict(arrowstyle="->", lw=2, color="#aaa"))
     ax.annotate("", xy=(7.5, 7.2), xytext=(6, 7.7), arrowprops=dict(arrowstyle="->", lw=2, color="#aaa"))
     ax.annotate("", xy=(5, 5.4), xytext=(4.5, 6.2), arrowprops=dict(arrowstyle="->", lw=2, color="#aaa"))
@@ -556,6 +558,7 @@ def draw_rlvf(ax):
 def save_stage(draw_fn, output_path, figsize, dpi=200):
     fig, ax = plt.subplots(figsize=figsize)
     draw_fn(ax)
+    apply_font_scale(fig, FONT_SCALE)
     fig.tight_layout()
     fig.savefig(output_path, dpi=dpi, bbox_inches="tight")
     plt.close(fig)
@@ -583,8 +586,12 @@ def save_llm_training_figures(output_dir=None, dpi=200):
     labels = ["Pretraining", "SFT", "RLHF", "RLVF"]
     for ax, draw_fn, label in zip(axes, draw_fns, labels):
         draw_fn(ax)
+        # Tighten panel framing in the combined figure so stages sit closer visually.
+        ax.set_xlim(0.9, 11.1)
         ax.set_title(label, fontsize=20, fontweight="bold", pad=18)
+    apply_font_scale(large_fig, FONT_SCALE)
     large_fig.tight_layout()
+    large_fig.subplots_adjust(left=0.01, right=0.99, wspace=0.0)
     combined_path = output_dir / "LLM_training_all_stages.png"
     large_fig.savefig(combined_path, dpi=dpi, bbox_inches="tight")
     plt.close(large_fig)

@@ -51,6 +51,31 @@ Som forskere ønsker vi å utnytte nytten av LLM-er samtidig som vi kontrollerer
 
 ---
 
+## LLM-arkitektur (høynivå)
+
+![](figures/LLM_architecture.png){width=100% fig-align="center"}
+
+---
+
+## Hvordan trening oppdaterer modellen
+
+![](figures/LLM_training_all_stages.png){width=100% fig-align="center"}
+
+---
+
+## Oppsummering av treningssteg
+
+::: {style="font-size:0.75em;"}
+| Steg | Data | Treningsmål | Feilmodus |
+|---|---|---|---|
+| Pretraining | Stort neste-token-korpus (web, bøker, kode) | Minimer neste-token-tap | Regresjon mot modalverdien; arvet skjevhet fra korpus |
+| SFT | Kuraterte prompt-respons-eksempler | Matche foretrukne assistent-svar | Overtilpasning til annoteringsstil; redusert variasjon |
+| RLHF | Menneskelige preferansesammenligninger | Maksimer reward-model-score via RL | Reward hacking; preferansebias fra vurderere |
+| RLVF | Verifiserbare oppgaver (tester, kompilatorer, sjekkere) | Maksimer objektiv verifikatorsuksess via RL | Optimaliserer mot sjekkeren, men kan bomme på bredere kvalitet |
+:::
+
+---
+
 ## Løsninger på LLM-problemer
 
 * Aktiver **utvidet resonnering** for komplekse spørsmål^[Kalles «tenkemodus», «dyp forskning» osv. avhengig av leverandør]
