@@ -12,10 +12,10 @@ format:
 This post works through what makes LLMs both useful and unreliable for research — the same architecture that produces fluent, confident output also produces hallucinations and conservative synthesis. It then covers three practical levers for controlling those risks: writing better instructions, building custom chatbots, and grounding the model in your own documents.
 
 ::: {.callout-tip}
-If you want the actionable steps without the background, skip ahead to [Getting Started](#getting-started).
+If you want the actionable steps without the background, skip ahead to [Getting started](#getting-started).
 :::
 
-## The Future Is Already Here
+## The future is already here
 
 Suppose you want to quickly put together a figure showing how Norway and other European countries compare on student learning and well-being — combining PISA academic achievement data with HBSC well-being data. Downloading the files, wrangling two large international datasets, constructing composite scores, and producing a labelled scatterplot would normally take an afternoon of coding. How quickly can this actually be done?
 
@@ -43,11 +43,11 @@ This is not a demo. It's what current agentic AI systems[^3] can do. The questio
 
 But powerful doesn't mean problem-free. The limitations matter, especially for researchers.
 
-## Why LLMs Are Tricky for Researchers
+## Why LLMs are tricky for researchers
 
 The same architecture that makes large language models (LLMs)[^4] fluent also makes them unreliable in specific ways — and both properties stem from the same source.
 
-### Regression to the Mode
+### Regression to the mode
 
 LLMs are trained to predict the next most-likely token[^5] (word fragment) given everything that came before. That's what makes them fluent. It's also what makes them conservative: output gravitates toward what is already common in the training data — for a research topic, toward what is already common in the literature.
 
@@ -63,7 +63,7 @@ For researchers, this isn't merely embarrassing — it's a validity threat. A re
 
 
 
-## A Framework for Responsible Use
+## A framework for responsible use
 
 Both problems have practical fixes — three levers, in increasing order of effort:
 
@@ -73,11 +73,11 @@ Both problems have practical fixes — three levers, in increasing order of effo
 
 The levers are ordered by effort, but they are complementary rather than alternative: most regular users end up using all three. Custom instructions are always on in the background, custom chatbots take over recurring specialist tasks, and document grounding handles work where the model needs to reason from specific source material rather than from its training memory. The progression below is about the order in which to adopt them, not about choosing one.
 
-What follows works through each lever, from the simplest to the most involved. If you want the quick version, skip ahead to [Getting Started](#getting-started).
+What follows works through each lever, from the simplest to the most involved. If you want the quick version, skip ahead to [Getting started](#getting-started).
 
 
 ::: {.callout-warning}
-## Data Privacy: What Not to Upload
+## Data privacy: what not to upload
 
 **Raw research data must not be uploaded.** This applies to participant-level data, health records, administrative data, and any dataset with privacy implications — regardless of pseudonymisation. The exception is data you downloaded from a public source or would share openly anyway (the PISA and HBSC files above fall into this category).
 
@@ -93,7 +93,7 @@ Follow FHI's guidelines on AI use. If you're uncertain whether a particular use 
 This post uses Microsoft Copilot for the worked examples because it is the AI assistant that FHI staff already have access to, and the workflows below are designed to be usable by readers without any additional licensing or setup. The same patterns — custom instructions, custom chatbots, and document grounding — port directly to ChatGPT (OpenAI), Claude (Anthropic), and Gemini (Google), often with somewhat stronger underlying models for analytical and synthesis tasks. If you have access to one of these and your data-handling situation allows it, the same instructions and chatbot specifications work there with minimal adjustment.
 :::
 
-## Lever 1: Custom Instructions
+## Lever 1: Custom instructions
 
 *~5 min · beginner · Every conversation starts better-behaved*
 
@@ -141,7 +141,7 @@ Microsoft Copilot (available at [copilot.microsoft.com](https://copilot.microsof
 
 > **Tip:** Custom instructions in Copilot apply across sessions but not across all Microsoft 365 entry points (e.g., Copilot in Word may not inherit browser-based instructions). Check the specific integration you are using.
 
-### Extended Reasoning
+### Extended reasoning
 
 Most major chatbots now offer an extended reasoning mode — variously labelled *thinking*, *deep think*, *extended thinking*, or *deep research* depending on the provider. When it's on, the model works through a problem step by step before generating its response, rather than jumping to the most statistically likely continuation.
 
@@ -155,7 +155,7 @@ It's a single toggle. Enable it by default for anything methodologically demandi
   <source src="figures/Thinking.mp4" type="video/mp4" />
 </video>
 
-### Writing Good Prompts
+### Writing good prompts
 
 Custom instructions shape how the model behaves across all conversations; a good prompt shapes how it behaves for a specific task. Both matter.
 
@@ -208,7 +208,7 @@ The difference is not length for its own sake. Every added element is doing work
 
 > **Tip:** Start a new chat for each new question or task. Long conversations that span multiple topics accumulate context that can pull the model off-target — earlier exchanges linger in the context window and can skew later responses. A fresh chat keeps the context focused.
 
-## Lever 2: Custom Chatbots
+## Lever 2: Custom chatbots
 
 *~15 min · beginner · Reusable specialist available any time*
 
@@ -250,17 +250,17 @@ Microsoft Copilot supports custom configurations (called **Copilot Agents** in C
 > **Tip:** For best results, upload Markdown rather than raw PDFs — PDF text extraction is often poor and can degrade the quality of answers. See [Document Quality for Knowledge Bases](#appendix-document-quality) in the Appendix.
 
 
-## Lever 3: Grounding the Model in Your Own Documents
+## Lever 3: Grounding the model in your own documents
 
 *~10–30 min · beginner · Model answers from your papers, not its training memory*
 
 This is also where the limitation of custom instructions stops mattering: with RAG, the model is no longer being asked to behave a certain way around its training memory — it is working from text it can point to. Properties the model could not verify under Lever 1 (is this paper real, does this passage actually say what I claim) become checkable, because the source is in the context window.
 
-The figure below illustrates three distinct methodologies for providing information to a Large Language Model (LLM) relative to its total context window length. The Short prompt configuration shows a minimal input that leaves most of the context window empty, requiring the model to rely almost entirely on its internal pre-trained knowledge. This is how LLMs are mostly used, but it is not optimal if veracity is important. 
+The figure below compares three ways of getting information into an LLM's context window. With a short prompt, most of the window stays empty and the model answers almost entirely from its training data. This is how most people use LLMs, but it is not the best option when getting the facts right matters.
 
-The RAG approach (Retrieval-Augmented Generation) fills a portion of the window with specific, relevant "snippets" (orange bars) retrieved from an external document database, allowing the model to ground its response in specific facts without needing to process the entire dataset. This can be used in custom chatbots with uploaded documents as knowledge base or in tools like NotebookLM.  
+RAG (Retrieval-Augmented Generation) fills part of the window with specific, relevant "snippets" (orange bars) pulled from an external document database, so the model grounds its answer in those passages instead of processing the whole dataset. Custom chatbots with an uploaded knowledge base and tools like NotebookLM work this way.
 
-Finally, the Full doc in context window approach depicts a model with a massive context window (currently mostly google gemini models) capable of ingesting the entire document database at once, providing the LLM with complete global awareness of the data without the need for a separate retrieval step. This comprehensive approach allows the model to "reason" across all text simultaneously—making it ideal for synthesizing information from roughly 50 to 100 journal articles—though it is currently not suited for massive datasets on the scale of 5,000 articles.
+The third option, fitting the full document set in the context window, needs a model with a very large context window — currently mostly Google's Gemini models. The model then has the entire database available at once and can reason across all of it without a separate retrieval step. That works well for synthesizing roughly 50 to 100 journal articles, but not for a dataset the size of 5,000 articles.
 
 ![](figures/context_window_plot.png){fig-alt="Visualization of context window utilization for short prompt, RAG, and full-document context" width=100%}
 
@@ -288,7 +288,7 @@ Use it for:
 
 The three levers above require no programming skills. For researchers comfortable with R or working in a coding environment, the Appendix describes two additional approaches: programmatic number verification with `tblscribe`, and agentic systems for automating full analysis pipelines.
 
-## Putting It Together: A Practical Workflow
+## Putting it together: a practical workflow
 
 The table below maps a typical research workflow — from grant writing through to manuscript editing — to the AI tools described in this post. It is not a prescription: most researchers will find AI useful at some stages and not others, and starting with one or two tasks where the benefit is obvious is more sustainable than trying to integrate AI everywhere at once. The point is that for each major stage there is either a dedicated tool or a custom chatbot that is straightforward to set up, and they are designed to work together — the SAP produced by the SAP / Prereg Drafter becomes the document the Data Analyst — R chatbot works from, which in turn produces the output tables the Results Writer uses to plan and draft the results section.
 
@@ -309,7 +309,7 @@ The table below maps a typical research workflow — from grant writing through 
 
 Instructions shape model behaviour, context windows filled with reliable information ground model reasoning, and verification — whether programmatic or expert — catches what slips through.
 
-## Getting Started
+## Getting started
 
 Most of the benefit described in this post comes from two steps that together take under 30 minutes.
 
@@ -329,15 +329,15 @@ The tools described here don't change what good research looks like — they cha
 
 What that frees up is the work that still requires a researcher: identifying the right question, judging whether a result is plausible, deciding what the evidence actually implies. LLMs are amplifiers — they multiply the competences you already have. Used carelessly, they scale your weaknesses just as readily. Used well, they give you back the time to focus on the part of the work that no model can replace.
 
-Start with [Step 1 in Getting Started](#getting-started). Five minutes of setup, and every conversation that follows starts better-behaved.
+Start with [Step 1 in Getting started](#getting-started). Five minutes of setup, and every conversation that follows starts better-behaved.
 
 *The chatbot specifications referenced in this post are available in the `chatbots/` directory. The `pdfParser` and `tblscribe` R packages are available on GitHub.*
 
 ## Appendix
 
-### Chatbot Example and Overview {#appendix-chatbot-example-and-overview}
+### Chatbot example and overview {#appendix-chatbot-example-and-overview}
 
-#### Methods Consultant — Epidemiology: Full Specification
+#### Methods Consultant — Epidemiology: full specification
 
 **Instructions** 
 (One example per theme (full instructions available in the [`chatbots/` directory](chatbots/methods_consultant_epidemiology.md))):
@@ -366,7 +366,7 @@ These are the actual documents (PDFs or better markdown files, see the [section 
 
 The effect is substantial. Instead of offering a generic answer to "should I adjust for X in my regression?", this chatbot will ask about your DAG, identify whether X is a confounder, mediator, or collider, and explain the consequences of conditioning on each — just as a good methodologist would.
 
-#### All Available Chatbots
+#### All available chatbots
 
 The chatbots listed below were generated with AI assistance and reviewed once. Treat them as starting points: read the instructions, test them on a real task, and adjust where they fall short for your field or workflow.
 
@@ -388,7 +388,7 @@ The chatbots listed below were generated with AI assistance and reviewed once. T
 
 These chatbot specifications were largely generated with AI assistance and should be treated as starting points, not finished products. Review the instructions, adjust them to your field and workflow, and refine them as you discover where the defaults fall short.
 
-### Document Quality for Knowledge Bases {#appendix-document-quality}
+### Document quality for knowledge bases {#appendix-document-quality}
 
 The knowledge base in a custom chatbot or RAG system is only as good as the text the platform can actually extract from it. When you upload a PDF to Copilot Studio, NotebookLM, or a similar platform, the platform extracts the text automatically before indexing it. This extraction is often poor: equations become garbled, tables lose their structure, and multi-column layouts produce jumbled, out-of-order text. The chatbot then reasons from this degraded version — not from the paper as you read it.
 
@@ -398,7 +398,7 @@ A better approach is to upload a clean **Markdown** version instead of the raw P
 
 For knowledge-base documents you return to repeatedly — core methods papers, reporting checklists, textbooks — converting them once with `pdfParser` and uploading the Markdown versions is worth the extra step.
 
-### Programmatic Verification with tblscribe {#appendix-tblscribe}
+### Programmatic verification with tblscribe {#appendix-tblscribe}
 
 One of the most practically useful applications of LLMs in research is generating text from statistical results — drafting results sections, municipality-specific reports, or subgroup summaries from tabular output. The risk is numerical hallucination: an LLM given a results table may misread a value, transpose digits, or confabulate a statistic.
 
@@ -415,27 +415,27 @@ You pass a data frame and a prompt to `tblscribe`'s main function; it sends both
 This is what makes AI-assisted text generation safe at scale: the LLM generates the prose, deterministic code verifies the numbers, and humans review flagged outputs. Neither step alone is sufficient.
 
 
-### Agentic Systems {#appendix-agentic-systems}
+### Agentic systems {#appendix-agentic-systems}
 
 An agentic AI system goes beyond answering questions in a chat window. It can use tools — web search, code execution, file reading and writing — and execute sequences of actions autonomously, correcting itself when something fails and continuing until the task is done. The PISA/HBSC figure at the top of this post illustrates what this looks like in practice: given the download URLs and a description of the desired output, the agent downloaded two international datasets, wrote R code to clean and merge them, built composite scores, produced a labelled scatterplot, fixed the errors that arose, and saved the figure and script — all from a single prompt, without manual intervention at any step.
 
 ![An overview of the Cursor agentic coding environment, showing its AI-native editor interface with inline code generation and debugging capabilities.](figures/Cursor.png)
 
-### Some Available Tools
+### Some available tools
 
 The main agentic coding environments used in research settings are [Claude Code](https://claude.ai/download) (Anthropic), which is particularly strong for R and Python data pipelines and can be used directly in a terminal or IDE; [Cursor](https://www.cursor.com), an AI-native code editor that writes, runs, and debugs code inline; [GitHub Copilot Workspace](https://githubnext.com/projects/copilot-workspace), which works within GitHub's ecosystem; and Microsoft Copilot with Code Interpreter, available in some Microsoft 365 configurations. All of them support the same core workflow: describe the task, let the agent write and run the code, review the output. If you already use Visual Studio Code, the easiest entry point is to install the [Claude Code extension](https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code) directly in the editor — you get the full agentic functionality without leaving the environment you already work in.
 
-### What Agentic Systems Are Best At
+### What agentic systems are best at
 
 Agentic systems are strongest at tasks that are well-defined, repetitive, and verifiable. Automating a data pipeline — download, clean, derive variables, fit models, produce tables and figures — is exactly the kind of work they handle well. They translate a verbal description of an analysis into executable code, iterate until it runs, and produce outputs that can be inspected directly. The more precisely the task is specified, the closer the result is to what a careful analyst would produce.
 
-### Agentic Systems as Expert Colleagues
+### Agentic systems as expert colleagues
 
 With the right context loaded, an agentic system can act as something closer to a knowledgeable sparring partner than a code generator. If you provide the analysis plan, describe the data structure, and upload relevant background literature — the methods papers that define the estimand, the reporting guidelines for your field, the preregistration document — the agent can review model specifications and flag mismatches with the stated research question, propose alternative analytical approaches grounded in the uploaded methods papers, and catch common implementation errors before they propagate. The key is that the agent reasons from what is in the context window. An agent given only the data and a vague instruction will produce something plausible; an agent given the analysis plan, the relevant methods papers, and explicit criteria for what a correct implementation looks like will produce something that can be evaluated against a standard. The quality of the context you provide directly determines the quality of the review you get back.
 
 To make this work well in practice, it helps to add *skills* to a project. Most agentic tools support some version of this idea: in Claude Code they are markdown files in `.claude/commands/`; in Cursor they are called Rules and live in `.cursor/rules/` as `.mdc` files with frontmatter that controls when they activate. In both cases, a skill or rule defines a set of instructions for a specific task — "review an analysis plan against the preregistration", "check R code for targets pipeline conventions" — and the agent loads them automatically when they are relevant, without being told explicitly.[^10] For a research project, a small library of skills — one for analysis plan review, one for results reporting, one for code style — means that domain-specific standards are applied consistently without having to repeat them in every prompt.
 
-### What They're Still Not Good At
+### What they're still not good at
 
 Even with rich context, agentic systems fall short in ways that matter for research. They tend not to generate genuinely novel scientific ideas — regression to the mode means output gravitates toward what is already common in the literature. An experienced researcher notices immediately when a result is implausible; an agent without that accumulated background knowledge cannot. Translating a theoretical prediction into a precise, testable statistical claim requires conceptual reasoning that LLMs handle poorly without very explicit scaffolding. And agents work with what is in front of them: they will not flag that a critical confound was never measured, that a sensitivity analysis is missing from the plan, or that the discussion ignores a rival explanation. LLMs multiply the competences you already have — they do not supply new ones. The value of agentic systems scales with your ability to evaluate what they produce.
 
